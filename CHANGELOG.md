@@ -1,3 +1,9 @@
+## [1.1.0](https://github.com/HagiaHaya/morphe-patches/compare/v1.0.0...v1.1.0) (2026-10-21)
+
+### ✨ New Features
+
+* Add `GmsCore support` patch for Wykop.pl ([ad24d18](https://github.com/HagiaHaya/morphe-patches/commit/ad24d18d1c098e85d6c321b385c2fb71b31e7949))
+
 ## [1.1.0-dev.1](https://github.com/HagiaHaya/morphe-patches/compare/v1.0.0...v1.1.0-dev.1) (2026-10-21)
 
 ### ✨ New Features
