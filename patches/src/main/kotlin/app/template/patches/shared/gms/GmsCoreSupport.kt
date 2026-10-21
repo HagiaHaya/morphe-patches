@@ -12,9 +12,11 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.resourcePatch
 import app.template.patches.shared.gms.Constants.ACTIONS
 import app.template.patches.shared.gms.Constants.AUTHORITIES
+import app.template.patches.shared.gms.Constants.CREDENTIAL_TYPES
 import app.template.patches.shared.gms.Constants.PERMISSIONS
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.builder.instruction.BuilderInstruction31c
@@ -87,7 +89,13 @@ internal fun gmsCoreSupportResourcePatch(packageName: String, originalSignature:
 internal fun BytecodePatchContext.useGmsCore() {
     // GmsCore is not signed by Google, so report it as available. Matched before
     // replacing the package name of Google Play services, which the method uses.
-    GooglePlayServicesAvailabilityFingerprint.method.addInstructions(
+    val googlePlayServicesAvailabilityMethod = listOf(
+        GooglePlayServicesAvailabilityFingerprint,
+        GooglePlayServicesUtilLightAvailabilityFingerprint,
+    ).firstNotNullOfOrNull { it.methodOrNull }
+        ?: throw PatchException("Could not find the Google Play services availability check")
+
+    googlePlayServicesAvailabilityMethod.addInstructions(
         0,
         """
             const/4 v0, 0x0
@@ -96,7 +104,8 @@ internal fun BytecodePatchContext.useGmsCore() {
     )
 
     // Use GmsCore instead of Google Play services.
-    val exactStrings = setOf("com.google", "com.google.android.gms") + PERMISSIONS + ACTIONS + AUTHORITIES
+    val exactStrings = setOf("com.google", "com.google.android.gms") +
+            PERMISSIONS + ACTIONS + AUTHORITIES + CREDENTIAL_TYPES
     val classes = exactStrings.flatMap { classDefByStrings(it) } +
             classDefByStrings("content://", StringComparisonType.STARTS_WITH)
 

@@ -11,3 +11,14 @@ internal object GooglePlayServicesAvailabilityFingerprint : Fingerprint(
     parameters = listOf("Landroid/content/Context;", "I"),
     strings = listOf("MetadataValueReader", "This should never happen."),
 )
+
+/**
+ * The same method in versions of the library without these strings, in apps
+ * that keep the names of the library classes.
+ */
+internal object GooglePlayServicesUtilLightAvailabilityFingerprint : Fingerprint(
+    definingClass = "Lcom/google/android/gms/common/GooglePlayServicesUtilLight;",
+    name = "isGooglePlayServicesAvailable",
+    returnType = "I",
+    parameters = listOf("Landroid/content/Context;", "I"),
+)
