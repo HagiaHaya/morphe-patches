@@ -1,14 +1,13 @@
-group = "app.template"
+group = "app.hagiahaya"
 
 patches {
-    // TODO: Update this section with your project details.
     about {
-        name = "UserXYZ Patches"
-        description = "Patches for apps I like"
-        source = "git@github.com:UserXYZ/morphe-patches.git"
-        author = "Awesome dev"
-        contact = "na"
-        website = "na"
+        name = "HagiaHaya Patches"
+        description = "Patches for the Wykop.pl app"
+        source = "git@github.com:HagiaHaya/morphe-patches.git"
+        author = "HagiaHaya"
+        contact = "https://github.com/HagiaHaya/morphe-patches/issues"
+        website = "https://github.com/HagiaHaya/morphe-patches"
         license = "GPLv3"
     }
 }
