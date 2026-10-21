@@ -17,7 +17,7 @@ Push notifications of the patched app also go through MicroG-RE.
 ## 🩹 Patches list
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.3.0](https://github.com/HagiaHaya/morphe-patches/releases/tag/v1.3.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;7 patches total
+> **[v1.3.1-dev.1](https://github.com/HagiaHaya/morphe-patches/releases/tag/v1.3.1-dev.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;7 patches total
 <details open>
 <summary>📦 Pepper&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
 <br>
