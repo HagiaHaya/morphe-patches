@@ -16,6 +16,7 @@ import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
 import app.template.patches.shared.Constants.COMPATIBILITY_WYKOP
+import app.template.patches.shared.requireExtensionMethods
 import app.template.patches.wykop.gms.Constants.ACTIONS
 import app.template.patches.wykop.gms.Constants.AUTHORITIES
 import app.template.patches.wykop.gms.Constants.PERMISSIONS
@@ -98,6 +99,8 @@ val gmsCoreSupportPatch = bytecodePatch(
     extendWith("extensions/extension.mpe")
 
     execute {
+        requireExtensionMethods(EXTENSION_CLASS, "checkGmsCore")
+
         // GmsCore is not signed by Google, so report it as available. Matched before
         // replacing the package name of Google Play services, which the method uses.
         GooglePlayServicesAvailabilityFingerprint.method.addInstructions(

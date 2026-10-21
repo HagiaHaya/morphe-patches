@@ -4,6 +4,7 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.patch.bytecodePatch
 import app.template.patches.shared.Constants.COMPATIBILITY_WYKOP
+import app.template.patches.shared.requireExtensionMethods
 
 private const val EXTENSION_CLASS = "Lapp/template/extension/wykop/RemoveAdsPatch;"
 
@@ -18,6 +19,8 @@ val removeAdsPatch = bytecodePatch(
     extendWith("extensions/extension.mpe")
 
     execute {
+        requireExtensionMethods(EXTENSION_CLASS, "blockAdRequest", "hideAdSlots")
+
         webViewClientClasses.forEach { webViewClientClass ->
             // Answer requests to ad servers with an empty response,
             // before the plugin gets a chance to load them.
