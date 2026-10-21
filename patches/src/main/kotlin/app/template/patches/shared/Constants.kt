@@ -24,4 +24,18 @@ object Constants {
             )
         )
     )
+
+    val COMPATIBILITY_PEPPER = Compatibility(
+        name = "Pepper", // App name as it appears in the Android launcher.
+        packageName = "com.tippingcanoe.pepperpl",
+        // Not available on APKMirror or Uptodown, APKPure distributes it as a split XAPK.
+        apkFileType = ApkFileType.XAPK,
+        appIconColor = 0xFF3400,
+        targets = listOf(
+            // Version the patches were developed and verified against.
+            AppTarget(
+                version = "8.20.00"
+            )
+        )
+    )
 }
