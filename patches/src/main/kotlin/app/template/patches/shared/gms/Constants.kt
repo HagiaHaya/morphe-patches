@@ -1,11 +1,11 @@
 /*
- * Based on the GmsCore support patch of Morphe Patches, changed for Wykop.pl.
+ * Based on the GmsCore support patch of Morphe Patches.
  * https://github.com/MorpheApp/morphe-patches
  *
  * See the included NOTICE file for GPLv3 Section 7 terms that apply to this code.
  */
 
-package app.template.patches.wykop.gms
+package app.template.patches.shared.gms
 
 /**
  * Permissions, intent actions and content provider authorities of Google Play services,
@@ -272,4 +272,5 @@ internal object Constants {
         "com.google.android.gsf.subscribedfeeds",
         "com.google.settings",
     )
+
 }
