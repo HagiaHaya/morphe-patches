@@ -1,7 +1,33 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.2.0-dev.1",
+  "version": "1.2.0-dev.2",
   "patches": [
+    {
+      "name": "GmsCore support",
+      "description": "Allows signing in with Google by using MicroG-RE instead of Google Play services.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.tippingcanoe.pepperpl",
+          "name": "Pepper",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FF3400",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "8.20.00",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
     {
       "name": "GmsCore support",
       "description": "Allows signing in with Google by using MicroG-RE instead of Google Play services.",
