@@ -69,18 +69,9 @@ public final class RemoveAdsPatch {
     private static final String ANTI_ADBLOCK_AD_SELECTOR = "section:has("
             + "> div.wrapper:only-child > img:first-child + a[target=\"_blank\"]:last-child)";
 
-    private static final String STYLE_ELEMENT_ID = "morphe-remove-ads";
-
-    private static final String HIDE_AD_SLOTS_SCRIPT = "(function() {"
-            + "  if (document.getElementById('" + STYLE_ELEMENT_ID + "')) return;"
-            + "  var parent = document.head || document.documentElement;"
-            + "  if (!parent) return;"
-            + "  var style = document.createElement('style');"
-            + "  style.id = '" + STYLE_ELEMENT_ID + "';"
-            + "  style.textContent = '" + AD_SLOT_SELECTORS + " { display: none !important; }"
-            + " " + ANTI_ADBLOCK_AD_SELECTOR + " { display: none !important; }';"
-            + "  parent.appendChild(style);"
-            + "})();";
+    private static final String HIDE_AD_SLOTS_SCRIPT = WebViewStyle.script("morphe-remove-ads",
+            AD_SLOT_SELECTORS + " { display: none !important; } "
+                    + ANTI_ADBLOCK_AD_SELECTOR + " { display: none !important; }");
 
     /**
      * Injection point. Called on a background thread for every request of the WebView.
@@ -107,11 +98,7 @@ public final class RemoveAdsPatch {
      * The website navigates without reloading the page, so the stylesheet stays in place.
      */
     public static void hideAdSlots(WebView webView) {
-        try {
-            webView.evaluateJavascript(HIDE_AD_SLOTS_SCRIPT, null);
-        } catch (Exception ex) {
-            Log.e(TAG, "hideAdSlots failure", ex);
-        }
+        WebViewStyle.add(webView, HIDE_AD_SLOTS_SCRIPT);
     }
 
     /**
