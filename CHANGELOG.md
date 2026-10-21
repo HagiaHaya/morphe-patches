@@ -1,3 +1,9 @@
+## [1.1.1-dev.1](https://github.com/HagiaHaya/morphe-patches/compare/v1.1.0...v1.1.1-dev.1) (2026-10-21)
+
+### 🐛 Bug Fixes
+
+* Fail patching when the extension is outdated ([9e69f38](https://github.com/HagiaHaya/morphe-patches/commit/9e69f38ce9969a3e4163e9cb69b87d3b194e0c97))
+
 ## [1.1.0](https://github.com/HagiaHaya/morphe-patches/compare/v1.0.0...v1.1.0) (2026-10-21)
 
 ### ✨ New Features
