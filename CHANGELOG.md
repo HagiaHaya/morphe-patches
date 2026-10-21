@@ -1,3 +1,9 @@
+## [1.3.0](https://github.com/HagiaHaya/morphe-patches/compare/v1.2.0...v1.3.0) (2026-10-21)
+
+### ✨ New Features
+
+* Add `GmsCore support` patch for Pepper ([098c487](https://github.com/HagiaHaya/morphe-patches/commit/098c487d7ac5348eed6d0f3e1a8173f1628664a6))
+
 ## [1.3.0-dev.1](https://github.com/HagiaHaya/morphe-patches/compare/v1.2.0...v1.3.0-dev.1) (2026-10-21)
 
 ### ✨ New Features
