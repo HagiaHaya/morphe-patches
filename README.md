@@ -10,12 +10,16 @@ Patches for the [Wykop.pl](https://wykop.pl) app, such as removing the ads shown
 
 Click here to add these patches to Morphe: https://morphe.software/add-source?github=HagiaHaya/morphe-patches
 
+The **GmsCore support** patch makes signing in with Google work in the patched app, which
+needs [MicroG-RE](https://github.com/MorpheApp/MicroG-RE/releases/latest) installed.
+Push notifications of the patched app also go through MicroG-RE.
+
 ## 🩹 Patches list
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.0.0](https://github.com/HagiaHaya/morphe-patches/releases/tag/v1.0.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;1 patches total
+> **[v1.1.0-dev.1](https://github.com/HagiaHaya/morphe-patches/releases/tag/v1.1.0-dev.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;2 patches total
 <details open>
-<summary>📦 Wykop.pl&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<summary>📦 Wykop.pl&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -25,6 +29,7 @@ Click here to add these patches to Morphe: https://morphe.software/add-source?gi
 
 | 💊&nbsp;Patch | 📜&nbsp;Description | ⚙️&nbsp;Options |
 |----------|----------------|-----------|
+| [GmsCore support](#gmscore-support) | Allows signing in with Google by using MicroG-RE instead of Google Play services. |  |
 | [Remove ads](#remove-ads) | Hides ads and blocks ad networks on the website shown by the app. |  |
 
 </details>
