@@ -1,3 +1,9 @@
+## [1.3.1](https://github.com/HagiaHaya/morphe-patches/compare/v1.3.0...v1.3.1) (2026-10-21)
+
+### 🐛 Bug Fixes
+
+* Sign in with Google on Android 14 and newer in Pepper ([b083298](https://github.com/HagiaHaya/morphe-patches/commit/b0832988d6f5a460a1c21cb402035111b46bb325))
+
 ## [1.3.0](https://github.com/HagiaHaya/morphe-patches/compare/v1.2.0...v1.3.0) (2026-10-21)
 
 ### ✨ New Features
