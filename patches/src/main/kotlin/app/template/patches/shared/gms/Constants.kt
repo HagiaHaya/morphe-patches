@@ -1,15 +1,15 @@
 /*
- * Based on the GmsCore support patch of Morphe Patches, changed for Wykop.pl.
+ * Based on the GmsCore support patch of Morphe Patches.
  * https://github.com/MorpheApp/morphe-patches
  *
  * See the included NOTICE file for GPLv3 Section 7 terms that apply to this code.
  */
 
-package app.template.patches.wykop.gms
+package app.template.patches.shared.gms
 
 /**
- * Permissions, intent actions and content provider authorities of Google Play services,
- * which GmsCore provides under its own vendor group instead of "com.google".
+ * Permissions, intent actions, content provider authorities and credential types of
+ * Google Play services, which GmsCore provides under its own vendor group instead of "com.google".
  */
 internal object Constants {
     /**
@@ -271,5 +271,13 @@ internal object Constants {
         "com.google.android.gsf.gservices",
         "com.google.android.gsf.subscribedfeeds",
         "com.google.settings",
+    )
+
+    /**
+     * Credential types of Credential Manager. MicroG-RE only accepts and returns
+     * a Google ID token credential under its own vendor group.
+     */
+    val CREDENTIAL_TYPES = setOf(
+        "com.google.android.libraries.identity.googleid.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL",
     )
 }
