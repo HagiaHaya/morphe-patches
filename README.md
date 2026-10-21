@@ -4,7 +4,7 @@ Patches for use with [Morphe](https://morphe.software).
 
 ## ❓ About
 
-Patches for the [Wykop.pl](https://wykop.pl) app, such as removing the ads shown on the website inside the app.
+Patches for the [Wykop.pl](https://wykop.pl) and [Pepper.pl](https://www.pepper.pl) apps, such as removing ads and sanitizing sharing links.
 
 ### How to use these patches
 
