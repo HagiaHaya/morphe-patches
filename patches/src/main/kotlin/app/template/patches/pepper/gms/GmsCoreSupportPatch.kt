@@ -9,16 +9,21 @@ package app.template.patches.pepper.gms
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
+import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
+import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.bytecodePatch
 import app.template.patches.shared.Constants.COMPATIBILITY_PEPPER
 import app.template.patches.shared.gms.gmsCoreSupportResourcePatch
 import app.template.patches.shared.gms.useGmsCore
 import app.template.patches.shared.requireExtensionMethods
+import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
 /**
  * SHA-1 of the certificate the original app is signed with.
  */
 private const val ORIGINAL_SIGNATURE = "e72704b9a996f089948d827f1b826d109d7590d6"
+
+private const val ANDROID_13_SDK_INT = 33
 
 private const val EXTENSION_CLASS = "Lapp/template/extension/pepper/GmsCoreSupportPatch;"
 
@@ -48,6 +53,14 @@ val gmsCoreSupportPatch = bytecodePatch(
                 return v0
             """
         )
+
+        // Read the response of GmsCore in the format of Android 13, which it answers with.
+        HandleGetCredentialResponseFingerprint.let {
+            val sdkIntIndex = it.instructionMatches.first().index
+            val register = it.method.getInstruction<OneRegisterInstruction>(sdkIntIndex).registerA
+
+            it.method.replaceInstruction(sdkIntIndex, "const/16 v$register, $ANDROID_13_SDK_INT")
+        }
 
         // Ask to install GmsCore if it is missing.
         MainActivityOnCreateFingerprint.method.addInstruction(
