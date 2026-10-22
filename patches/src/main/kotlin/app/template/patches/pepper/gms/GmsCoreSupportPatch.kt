@@ -13,6 +13,7 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.bytecodePatch
 import app.template.patches.shared.Constants.COMPATIBILITY_PEPPER
+import app.template.patches.shared.gms.FrameworkCredentialProviderAvailabilityFingerprint
 import app.template.patches.shared.gms.gmsCoreSupportResourcePatch
 import app.template.patches.shared.gms.useGmsCore
 import app.template.patches.shared.requireExtensionMethods
