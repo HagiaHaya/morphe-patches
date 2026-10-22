@@ -99,6 +99,9 @@ public final class MessageArchiveActivity extends Activity {
         addHeader("Archive");
         statsSummary = addRow("Archived messages", "Counting…", null, null)
                 .findViewWithTag("summary");
+        addRow("Search",
+                "Searches the archived messages, including the ones the server hides.",
+                null, view -> startActivity(new Intent(this, MessageArchiveSearchActivity.class)));
         addRow("Export",
                 "Saves the archived messages as a JSON file, listed by conversation ID.",
                 null, view -> export());

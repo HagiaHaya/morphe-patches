@@ -28,11 +28,13 @@ private const val EXTENSION_CLASS = "Lapp/template/extension/slack/KeepMessageHi
 
 private const val ARCHIVE_ACTIVITY = "app.template.extension.slack.MessageArchiveActivity"
 
+private const val ARCHIVE_SEARCH_ACTIVITY = "app.template.extension.slack.MessageArchiveSearchActivity"
+
 private const val JSON_INFLATER_CLASS = "Lslack/commons/json/JsonInflater;"
 
 private const val SINGLE_CLASS = "Lio/reactivex/rxjava3/core/Single;"
 
-private const val SHORTCUT_ICON = "hagiahaya_shortcut_message_archive"
+private const val SHORTCUT_BACKGROUND_COLOR = "hagiahaya_shortcut_background"
 
 /**
  * How many instructions before loading the SQL of a statement the lambda binding it is looked for.
@@ -41,71 +43,81 @@ private const val BINDER_SEARCH_DISTANCE = 10
 
 private val messageArchiveShortcutPatch = resourcePatch {
     execute {
-        document("AndroidManifest.xml").use { document ->
-            document.getElementsByTagName("application").item(0).appendChild(
-                document.createElement("activity").apply {
-                    setAttribute("android:name", ARCHIVE_ACTIVITY)
-                    setAttribute("android:label", "@string/hagiahaya_message_archive")
-                    setAttribute("android:exported", "false")
-                }
-            )
-        }
-
-        document("res/values/strings.xml").use { document ->
-            document.documentElement.appendChild(
-                document.createElement("string").apply {
-                    setAttribute("name", "hagiahaya_message_archive")
-                    textContent = "Message archive"
-                }
-            )
-        }
-
-        // The history icon of Slack, in white on the aubergine of the app icon.
-        get("res/drawable/history.xml").copyTo(get("res/drawable/${SHORTCUT_ICON}_foreground.xml"), overwrite = true)
-        document("res/drawable/${SHORTCUT_ICON}_foreground.xml").use { document ->
-            val paths = document.getElementsByTagName("path")
-            for (i in 0 until paths.length) {
-                (paths.item(i) as org.w3c.dom.Element).setAttribute("android:fillColor", "#FFFFFF")
-            }
-        }
-        get("res/drawable/$SHORTCUT_ICON.xml").writeText(
-            """
-            <?xml version="1.0" encoding="utf-8"?>
-            <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
-                <background android:drawable="@color/hagiahaya_shortcut_background" />
-                <foreground>
-                    <inset android:drawable="@drawable/${SHORTCUT_ICON}_foreground" android:inset="34%" />
-                </foreground>
-            </adaptive-icon>
-            """.trimIndent()
-        )
         document("res/values/colors.xml").use { document ->
             document.documentElement.appendChild(
                 document.createElement("color").apply {
-                    setAttribute("name", "hagiahaya_shortcut_background")
+                    setAttribute("name", SHORTCUT_BACKGROUND_COLOR)
                     textContent = "#4A154B"
                 }
             )
         }
 
-        // Long pressing the app icon offers the archive.
-        document("res/xml/shortcut.xml").use { document ->
-            document.documentElement.appendChild(
-                document.createElement("shortcut").apply {
-                    setAttribute("android:shortcutId", "hagiahaya_message_archive")
-                    setAttribute("android:enabled", "true")
-                    setAttribute("android:icon", "@drawable/$SHORTCUT_ICON")
-                    setAttribute("android:shortcutShortLabel", "@string/hagiahaya_message_archive")
-                    appendChild(
-                        document.createElement("intent").apply {
-                            setAttribute("android:action", "android.intent.action.VIEW")
-                            setAttribute("android:targetPackage", packageMetadata.packageName)
-                            setAttribute("android:targetClass", ARCHIVE_ACTIVITY)
-                        }
-                    )
+        /**
+         * Adds a screen of the extension and a shortcut to it to the app icon,
+         * with an icon of Slack in white on the aubergine of the app icon.
+         */
+        fun addScreen(activity: String, id: String, label: String, slackIcon: String) {
+            document("AndroidManifest.xml").use { document ->
+                document.getElementsByTagName("application").item(0).appendChild(
+                    document.createElement("activity").apply {
+                        setAttribute("android:name", activity)
+                        setAttribute("android:label", "@string/$id")
+                        setAttribute("android:exported", "false")
+                    }
+                )
+            }
+
+            document("res/values/strings.xml").use { document ->
+                document.documentElement.appendChild(
+                    document.createElement("string").apply {
+                        setAttribute("name", id)
+                        textContent = label
+                    }
+                )
+            }
+
+            val icon = "${id}_shortcut"
+            get("res/drawable/$slackIcon.xml").copyTo(get("res/drawable/${icon}_foreground.xml"), overwrite = true)
+            document("res/drawable/${icon}_foreground.xml").use { document ->
+                val paths = document.getElementsByTagName("path")
+                for (i in 0 until paths.length) {
+                    (paths.item(i) as org.w3c.dom.Element).setAttribute("android:fillColor", "#FFFFFF")
                 }
+            }
+            get("res/drawable/$icon.xml").writeText(
+                """
+                <?xml version="1.0" encoding="utf-8"?>
+                <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+                    <background android:drawable="@color/$SHORTCUT_BACKGROUND_COLOR" />
+                    <foreground>
+                        <inset android:drawable="@drawable/${icon}_foreground" android:inset="34%" />
+                    </foreground>
+                </adaptive-icon>
+                """.trimIndent()
             )
+
+            // Long pressing the app icon offers the screen.
+            document("res/xml/shortcut.xml").use { document ->
+                document.documentElement.appendChild(
+                    document.createElement("shortcut").apply {
+                        setAttribute("android:shortcutId", id)
+                        setAttribute("android:enabled", "true")
+                        setAttribute("android:icon", "@drawable/$icon")
+                        setAttribute("android:shortcutShortLabel", "@string/$id")
+                        appendChild(
+                            document.createElement("intent").apply {
+                                setAttribute("android:action", "android.intent.action.VIEW")
+                                setAttribute("android:targetPackage", packageMetadata.packageName)
+                                setAttribute("android:targetClass", activity)
+                            }
+                        )
+                    }
+                )
+            }
         }
+
+        addScreen(ARCHIVE_ACTIVITY, "hagiahaya_message_archive", "Message archive", "history")
+        addScreen(ARCHIVE_SEARCH_ACTIVITY, "hagiahaya_message_archive_search", "Search archive", "search")
     }
 }
 
@@ -204,7 +216,8 @@ val keepMessageHistoryPatch = bytecodePatch(
     description = "Keeps a copy of the messages Slack loads on the device, and shows the copies " +
         "where the server hides older messages, such as after 90 days on the free plan. " +
         "Only the messages loaded while the patched app is used are kept. " +
-        "Long press the app icon and choose \"Message archive\" to turn it off, export or delete the copies.",
+        "Long press the app icon and choose \"Search archive\" to search the copies, " +
+        "or \"Message archive\" to turn it off, export or delete them.",
     default = true
 ) {
     compatibleWith(COMPATIBILITY_SLACK)

@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedWriter;
@@ -18,6 +19,7 @@ import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -40,19 +42,24 @@ final class MessageArchive extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "hagiahaya_message_archive.db";
 
-    private static final int DATABASE_VERSION = 1;
+    /**
+     * Version 2 adds the text column.
+     */
+    private static final int DATABASE_VERSION = 2;
 
     private static final String UPSERT_MESSAGE =
-            "INSERT INTO message(channel_id, ts, thread_ts, in_channel, json, archived_at) VALUES (?, ?, ?, ?, ?, ?)"
+            "INSERT INTO message(channel_id, ts, thread_ts, in_channel, json, archived_at, text)"
+                    + " VALUES (?, ?, ?, ?, ?, ?, ?)"
                     + " ON CONFLICT(channel_id, ts) DO UPDATE SET"
                     + " thread_ts = excluded.thread_ts,"
                     + " in_channel = max(in_channel, excluded.in_channel),"
                     + " json = excluded.json,"
-                    + " archived_at = excluded.archived_at";
+                    + " archived_at = excluded.archived_at,"
+                    + " text = excluded.text";
 
     private static final String INSERT_MESSAGE_IF_ABSENT =
-            "INSERT OR IGNORE INTO message(channel_id, ts, thread_ts, in_channel, json, archived_at)"
-                    + " VALUES (?, ?, ?, ?, ?, ?)";
+            "INSERT OR IGNORE INTO message(channel_id, ts, thread_ts, in_channel, json, archived_at, text)"
+                    + " VALUES (?, ?, ?, ?, ?, ?, ?)";
 
     private static MessageArchive instance;
 
@@ -99,6 +106,8 @@ final class MessageArchive extends SQLiteOpenHelper {
                 + " in_channel INTEGER NOT NULL,"
                 + " json TEXT NOT NULL,"
                 + " archived_at INTEGER NOT NULL,"
+                // What the message is searched by, see searchableText.
+                + " text TEXT,"
                 + " PRIMARY KEY (channel_id, ts)"
                 + ") WITHOUT ROWID");
         db.execSQL("CREATE INDEX message_thread ON message(channel_id, thread_ts)");
@@ -106,6 +115,53 @@ final class MessageArchive extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if (oldVersion < 2) {
+            db.execSQL("ALTER TABLE message ADD COLUMN text TEXT");
+            try (Cursor cursor = db.query("message", new String[]{"channel_id", "ts", "json"},
+                    null, null, null, null, null)) {
+                SQLiteStatement statement = db.compileStatement(
+                        "UPDATE message SET text = ? WHERE channel_id = ? AND ts = ?");
+                while (cursor.moveToNext()) {
+                    statement.bindString(1, searchableText(cursor.getString(2)));
+                    statement.bindString(2, cursor.getString(0));
+                    statement.bindString(3, cursor.getString(1));
+                    statement.executeUpdateDelete();
+                }
+                statement.close();
+            }
+        }
+    }
+
+    /**
+     * @return The text of a message, its attachments and the names of its files, in lower case.
+     */
+    static String searchableText(String json) {
+        StringBuilder text = new StringBuilder();
+        try {
+            JSONObject message = new JSONObject(json);
+            text.append(message.optString("text"));
+            JSONArray attachments = message.optJSONArray("attachments");
+            for (int i = 0; attachments != null && i < attachments.length(); i++) {
+                JSONObject attachment = attachments.optJSONObject(i);
+                if (attachment != null) {
+                    for (String key : new String[]{"pretext", "title", "text", "fallback"}) {
+                        text.append('\n').append(attachment.optString(key));
+                    }
+                }
+            }
+            JSONArray files = message.optJSONArray("files");
+            for (int i = 0; files != null && i < files.length(); i++) {
+                JSONObject file = files.optJSONObject(i);
+                if (file != null) {
+                    text.append('\n').append(file.optString("title")).append('\n').append(file.optString("name"));
+                }
+            }
+        } catch (Exception ex) {
+            Log.e(TAG, "Failed to read the text of a message", ex);
+        }
+        // Slack escapes these in the text of messages.
+        return text.toString().replace("&lt;", "<").replace("&gt;", ">").replace("&amp;", "&")
+                .toLowerCase(Locale.ROOT);
     }
 
     // region Writes
@@ -151,6 +207,7 @@ final class MessageArchive extends SQLiteOpenHelper {
      */
     void save(String channelId, String ts, String threadTs, boolean inChannel, String json, boolean replace) {
         long archivedAt = System.currentTimeMillis();
+        String text = searchableText(json);
         enqueue(db -> {
             SQLiteStatement statement = db.compileStatement(replace ? UPSERT_MESSAGE : INSERT_MESSAGE_IF_ABSENT);
             statement.bindString(1, channelId);
@@ -163,6 +220,7 @@ final class MessageArchive extends SQLiteOpenHelper {
             statement.bindLong(4, inChannel ? 1 : 0);
             statement.bindString(5, json);
             statement.bindLong(6, archivedAt);
+            statement.bindString(7, text);
             statement.executeInsert();
             statement.close();
         });
@@ -178,6 +236,7 @@ final class MessageArchive extends SQLiteOpenHelper {
             values.put("thread_ts", threadTs);
             values.put("json", json);
             values.put("archived_at", archivedAt);
+            values.put("text", searchableText(json));
             db.update("message", values, "ts = ?", new String[]{ts});
         });
     }
@@ -248,6 +307,59 @@ final class MessageArchive extends SQLiteOpenHelper {
             }
         }
         return json;
+    }
+
+    static final class Match {
+        final String channelId;
+        final String ts;
+        /**
+         * Timestamp of the parent message, or null if the message is not in a thread.
+         */
+        final String threadTs;
+        /**
+         * If the message is shown in the conversation, and not only in its thread.
+         */
+        final boolean inChannel;
+        final String json;
+
+        Match(String channelId, String ts, String threadTs, boolean inChannel, String json) {
+            this.channelId = channelId;
+            this.ts = ts;
+            this.threadTs = threadTs;
+            this.inChannel = inChannel;
+            this.json = json;
+        }
+    }
+
+    /**
+     * @return The messages whose text contains all words of the query, newest first.
+     */
+    List<Match> search(String query, int limit) {
+        StringBuilder selection = new StringBuilder();
+        List<String> args = new ArrayList<>();
+        for (String word : query.toLowerCase(Locale.ROOT).trim().split("\\s+")) {
+            if (word.isEmpty()) {
+                continue;
+            }
+            if (selection.length() > 0) {
+                selection.append(" AND ");
+            }
+            selection.append("text LIKE ? ESCAPE '\\'");
+            args.add("%" + word.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_") + "%");
+        }
+        List<Match> matches = new ArrayList<>();
+        if (args.isEmpty()) {
+            return matches;
+        }
+        try (Cursor cursor = getReadableDatabase().query("message",
+                new String[]{"channel_id", "ts", "thread_ts", "in_channel", "json"},
+                selection.toString(), args.toArray(new String[0]), null, null, "ts DESC", String.valueOf(limit))) {
+            while (cursor.moveToNext()) {
+                matches.add(new Match(cursor.getString(0), cursor.getString(1), cursor.getString(2),
+                        cursor.getInt(3) != 0, cursor.getString(4)));
+            }
+        }
+        return matches;
     }
 
     static final class Stats {
