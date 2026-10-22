@@ -2,89 +2,89 @@
 
 ### 🐛 Bug Fixes
 
-* Show archived messages next to a message Slack opens at ([596dbdd](https://github.com/HagiaHaya/morphe-patches/commit/596dbdd71d63505027801e984bcf459d3708618c))
+* **Slack:** Show archived messages next to a message Slack opens at ([596dbdd](https://github.com/HagiaHaya/morphe-patches/commit/596dbdd71d63505027801e984bcf459d3708618c))
 
 ### ✨ New Features
 
-* Add `Fix Google sign-in` patch for Slack ([9545a73](https://github.com/HagiaHaya/morphe-patches/commit/9545a732fe232a949625525c88533638e1463015))
-* Add `GmsCore support` patch for Slack ([d40b09b](https://github.com/HagiaHaya/morphe-patches/commit/d40b09bc950da75a7bdc787cac6b58402736d769))
-* Add `Hide history limit banner` patch for Slack ([fe07e7c](https://github.com/HagiaHaya/morphe-patches/commit/fe07e7cd9595124077e4338911044716794626e4))
-* Add `Keep message history` patch for Slack ([35b0fab](https://github.com/HagiaHaya/morphe-patches/commit/35b0fab899839ad13d5012387542725b9b3e797e))
-* Add search of archived messages to Slack ([cdaf7ff](https://github.com/HagiaHaya/morphe-patches/commit/cdaf7ff3b151be96b441816839377a5feb2a4457))
+* **Slack:** Add `Fix Google sign-in` patch ([9545a73](https://github.com/HagiaHaya/morphe-patches/commit/9545a732fe232a949625525c88533638e1463015))
+* **Slack:** Add `GmsCore support` patch ([d40b09b](https://github.com/HagiaHaya/morphe-patches/commit/d40b09bc950da75a7bdc787cac6b58402736d769))
+* **Slack:** Add `Hide history limit banner` patch ([fe07e7c](https://github.com/HagiaHaya/morphe-patches/commit/fe07e7cd9595124077e4338911044716794626e4))
+* **Slack:** Add `Keep message history` patch ([35b0fab](https://github.com/HagiaHaya/morphe-patches/commit/35b0fab899839ad13d5012387542725b9b3e797e))
+* **Slack:** Add search of archived messages ([cdaf7ff](https://github.com/HagiaHaya/morphe-patches/commit/cdaf7ff3b151be96b441816839377a5feb2a4457))
 
 ## [1.5.0-dev.2](https://github.com/HagiaHaya/morphe-patches/compare/v1.5.0-dev.1...v1.5.0-dev.2) (2026-10-22)
 
 ### ✨ New Features
 
-* Add settings of the patches to Pepper ([1043a52](https://github.com/HagiaHaya/morphe-patches/commit/1043a52e85eaa0cd39d6d5a7166e6f48dd9bcb44))
+* **Pepper:** Add settings of the patches ([1043a52](https://github.com/HagiaHaya/morphe-patches/commit/1043a52e85eaa0cd39d6d5a7166e6f48dd9bcb44))
 
 ## [1.5.0-dev.1](https://github.com/HagiaHaya/morphe-patches/compare/v1.4.0...v1.5.0-dev.1) (2026-10-22)
 
 ### ✨ New Features
 
-* Add `Hide deal vote prompt` patch for Pepper ([b38e2e2](https://github.com/HagiaHaya/morphe-patches/commit/b38e2e20535c3073c9b2850d400cd1c5aad9e724))
-* Add `Spoof contributor level` patch for Pepper ([3fb3add](https://github.com/HagiaHaya/morphe-patches/commit/3fb3add54cd53aabd1220783d5708ca5b2457ec0))
-* Add `Unlock custom app icons` patch for Pepper ([a37047c](https://github.com/HagiaHaya/morphe-patches/commit/a37047c73c005c173b3d8b1037afb4f3cb66f00d))
+* **Pepper:** Add `Hide deal vote prompt` patch ([b38e2e2](https://github.com/HagiaHaya/morphe-patches/commit/b38e2e20535c3073c9b2850d400cd1c5aad9e724))
+* **Pepper:** Add `Spoof contributor level` patch ([3fb3add](https://github.com/HagiaHaya/morphe-patches/commit/3fb3add54cd53aabd1220783d5708ca5b2457ec0))
+* **Pepper:** Add `Unlock custom app icons` patch ([a37047c](https://github.com/HagiaHaya/morphe-patches/commit/a37047c73c005c173b3d8b1037afb4f3cb66f00d))
 
 ## [1.4.0](https://github.com/HagiaHaya/morphe-patches/compare/v1.3.1...v1.4.0) (2026-10-22)
 
 ### ✨ New Features
 
-* Add `Fix sidebar layout` patch for Wykop.pl ([7886f8a](https://github.com/HagiaHaya/morphe-patches/commit/7886f8a0112cd4d2f7ef112d0361ff8350cae6a4))
+* **Wykop.pl:** Add `Fix sidebar layout` patch ([7886f8a](https://github.com/HagiaHaya/morphe-patches/commit/7886f8a0112cd4d2f7ef112d0361ff8350cae6a4))
 
 ## [1.4.0-dev.1](https://github.com/HagiaHaya/morphe-patches/compare/v1.3.1-dev.1...v1.4.0-dev.1) (2026-10-22)
 
 ### ✨ New Features
 
-* Add `Fix sidebar layout` patch for Wykop.pl ([7886f8a](https://github.com/HagiaHaya/morphe-patches/commit/7886f8a0112cd4d2f7ef112d0361ff8350cae6a4))
+* **Wykop.pl:** Add `Fix sidebar layout` patch ([7886f8a](https://github.com/HagiaHaya/morphe-patches/commit/7886f8a0112cd4d2f7ef112d0361ff8350cae6a4))
 
 ## [1.3.1](https://github.com/HagiaHaya/morphe-patches/compare/v1.3.0...v1.3.1) (2026-10-21)
 
 ### 🐛 Bug Fixes
 
-* Sign in with Google on Android 14 and newer in Pepper ([b083298](https://github.com/HagiaHaya/morphe-patches/commit/b0832988d6f5a460a1c21cb402035111b46bb325))
+* **Pepper:** Sign in with Google on Android 14 and newer ([b083298](https://github.com/HagiaHaya/morphe-patches/commit/b0832988d6f5a460a1c21cb402035111b46bb325))
 
 ## [1.3.1-dev.1](https://github.com/HagiaHaya/morphe-patches/compare/v1.3.0...v1.3.1-dev.1) (2026-10-21)
 
 ### 🐛 Bug Fixes
 
-* Sign in with Google on Android 14 and newer in Pepper ([b083298](https://github.com/HagiaHaya/morphe-patches/commit/b0832988d6f5a460a1c21cb402035111b46bb325))
+* **Pepper:** Sign in with Google on Android 14 and newer ([b083298](https://github.com/HagiaHaya/morphe-patches/commit/b0832988d6f5a460a1c21cb402035111b46bb325))
 
 ## [1.3.0](https://github.com/HagiaHaya/morphe-patches/compare/v1.2.0...v1.3.0) (2026-10-21)
 
 ### ✨ New Features
 
-* Add `GmsCore support` patch for Pepper ([098c487](https://github.com/HagiaHaya/morphe-patches/commit/098c487d7ac5348eed6d0f3e1a8173f1628664a6))
+* **Pepper:** Add `GmsCore support` patch ([098c487](https://github.com/HagiaHaya/morphe-patches/commit/098c487d7ac5348eed6d0f3e1a8173f1628664a6))
 
 ## [1.3.0-dev.1](https://github.com/HagiaHaya/morphe-patches/compare/v1.2.0...v1.3.0-dev.1) (2026-10-21)
 
 ### ✨ New Features
 
-* Add `GmsCore support` patch for Pepper ([098c487](https://github.com/HagiaHaya/morphe-patches/commit/098c487d7ac5348eed6d0f3e1a8173f1628664a6))
+* **Pepper:** Add `GmsCore support` patch ([098c487](https://github.com/HagiaHaya/morphe-patches/commit/098c487d7ac5348eed6d0f3e1a8173f1628664a6))
 
 ## [1.2.0-dev.2](https://github.com/HagiaHaya/morphe-patches/compare/v1.2.0-dev.1...v1.2.0-dev.2) (2026-10-21)
 
 ### ✨ New Features
 
-* Add `GmsCore support` patch for Pepper ([098c487](https://github.com/HagiaHaya/morphe-patches/commit/098c487d7ac5348eed6d0f3e1a8173f1628664a6))
+* **Pepper:** Add `GmsCore support` patch ([098c487](https://github.com/HagiaHaya/morphe-patches/commit/098c487d7ac5348eed6d0f3e1a8173f1628664a6))
 
 ## [1.2.0](https://github.com/HagiaHaya/morphe-patches/compare/v1.1.1...v1.2.0) (2026-10-21)
 
 ### ✨ New Features
 
-* Add `Hide newsletter prompt` patch for Wykop.pl ([65e0ed9](https://github.com/HagiaHaya/morphe-patches/commit/65e0ed9f3ac4a263d22b970853c5d4144d105240))
-* Add `Remove ads` patch for Pepper ([aa1cb55](https://github.com/HagiaHaya/morphe-patches/commit/aa1cb55c23b01d14f3de898c320e93d5f4b9cd20))
-* Add `Sanitize deal links` patch for Pepper ([d4e97f9](https://github.com/HagiaHaya/morphe-patches/commit/d4e97f924c08aec9fc2165e69d1c83a4e3c5bfb2))
-* Add `Sanitize sharing links` patch for Pepper ([26d164a](https://github.com/HagiaHaya/morphe-patches/commit/26d164a27ffd76ceb676583017925e8c1000a255))
+* **Wykop.pl:** Add `Hide newsletter prompt` patch ([65e0ed9](https://github.com/HagiaHaya/morphe-patches/commit/65e0ed9f3ac4a263d22b970853c5d4144d105240))
+* **Pepper:** Add `Remove ads` patch ([aa1cb55](https://github.com/HagiaHaya/morphe-patches/commit/aa1cb55c23b01d14f3de898c320e93d5f4b9cd20))
+* **Pepper:** Add `Sanitize deal links` patch ([d4e97f9](https://github.com/HagiaHaya/morphe-patches/commit/d4e97f924c08aec9fc2165e69d1c83a4e3c5bfb2))
+* **Pepper:** Add `Sanitize sharing links` patch ([26d164a](https://github.com/HagiaHaya/morphe-patches/commit/26d164a27ffd76ceb676583017925e8c1000a255))
 
 ## [1.2.0-dev.1](https://github.com/HagiaHaya/morphe-patches/compare/v1.1.1-dev.1...v1.2.0-dev.1) (2026-10-21)
 
 ### ✨ New Features
 
-* Add `Hide newsletter prompt` patch for Wykop.pl ([65e0ed9](https://github.com/HagiaHaya/morphe-patches/commit/65e0ed9f3ac4a263d22b970853c5d4144d105240))
-* Add `Remove ads` patch for Pepper ([aa1cb55](https://github.com/HagiaHaya/morphe-patches/commit/aa1cb55c23b01d14f3de898c320e93d5f4b9cd20))
-* Add `Sanitize deal links` patch for Pepper ([d4e97f9](https://github.com/HagiaHaya/morphe-patches/commit/d4e97f924c08aec9fc2165e69d1c83a4e3c5bfb2))
-* Add `Sanitize sharing links` patch for Pepper ([26d164a](https://github.com/HagiaHaya/morphe-patches/commit/26d164a27ffd76ceb676583017925e8c1000a255))
+* **Wykop.pl:** Add `Hide newsletter prompt` patch ([65e0ed9](https://github.com/HagiaHaya/morphe-patches/commit/65e0ed9f3ac4a263d22b970853c5d4144d105240))
+* **Pepper:** Add `Remove ads` patch ([aa1cb55](https://github.com/HagiaHaya/morphe-patches/commit/aa1cb55c23b01d14f3de898c320e93d5f4b9cd20))
+* **Pepper:** Add `Sanitize deal links` patch ([d4e97f9](https://github.com/HagiaHaya/morphe-patches/commit/d4e97f924c08aec9fc2165e69d1c83a4e3c5bfb2))
+* **Pepper:** Add `Sanitize sharing links` patch ([26d164a](https://github.com/HagiaHaya/morphe-patches/commit/26d164a27ffd76ceb676583017925e8c1000a255))
 
 ## [1.1.1](https://github.com/HagiaHaya/morphe-patches/compare/v1.1.0...v1.1.1) (2026-10-21)
 
@@ -102,22 +102,22 @@
 
 ### ✨ New Features
 
-* Add `GmsCore support` patch for Wykop.pl ([ad24d18](https://github.com/HagiaHaya/morphe-patches/commit/ad24d18d1c098e85d6c321b385c2fb71b31e7949))
+* **Wykop.pl:** Add `GmsCore support` patch ([ad24d18](https://github.com/HagiaHaya/morphe-patches/commit/ad24d18d1c098e85d6c321b385c2fb71b31e7949))
 
 ## [1.1.0-dev.1](https://github.com/HagiaHaya/morphe-patches/compare/v1.0.0...v1.1.0-dev.1) (2026-10-21)
 
 ### ✨ New Features
 
-* Add `GmsCore support` patch for Wykop.pl ([ad24d18](https://github.com/HagiaHaya/morphe-patches/commit/ad24d18d1c098e85d6c321b385c2fb71b31e7949))
+* **Wykop.pl:** Add `GmsCore support` patch ([ad24d18](https://github.com/HagiaHaya/morphe-patches/commit/ad24d18d1c098e85d6c321b385c2fb71b31e7949))
 
 ## 1.0.0 (2026-10-21)
 
 ### ✨ New Features
 
-* Add `Remove ads` patch for Wykop.pl ([4c8fc18](https://github.com/HagiaHaya/morphe-patches/commit/4c8fc1870172924594a95998d88c068c706fe581))
+* **Wykop.pl:** Add `Remove ads` patch ([4c8fc18](https://github.com/HagiaHaya/morphe-patches/commit/4c8fc1870172924594a95998d88c068c706fe581))
 
 ## 1.0.0-dev.1 (2026-10-21)
 
 ### ✨ New Features
 
-* Add `Remove ads` patch for Wykop.pl ([4c8fc18](https://github.com/HagiaHaya/morphe-patches/commit/4c8fc1870172924594a95998d88c068c706fe581))
+* **Wykop.pl:** Add `Remove ads` patch ([4c8fc18](https://github.com/HagiaHaya/morphe-patches/commit/4c8fc1870172924594a95998d88c068c706fe581))
