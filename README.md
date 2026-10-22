@@ -4,7 +4,7 @@ Patches for use with [Morphe](https://morphe.software).
 
 ## ❓ About
 
-Patches for the [Wykop.pl](https://wykop.pl) and [Pepper.pl](https://www.pepper.pl) apps, such as removing ads and sanitizing sharing and deal links.
+Patches for the [Wykop.pl](https://wykop.pl), [Pepper.pl](https://www.pepper.pl) and [Slack](https://slack.com) apps, such as removing ads, sanitizing sharing and deal links, and keeping Slack messages older than the free plan shows.
 
 ### How to use these patches
 
