@@ -1,17 +1,20 @@
 package app.template.patches.pepper.icon
 
+import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
-import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.bytecodePatch
+import app.template.patches.pepper.settings.addPatchedFeature
+import app.template.patches.pepper.settings.settingsPatch
 import app.template.patches.shared.Constants.COMPATIBILITY_PEPPER
+import app.template.patches.shared.requireExtensionMethods
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
-import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
-import com.android.tools.smali.dexlib2.iface.reference.StringReference
+
+private const val EXTENSION_CLASS = "Lapp/template/extension/pepper/UnlockCustomAppIconsPatch;"
 
 @Suppress("unused")
 val unlockCustomAppIconsPatch = bytecodePatch(
@@ -22,7 +25,15 @@ val unlockCustomAppIconsPatch = bytecodePatch(
 ) {
     compatibleWith(COMPATIBILITY_PEPPER)
 
+    dependsOn(settingsPatch)
+
+    extendWith("extensions/extension.mpe")
+
     execute {
+        requireExtensionMethods(EXTENSION_CLASS, "getMinTierLevel", "isEventThemingAppIcon")
+
+        addPatchedFeature("unlockCustomAppIcons")
+
         CustomAppIconListFingerprint.method.apply {
             // CustomAppIcon(resIcon, name, manifestAliasId, minTierLevel, analyticsName, isEventThemingAppIcon)
             val customAppIconConstructor = instructions.firstNotNullOf { instruction ->
@@ -33,16 +44,6 @@ val unlockCustomAppIconsPatch = bytecodePatch(
             val customAppIconClass = customAppIconConstructor.definingClass
             val tierLevelClass = customAppIconConstructor.parameterTypes[3].toString()
 
-            // The DEFAULT contributor level, which every user has.
-            val defaultTierLevelField = classDefBy(tierLevelClass).methods
-                .first { it.name == "<clinit>" }.instructions.toList().let { clinit ->
-                    val defaultNameIndex = clinit.indexOfFirst {
-                        ((it as? ReferenceInstruction)?.reference as? StringReference)?.string == "DEFAULT"
-                    }
-                    clinit.drop(defaultNameIndex).first { it.opcode == Opcode.SPUT_OBJECT }
-                        .let { (it as ReferenceInstruction).reference as FieldReference }
-                }
-
             fun indexOfCustomAppIconFieldRead(opcode: Opcode, fieldType: String) = instructions.indexOfFirst {
                 val field = (it as? ReferenceInstruction)?.reference as? FieldReference
                 it.opcode == opcode && field?.definingClass == customAppIconClass && field.type == fieldType
@@ -50,19 +51,31 @@ val unlockCustomAppIconsPatch = bytecodePatch(
                 check(index >= 0) { "Could not find the read of the $fieldType field of $customAppIconClass" }
             }
 
-            // Read the level an icon needs as DEFAULT, so all icons are listed and unlocked,
-            // also when signed out.
-            indexOfCustomAppIconFieldRead(Opcode.IGET_OBJECT, tierLevelClass).let { index ->
-                val register = getInstruction<TwoRegisterInstruction>(index).registerA
+            val minTierLevelIndex = indexOfCustomAppIconFieldRead(Opcode.IGET_OBJECT, tierLevelClass)
+            val isEventThemingAppIconIndex = indexOfCustomAppIconFieldRead(Opcode.IGET_BOOLEAN, "Z")
 
-                replaceInstruction(index, "sget-object v$register, $defaultTierLevelField")
-            }
-
-            // Read isEventThemingAppIcon as false, so the seasonal icons are listed like the others.
-            indexOfCustomAppIconFieldRead(Opcode.IGET_BOOLEAN, "Z").let { index ->
+            // Add the later instructions first, so the earlier index stays valid.
+            mapOf(
+                // Read the level an icon needs as DEFAULT, so all icons are listed and unlocked,
+                // also when signed out.
+                minTierLevelIndex to { register: Int ->
+                    """
+                        invoke-static/range { v$register .. v$register }, $EXTENSION_CLASS->getMinTierLevel(Ljava/lang/Object;)Ljava/lang/Object;
+                        move-result-object v$register
+                        check-cast v$register, $tierLevelClass
+                    """
+                },
+                // Read isEventThemingAppIcon as false, so the seasonal icons are listed like the others.
+                isEventThemingAppIconIndex to { register: Int ->
+                    """
+                        invoke-static/range { v$register .. v$register }, $EXTENSION_CLASS->isEventThemingAppIcon(Z)Z
+                        move-result v$register
+                    """
+                },
+            ).toSortedMap(reverseOrder()).forEach { (index, smali) ->
                 val register = getInstruction<OneRegisterInstruction>(index).registerA
 
-                replaceInstruction(index, "const/16 v$register, 0x0")
+                addInstructions(index + 1, smali(register))
             }
         }
     }

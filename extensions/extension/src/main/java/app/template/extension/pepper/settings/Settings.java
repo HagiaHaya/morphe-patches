@@ -1,0 +1,62 @@
+package app.template.extension.pepper.settings;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.util.Log;
+
+/**
+ * Settings of the patches, changed on the screen added to the settings of Pepper.
+ */
+@SuppressWarnings("unused")
+public final class Settings {
+
+    private static final String TAG = "MorphePepper";
+
+    private static final String PREFERENCES_NAME = "hagiahaya_patches";
+
+    public static final String REMOVE_ADS = "remove_ads";
+    public static final String SANITIZE_SHARING_LINKS = "sanitize_sharing_links";
+    public static final String SANITIZE_DEAL_LINKS = "sanitize_deal_links";
+    public static final String UNLOCK_CUSTOM_APP_ICONS = "unlock_custom_app_icons";
+
+    /**
+     * Contributor level to show, from 1 (Silver) to 3 (Platinum), or 0 to show the one earned.
+     */
+    public static final String CONTRIBUTOR_LEVEL = "contributor_level";
+
+    private static SharedPreferences preferences;
+
+    /**
+     * Injection point. Called when the app is created.
+     */
+    public static void initialize(Context context) {
+        try {
+            preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+        } catch (Exception ex) {
+            Log.e(TAG, "Failed to load the settings", ex);
+        }
+    }
+
+    /**
+     * @return If the feature is turned on. Features are on until turned off.
+     */
+    public static boolean isEnabled(String key) {
+        return preferences == null || preferences.getBoolean(key, true);
+    }
+
+    static void setEnabled(String key, boolean enabled) {
+        if (preferences != null) {
+            preferences.edit().putBoolean(key, enabled).apply();
+        }
+    }
+
+    public static int getContributorLevel() {
+        return preferences == null ? 0 : preferences.getInt(CONTRIBUTOR_LEVEL, 0);
+    }
+
+    static void setContributorLevel(int level) {
+        if (preferences != null) {
+            preferences.edit().putInt(CONTRIBUTOR_LEVEL, level).apply();
+        }
+    }
+}
