@@ -1,3 +1,9 @@
+## [1.4.0](https://github.com/HagiaHaya/morphe-patches/compare/v1.3.1...v1.4.0) (2026-10-22)
+
+### ✨ New Features
+
+* Add `Fix sidebar layout` patch for Wykop.pl ([7886f8a](https://github.com/HagiaHaya/morphe-patches/commit/7886f8a0112cd4d2f7ef112d0361ff8350cae6a4))
+
 ## [1.4.0-dev.1](https://github.com/HagiaHaya/morphe-patches/compare/v1.3.1-dev.1...v1.4.0-dev.1) (2026-10-22)
 
 ### ✨ New Features
