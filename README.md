@@ -17,7 +17,25 @@ Push notifications of the patched app also go through MicroG-RE.
 ## 🩹 Patches list
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.5.0-dev.2](https://github.com/HagiaHaya/morphe-patches/releases/tag/v1.5.0-dev.2)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;10 patches total
+> **[v1.5.0-dev.3](https://github.com/HagiaHaya/morphe-patches/releases/tag/v1.5.0-dev.3)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;14 patches total
+<details open>
+<summary>📦 Slack&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 26.10.20.0 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description | ⚙️&nbsp;Options |
+|----------|----------------|-----------|
+| [Fix Google sign-in](#fix-google-sign-in) | Fixes signing in with Google staying on a loading button after choosing the account. |  |
+| [GmsCore support](#gmscore-support) | Allows signing in with Google and receiving notifications by using MicroG-RE instead of Google Play services. |  |
+| [Hide history limit banner](#hide-history-limit-banner) | Hides the banner at the start of conversations that says messages older than 90 days are hidden on the free plan and offers a Pro trial. |  |
+| [Keep message history](#keep-message-history) | Keeps a copy of the messages Slack loads on the device, and shows the copies where the server hides older messages, such as after 90 days on the free plan. Only the messages loaded while the patched app is used are kept. Long press the app icon and choose "Search archive" to search the copies, or "Message archive" to turn it off, export or delete them. |  |
+
+</details>
+
 <details open>
 <summary>📦 Wykop.pl&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
 <br>

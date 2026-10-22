@@ -1,3 +1,17 @@
+## [1.5.0-dev.3](https://github.com/HagiaHaya/morphe-patches/compare/v1.5.0-dev.2...v1.5.0-dev.3) (2026-10-22)
+
+### 🐛 Bug Fixes
+
+* Show archived messages next to a message Slack opens at ([596dbdd](https://github.com/HagiaHaya/morphe-patches/commit/596dbdd71d63505027801e984bcf459d3708618c))
+
+### ✨ New Features
+
+* Add `Fix Google sign-in` patch for Slack ([9545a73](https://github.com/HagiaHaya/morphe-patches/commit/9545a732fe232a949625525c88533638e1463015))
+* Add `GmsCore support` patch for Slack ([d40b09b](https://github.com/HagiaHaya/morphe-patches/commit/d40b09bc950da75a7bdc787cac6b58402736d769))
+* Add `Hide history limit banner` patch for Slack ([fe07e7c](https://github.com/HagiaHaya/morphe-patches/commit/fe07e7cd9595124077e4338911044716794626e4))
+* Add `Keep message history` patch for Slack ([35b0fab](https://github.com/HagiaHaya/morphe-patches/commit/35b0fab899839ad13d5012387542725b9b3e797e))
+* Add search of archived messages to Slack ([cdaf7ff](https://github.com/HagiaHaya/morphe-patches/commit/cdaf7ff3b151be96b441816839377a5feb2a4457))
+
 ## [1.5.0-dev.2](https://github.com/HagiaHaya/morphe-patches/compare/v1.5.0-dev.1...v1.5.0-dev.2) (2026-10-22)
 
 ### ✨ New Features
