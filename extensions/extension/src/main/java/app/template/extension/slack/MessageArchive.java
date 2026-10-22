@@ -213,6 +213,22 @@ final class MessageArchive extends SQLiteOpenHelper {
     }
 
     /**
+     * @return The JSON of the messages of a conversation after a timestamp, oldest first.
+     */
+    List<String> conversationPageAfter(String channelId, String afterTs, boolean inclusive, String beforeTs, int limit) {
+        StringBuilder selection = new StringBuilder("channel_id = ? AND in_channel = 1");
+        List<String> args = new ArrayList<>();
+        args.add(channelId);
+        selection.append(inclusive ? " AND ts >= ?" : " AND ts > ?");
+        args.add(afterTs);
+        if (beforeTs != null) {
+            selection.append(" AND ts < ?");
+            args.add(beforeTs);
+        }
+        return queryJson(selection.toString(), args, "ts ASC", String.valueOf(limit));
+    }
+
+    /**
      * @return The JSON of the parent and the replies of a thread, oldest first.
      */
     List<String> thread(String channelId, String threadTs) {

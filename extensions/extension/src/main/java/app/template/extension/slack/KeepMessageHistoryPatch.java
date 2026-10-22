@@ -357,6 +357,52 @@ public final class KeepMessageHistoryPatch {
     }
 
     /**
+     * Builds a response of the messages right after a timestamp: the archived ones the server hid,
+     * then the ones it returned.
+     *
+     * @return The response, or null if there are no archived messages after the timestamp.
+     */
+    private static MsgHistory withArchivedMessagesAfter(MessageArchive archive, JsonInflater inflater, MsgHistory history,
+                                                        List<Object> serverMessages, String channelId, String afterTs,
+                                                        boolean inclusive, String oldestServer, int limit) {
+        // Oldest first.
+        List<String> archived = archive.conversationPageAfter(channelId, afterTs, inclusive, oldestServer, limit + 1);
+        if (archived.isEmpty()) {
+            return null;
+        }
+        List<Object> messages = inflateMessages(inflater, archived);
+        List<Object> newer = new ArrayList<>(serverMessages);
+        Collections.sort(newer, (a, b) -> {
+            String aTs = tsOf(a);
+            String bTs = tsOf(b);
+            return aTs == null || bTs == null ? 0 : aTs.compareTo(bTs);
+        });
+        messages.addAll(newer);
+
+        boolean hasMore = messages.size() > limit || history.hasMore;
+        if (messages.size() > limit) {
+            messages = new ArrayList<>(messages.subList(0, limit));
+        }
+        // Newest first, as the server lists them.
+        Collections.reverse(messages);
+
+        return new MsgHistory(
+                true,
+                null,
+                messages,
+                hasMore,
+                // The window starts at the requested timestamp, nothing before it is hidden.
+                false,
+                history.deleted,
+                // The cursor of the server does not continue from the messages kept.
+                null,
+                history.mutationTimestamps,
+                history.latestUpdates,
+                history.unchangedMessages
+        );
+    }
+
+    /**
      * Injection point. Answers a request for a page of the archive, before the request is sent.
      *
      * @return The page, or null to send the request.
@@ -418,8 +464,20 @@ public final class KeepMessageHistoryPatch {
             }
         }
 
-        // The server returned all messages it has, or it can return more.
-        if (!history.isLimited || history.hasMore) {
+        if (!history.isLimited) {
+            return history;
+        }
+
+        // Only a start: the messages right after it, as when Slack shows the messages
+        // around one it jumps to. Then has_more tells if there are newer ones.
+        if (request.oldestTs != null && request.latestTs == null && request.cursor == null) {
+            MsgHistory merged = withArchivedMessagesAfter(archive, inflater, history, serverMessages, channelId,
+                    request.oldestTs, request.inclusive, oldestServer, limitOf(request));
+            return merged != null ? merged : history;
+        }
+
+        // The server can return more.
+        if (history.hasMore) {
             return history;
         }
 
@@ -456,10 +514,11 @@ public final class KeepMessageHistoryPatch {
      * Injection point. Adds the archived messages of a thread the server did not return
      * to the response of conversations.replies, or answers with them if it failed.
      *
-     * @param result {@link ApiResult} of the request, or the marker of a suspended coroutine.
+     * @param result    {@link ApiResult} of the request, or the marker of a suspended coroutine.
+     * @param inclusive If replies at oldestTs and latestTs are included.
      */
     public static Object addArchivedReplies(Object result, JsonInflater inflater, String channelId,
-                                            String threadTs, String oldestTs, String latestTs) {
+                                            String threadTs, String oldestTs, String latestTs, boolean inclusive) {
         try {
             MessageArchive archive = archive();
             if (archive == null || !(result instanceof ApiResult) || channelId == null || threadTs == null) {
@@ -489,9 +548,13 @@ public final class KeepMessageHistoryPatch {
             for (String json : archive.thread(channelId, threadTs)) {
                 String ts = new JSONObject(json).optString("ts", null);
                 if (ts == null || serverTs.contains(ts)
-                        || (oldestServer != null && ts.compareTo(oldestServer) >= 0)
-                        || (oldestTs != null && ts.compareTo(oldestTs) < 0)
-                        || (latestTs != null && ts.compareTo(latestTs) > 0)) {
+                        || (oldestServer != null && ts.compareTo(oldestServer) >= 0)) {
+                    continue;
+                }
+                // The parent is listed first whatever the range, as the server does.
+                if (!ts.equals(threadTs) && (
+                        (oldestTs != null && (inclusive ? ts.compareTo(oldestTs) < 0 : ts.compareTo(oldestTs) <= 0))
+                        || (latestTs != null && (inclusive ? ts.compareTo(latestTs) > 0 : ts.compareTo(latestTs) >= 0)))) {
                     continue;
                 }
                 archivedJson.add(json);

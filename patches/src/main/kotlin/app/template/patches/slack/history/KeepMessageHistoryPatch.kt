@@ -315,13 +315,14 @@ val keepMessageHistoryPatch = bytecodePatch(
             val repository = capturedField("this\$0")
             val jsonInflater = fieldOfType(repository.type, JSON_INFLATER_CLASS)
             val fields = listOf("\$channelId", "\$threadTs", "\$oldestTs", "\$latestTs").map(::capturedField)
+            val inclusive = capturedField("\$inclusive")
             val invokeSuspendWithoutArchive = "invokeSuspendWithoutArchive"
 
-            // Registers: v0 to v5, p0 (this), p1 (result of the previous step).
+            // Registers: v0 to v6, p0 (this), p1 (result of the previous step).
             fingerprint.classDef.wrapMethod(
                 method,
                 invokeSuspendWithoutArchive,
-                registerCount = 8,
+                registerCount = 9,
                 """
                     invoke-virtual { p0, p1 }, $GET_THREAD_COROUTINE_CLASS->$invokeSuspendWithoutArchive(Ljava/lang/Object;)Ljava/lang/Object;
                     move-result-object v0
@@ -330,7 +331,8 @@ val keepMessageHistoryPatch = bytecodePatch(
                     ${fields.mapIndexed { i, field ->
                         "iget-object v${i + 2}, p0, $GET_THREAD_COROUTINE_CLASS->${field.name}:Ljava/lang/String;"
                     }.joinToString("\n")}
-                    invoke-static/range { v0 .. v5 }, $EXTENSION_CLASS->addArchivedReplies(Ljava/lang/Object;${JSON_INFLATER_CLASS}Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/Object;
+                    iget-boolean v6, p0, $GET_THREAD_COROUTINE_CLASS->${inclusive.name}:Z
+                    invoke-static/range { v0 .. v6 }, $EXTENSION_CLASS->addArchivedReplies(Ljava/lang/Object;${JSON_INFLATER_CLASS}Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/Object;
                     move-result-object v0
                     return-object v0
                 """
