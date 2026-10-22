@@ -17,7 +17,7 @@ Push notifications of the patched app also go through MicroG-RE.
 ## 🩹 Patches list
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.5.0-dev.1](https://github.com/HagiaHaya/morphe-patches/releases/tag/v1.5.0-dev.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;11 patches total
+> **[v1.5.0-dev.2](https://github.com/HagiaHaya/morphe-patches/releases/tag/v1.5.0-dev.2)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;10 patches total
 <details open>
 <summary>📦 Wykop.pl&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
 <br>
@@ -37,7 +37,7 @@ Push notifications of the patched app also go through MicroG-RE.
 </details>
 
 <details open>
-<summary>📦 Pepper&nbsp;&nbsp;•&nbsp;&nbsp;7 patches</summary>
+<summary>📦 Pepper&nbsp;&nbsp;•&nbsp;&nbsp;6 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -48,11 +48,10 @@ Push notifications of the patched app also go through MicroG-RE.
 | 💊&nbsp;Patch | 📜&nbsp;Description | ⚙️&nbsp;Options |
 |----------|----------------|-----------|
 | [GmsCore support](#gmscore-support) | Allows signing in with Google by using MicroG-RE instead of Google Play services. |  |
-| [Hide deal vote prompt](#hide-deal-vote-prompt) | Hides the "How was this deal?" prompt shown after returning from the shop a deal links to, as for contributors from the Gold level up. |  |
 | [Remove ads](#remove-ads) | Removes the ads shown between deals and on the deal pages. |  |
 | [Sanitize deal links](#sanitize-deal-links) | Opens the store page of a deal directly, instead of through redirects that track the click and add affiliate links. |  |
 | [Sanitize sharing links](#sanitize-sharing-links) | Shares the direct link to deals and discussions, instead of a link that redirects through a tracking service. |  |
-| [Spoof contributor level](#spoof-contributor-level) | Shows a contributor level of the loyalty program in the app, such as on the profile, instead of the one earned. It unlocks the app icons of the level and hides the deal vote prompt from the Gold level up, but rewards granted by Pepper, such as more deal stats, are not unlocked. | • Contributor level |
+| [Spoof contributor level](#spoof-contributor-level) | Adds a setting to show Silver, Gold or Platinum in the app, such as on the profile, instead of the contributor level earned. It unlocks the app icons of the level, but rewards granted by Pepper, such as more deal stats, are not unlocked. |  |
 | [Unlock custom app icons](#unlock-custom-app-icons) | Unlocks all app icons regardless of the contributor level, and offers the seasonal icons, such as the Black Friday one, all year round. |  |
 
 </details>

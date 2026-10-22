@@ -1,3 +1,9 @@
+## [1.5.0-dev.2](https://github.com/HagiaHaya/morphe-patches/compare/v1.5.0-dev.1...v1.5.0-dev.2) (2026-10-22)
+
+### ✨ New Features
+
+* Add settings of the patches to Pepper ([1043a52](https://github.com/HagiaHaya/morphe-patches/commit/1043a52e85eaa0cd39d6d5a7166e6f48dd9bcb44))
+
 ## [1.5.0-dev.1](https://github.com/HagiaHaya/morphe-patches/compare/v1.4.0...v1.5.0-dev.1) (2026-10-22)
 
 ### ✨ New Features
