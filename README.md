@@ -17,7 +17,25 @@ Push notifications of the patched app also go through MicroG-RE.
 ## 🩹 Patches list
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.3.1-dev.1](https://github.com/HagiaHaya/morphe-patches/releases/tag/v1.3.1-dev.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;7 patches total
+> **[v1.4.0-dev.1](https://github.com/HagiaHaya/morphe-patches/releases/tag/v1.4.0-dev.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;8 patches total
+<details open>
+<summary>📦 Wykop.pl&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 5.1.3 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description | ⚙️&nbsp;Options |
+|----------|----------------|-----------|
+| [Fix sidebar layout](#fix-sidebar-layout) | Keeps the sidebar of the website shown by the app clear of the status bar and the navigation bar. |  |
+| [GmsCore support](#gmscore-support) | Allows signing in with Google by using MicroG-RE instead of Google Play services. |  |
+| [Hide newsletter prompt](#hide-newsletter-prompt) | Hides the prompt to sign up for the newsletter on the website shown by the app. |  |
+| [Remove ads](#remove-ads) | Hides ads and blocks ad networks on the website shown by the app. |  |
+
+</details>
+
 <details open>
 <summary>📦 Pepper&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
 <br>
@@ -33,23 +51,6 @@ Push notifications of the patched app also go through MicroG-RE.
 | [Remove ads](#remove-ads) | Removes the ads shown between deals and on the deal pages. |  |
 | [Sanitize deal links](#sanitize-deal-links) | Opens the store page of a deal directly, instead of through redirects that track the click and add affiliate links. |  |
 | [Sanitize sharing links](#sanitize-sharing-links) | Shares the direct link to deals and discussions, instead of a link that redirects through a tracking service. |  |
-
-</details>
-
-<details open>
-<summary>📦 Wykop.pl&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
-<br>
-
-**🎯 Supported versions:**
-
-| 5.1.3 |
-| :---: |
-
-| 💊&nbsp;Patch | 📜&nbsp;Description | ⚙️&nbsp;Options |
-|----------|----------------|-----------|
-| [GmsCore support](#gmscore-support) | Allows signing in with Google by using MicroG-RE instead of Google Play services. |  |
-| [Hide newsletter prompt](#hide-newsletter-prompt) | Hides the prompt to sign up for the newsletter on the website shown by the app. |  |
-| [Remove ads](#remove-ads) | Hides ads and blocks ad networks on the website shown by the app. |  |
 
 </details>
 
