@@ -1,3 +1,11 @@
+## [1.5.0-dev.1](https://github.com/HagiaHaya/morphe-patches/compare/v1.4.0...v1.5.0-dev.1) (2026-10-22)
+
+### ✨ New Features
+
+* Add `Hide deal vote prompt` patch for Pepper ([b38e2e2](https://github.com/HagiaHaya/morphe-patches/commit/b38e2e20535c3073c9b2850d400cd1c5aad9e724))
+* Add `Spoof contributor level` patch for Pepper ([3fb3add](https://github.com/HagiaHaya/morphe-patches/commit/3fb3add54cd53aabd1220783d5708ca5b2457ec0))
+* Add `Unlock custom app icons` patch for Pepper ([a37047c](https://github.com/HagiaHaya/morphe-patches/commit/a37047c73c005c173b3d8b1037afb4f3cb66f00d))
+
 ## [1.4.0](https://github.com/HagiaHaya/morphe-patches/compare/v1.3.1...v1.4.0) (2026-10-22)
 
 ### ✨ New Features
