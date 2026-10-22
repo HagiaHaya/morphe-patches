@@ -35,7 +35,7 @@ jobs:
         run: npm install
 
       # Semantic release runs its own Gradle build command.
-      # Only dev and main branch will generate a release as specified by .releaserc
+      # Only dev and main branch will generate a release as specified by release.config.mjs
       - name: Release
         uses: cycjimmy/semantic-release-action@v6
         id: release
