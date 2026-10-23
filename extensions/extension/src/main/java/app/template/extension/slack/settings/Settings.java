@@ -26,6 +26,7 @@ public final class Settings {
     public static final String BLOCK_TELEMETRY = "block_telemetry";
     public static final String SANITIZE_LINKS = "sanitize_links";
     public static final String ANONYMIZE_FILE_NAMES = "anonymize_file_names";
+    public static final String STANDARD_MARKDOWN = "standard_markdown";
     public static final String HIDE_HISTORY_LIMIT_BANNER = "hide_history_limit_banner";
     public static final String KEEP_MESSAGE_HISTORY = "keep_message_history";
 

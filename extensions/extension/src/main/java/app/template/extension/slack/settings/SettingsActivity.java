@@ -20,6 +20,7 @@ public final class SettingsActivity extends SettingsScreen {
 
         addPrivacy();
         addMessages();
+        addComposer();
         addRestart();
     }
 
@@ -56,6 +57,15 @@ public final class SettingsActivity extends SettingsScreen {
         if (PatchedFeatures.hideHistoryLimitBanner()) {
             addSwitch(Settings.HIDE_HISTORY_LIMIT_BANNER, "Hide history limit banner",
                     "Hides the banner about messages older than 90 days being hidden on the free plan.");
+        }
+    }
+
+    private void addComposer() {
+        startSection("Message composer");
+        if (PatchedFeatures.standardMarkdown()) {
+            addSwitch(Settings.STANDARD_MARKDOWN, "Standard Markdown",
+                    "Formats **bold**, *italic*, ~~strikethrough~~, `code` and [text](link) as you type, "
+                            + "instead of Slack's *bold* and _italic_.");
         }
     }
 
