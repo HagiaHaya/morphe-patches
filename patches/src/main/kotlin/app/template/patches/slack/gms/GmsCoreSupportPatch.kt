@@ -46,7 +46,7 @@ val gmsCoreSupportPatch = bytecodePatch(
     extendWith("extensions/extension.mpe")
 
     execute {
-        requireExtensionMethods(EXTENSION_CLASS, "checkGmsCore")
+        requireExtensionMethods(EXTENSION_CLASS, "checkGmsCore", "resetPushRegistration")
 
         useGmsCore()
 
@@ -75,6 +75,14 @@ val gmsCoreSupportPatch = bytecodePatch(
 
             it.method.replaceInstruction(sdkIntIndex, "const/16 v$register, $ANDROID_13_SDK_INT")
         }
+
+        // Register for push notifications again through GmsCore once, as a push token
+        // Slack got before it used GmsCore belongs to Google Play services.
+        FirebaseInitProviderOnCreateFingerprint.method.addInstruction(
+            0,
+            "invoke-static/range { p0 .. p0 }, $EXTENSION_CLASS->" +
+                "resetPushRegistration(Landroid/content/ContentProvider;)V"
+        )
 
         // Ask to install GmsCore if it is missing, on the first screen shown signed out or in.
         listOf(AppLandingActivityOnCreateFingerprint, MainActivityOnCreateFingerprint).forEach {
