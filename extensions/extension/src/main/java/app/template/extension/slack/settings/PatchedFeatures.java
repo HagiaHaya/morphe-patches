@@ -15,6 +15,10 @@ public final class PatchedFeatures {
         return false;
     }
 
+    public static boolean sanitizeLinks() {
+        return false;
+    }
+
     public static boolean keepMessageHistory() {
         return false;
     }

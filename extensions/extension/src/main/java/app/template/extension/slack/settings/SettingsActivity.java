@@ -33,6 +33,10 @@ public final class SettingsActivity extends SettingsScreen {
             addSwitch(Settings.BLOCK_TELEMETRY, "Block telemetry",
                     "Doesn't send usage tracking, performance traces and crash reports to Slack.");
         }
+        if (PatchedFeatures.sanitizeLinks()) {
+            addSwitch(Settings.SANITIZE_LINKS, "Sanitize links",
+                    "Removes tracking parameters, such as utm_source or fbclid, from links in the messages you send.");
+        }
     }
 
     private void addMessages() {
