@@ -1,3 +1,21 @@
+## [1.5.0-dev.4](https://github.com/HagiaHaya/morphe-patches/compare/v1.5.0-dev.3...v1.5.0-dev.4) (2026-10-23)
+
+### 🐛 Bug Fixes
+
+* **Slack - Hide history limit banner:** Fix the code that hides the banner failing to compile ([99b24bd](https://github.com/HagiaHaya/morphe-patches/commit/99b24bda49d852bad6dc6249ebb565d79103ee52))
+
+### ✨ New Features
+
+* **Slack - Anonymize file names:** Upload files under random names ([4c4decb](https://github.com/HagiaHaya/morphe-patches/commit/4c4decb080b694465d605005092fc9a7a5ecd96a))
+* **Slack - Block telemetry:** Block usage tracking, traces and crash reports ([3e83f57](https://github.com/HagiaHaya/morphe-patches/commit/3e83f573bdaceb4ef7a6a7d54c4ca0250a9bdc07))
+* **Slack - Feature flags:** Turn the feature flags of Slack on or off ([187b177](https://github.com/HagiaHaya/morphe-patches/commit/187b17763752917af597aa105d01242b1766f211))
+* **Slack - Message logger:** Keep the messages others delete and earlier versions of edits ([dd42389](https://github.com/HagiaHaya/morphe-patches/commit/dd423892b2cf8be09994decfb4ca7ca9c3256abd))
+* **Slack - Nicknames:** Give members nicknames that only you see ([c733091](https://github.com/HagiaHaya/morphe-patches/commit/c733091c55b399d06643a57498721f6e963a9bce))
+* **Slack - Sanitize links:** Remove tracking parameters from the links you send ([6784998](https://github.com/HagiaHaya/morphe-patches/commit/678499803d75cb250b2c23593cb52d124ec6187b))
+* **Slack - Silent typing:** Don't show others that you are typing ([e7006c6](https://github.com/HagiaHaya/morphe-patches/commit/e7006c65062563cb53f1bc201f31c6c7ed76e9ba))
+* **Slack - Standard Markdown:** Format standard Markdown as you type ([6d203a9](https://github.com/HagiaHaya/morphe-patches/commit/6d203a98d69ce81d2e525a58d934ec1b14c9d83d))
+* **Slack:** Add settings of the patches ([57abe9d](https://github.com/HagiaHaya/morphe-patches/commit/57abe9d17fb6329c8427c594b2cab23d5726cc94))
+
 ## [1.5.0-dev.3](https://github.com/HagiaHaya/morphe-patches/compare/v1.5.0-dev.2...v1.5.0-dev.3) (2026-10-22)
 
 ### 🐛 Bug Fixes

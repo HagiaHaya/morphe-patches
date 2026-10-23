@@ -17,9 +17,9 @@ Push notifications of the patched app also go through MicroG-RE.
 ## 🩹 Patches list
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.5.0-dev.3](https://github.com/HagiaHaya/morphe-patches/releases/tag/v1.5.0-dev.3)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;14 patches total
+> **[v1.5.0-dev.4](https://github.com/HagiaHaya/morphe-patches/releases/tag/v1.5.0-dev.4)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;22 patches total
 <details open>
-<summary>📦 Slack&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
+<summary>📦 Slack&nbsp;&nbsp;•&nbsp;&nbsp;12 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -29,10 +29,18 @@ Push notifications of the patched app also go through MicroG-RE.
 
 | 💊&nbsp;Patch | 📜&nbsp;Description | ⚙️&nbsp;Options |
 |----------|----------------|-----------|
+| [Anonymize file names](#anonymize-file-names) | Adds an option to upload files under a random name, keeping the extension, so the name does not reveal anything about the file or the device. |  |
+| [Block telemetry](#block-telemetry) | Adds an option to block the usage tracking, performance traces and crash reports Slack sends to its servers and to Sentry. |  |
+| [Feature flags](#feature-flags) | Adds a screen to the patch settings to turn the feature flags of Slack on or off, which can enable features and experiments Slack has not released yet. |  |
 | [Fix Google sign-in](#fix-google-sign-in) | Fixes signing in with Google staying on a loading button after choosing the account. |  |
 | [GmsCore support](#gmscore-support) | Allows signing in with Google and receiving notifications by using MicroG-RE instead of Google Play services. |  |
 | [Hide history limit banner](#hide-history-limit-banner) | Hides the banner at the start of conversations that says messages older than 90 days are hidden on the free plan and offers a Pro trial. |  |
 | [Keep message history](#keep-message-history) | Keeps a copy of the messages Slack loads on the device, and shows the copies where the server hides older messages, such as after 90 days on the free plan. Only the messages loaded while the patched app is used are kept. Long press the app icon and choose "Search archive" to search the copies, or "Message archive" to turn it off, export or delete them. |  |
+| [Message logger](#message-logger) | Adds options to keep the messages others delete, marked as deleted, and to show the earlier versions of the messages others edit below them. Patch settings list them in a message log. |  |
+| [Nicknames](#nicknames) | Adds a screen to the patch settings to give other members nicknames, which Slack shows instead of their names, only on this device. |  |
+| [Sanitize links](#sanitize-links) | Adds an option to remove tracking parameters, such as utm_source or fbclid, from the links in the messages you send. |  |
+| [Silent typing](#silent-typing) | Adds an option to not show others that you are typing, while still showing when they are. |  |
+| [Standard Markdown](#standard-markdown) | Adds an option to format messages as you type standard Markdown, such as **bold**, *italic*, ~~strikethrough~~ and [text](link), instead of Slack markup. |  |
 
 </details>
 
