@@ -29,6 +29,10 @@ public final class SettingsActivity extends SettingsScreen {
             addSwitch(Settings.SILENT_TYPING, "Silent typing",
                     "Others don't see that you are typing. You still see when they are.");
         }
+        if (PatchedFeatures.blockTelemetry()) {
+            addSwitch(Settings.BLOCK_TELEMETRY, "Block telemetry",
+                    "Doesn't send usage tracking, performance traces and crash reports to Slack.");
+        }
     }
 
     private void addMessages() {

@@ -11,6 +11,10 @@ public final class PatchedFeatures {
         return false;
     }
 
+    public static boolean blockTelemetry() {
+        return false;
+    }
+
     public static boolean keepMessageHistory() {
         return false;
     }
