@@ -1,3 +1,9 @@
+## [1.5.0-dev.5](https://github.com/HagiaHaya/morphe-patches/compare/v1.5.0-dev.4...v1.5.0-dev.5) (2026-10-23)
+
+### 🐛 Bug Fixes
+
+* **Slack - GmsCore support:** Show notifications when Slack registered for them through Google Play services ([9556e6a](https://github.com/HagiaHaya/morphe-patches/commit/9556e6a7756c4064badc0300fcee21b31a1a8782))
+
 ## [1.5.0-dev.4](https://github.com/HagiaHaya/morphe-patches/compare/v1.5.0-dev.3...v1.5.0-dev.4) (2026-10-23)
 
 ### 🐛 Bug Fixes

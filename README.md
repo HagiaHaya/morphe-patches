@@ -17,7 +17,7 @@ Push notifications of the patched app also go through MicroG-RE.
 ## 🩹 Patches list
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.5.0-dev.4](https://github.com/HagiaHaya/morphe-patches/releases/tag/v1.5.0-dev.4)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;22 patches total
+> **[v1.5.0-dev.5](https://github.com/HagiaHaya/morphe-patches/releases/tag/v1.5.0-dev.5)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;22 patches total
 <details open>
 <summary>📦 Slack&nbsp;&nbsp;•&nbsp;&nbsp;12 patches</summary>
 <br>
