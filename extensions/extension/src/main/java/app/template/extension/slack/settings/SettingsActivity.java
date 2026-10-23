@@ -37,6 +37,10 @@ public final class SettingsActivity extends SettingsScreen {
             addSwitch(Settings.SANITIZE_LINKS, "Sanitize links",
                     "Removes tracking parameters, such as utm_source or fbclid, from links in the messages you send.");
         }
+        if (PatchedFeatures.anonymizeFileNames()) {
+            addSwitch(Settings.ANONYMIZE_FILE_NAMES, "Anonymize file names",
+                    "Uploads files under a random name, keeping the extension.");
+        }
     }
 
     private void addMessages() {

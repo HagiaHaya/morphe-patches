@@ -19,6 +19,10 @@ public final class PatchedFeatures {
         return false;
     }
 
+    public static boolean anonymizeFileNames() {
+        return false;
+    }
+
     public static boolean keepMessageHistory() {
         return false;
     }
