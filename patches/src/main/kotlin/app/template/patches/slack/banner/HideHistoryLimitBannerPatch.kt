@@ -15,12 +15,14 @@ val hideHistoryLimitBannerPatch = bytecodePatch(
 
     execute {
         // Hide the banner instead of presenting it. The method suspends, but may return its
-        // result right away.
+        // result right away. The banner parameter is a high register, which invoke-virtual
+        // can not take, so it is copied first.
         PresentFreePlanBannerFingerprint.method.addInstructions(
             0,
             """
+                move-object/from16 v1, p1
                 const/16 v0, 0x8
-                invoke-virtual { p1, v0 }, Landroid/view/View;->setVisibility(I)V
+                invoke-virtual { v1, v0 }, Landroid/view/View;->setVisibility(I)V
                 sget-object v0, Lkotlin/Unit;->INSTANCE:Lkotlin/Unit;
                 return-object v0
             """
