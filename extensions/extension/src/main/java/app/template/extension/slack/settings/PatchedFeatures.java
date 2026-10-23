@@ -7,6 +7,10 @@ package app.template.extension.slack.settings;
 @SuppressWarnings("unused")
 public final class PatchedFeatures {
 
+    public static boolean silentTyping() {
+        return false;
+    }
+
     public static boolean keepMessageHistory() {
         return false;
     }

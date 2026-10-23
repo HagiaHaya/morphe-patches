@@ -18,8 +18,17 @@ public final class SettingsActivity extends SettingsScreen {
         super.onCreate(savedInstanceState);
         setTitle("HagiaHaya Patches");
 
+        addPrivacy();
         addMessages();
         addRestart();
+    }
+
+    private void addPrivacy() {
+        startSection("Privacy");
+        if (PatchedFeatures.silentTyping()) {
+            addSwitch(Settings.SILENT_TYPING, "Silent typing",
+                    "Others don't see that you are typing. You still see when they are.");
+        }
     }
 
     private void addMessages() {
