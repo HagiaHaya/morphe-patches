@@ -255,6 +255,10 @@ public final class KeepMessageHistoryPatch {
      */
     public static void onMessageDeleted(String channelId, String ts) {
         try {
+            // The message logger kept the message, marked as deleted.
+            if (MessageLoggerPatch.isLoggedAsDeleted(channelId, ts)) {
+                return;
+            }
             MessageArchive archive = archive();
             if (archive != null && channelId != null && ts != null) {
                 archive.delete(channelId, ts);

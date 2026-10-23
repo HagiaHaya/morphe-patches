@@ -290,6 +290,16 @@ final class MessageArchive extends SQLiteOpenHelper {
     /**
      * @return The JSON of the parent and the replies of a thread, oldest first.
      */
+    /**
+     * @return The JSON of a message, or null if it is not archived.
+     */
+    String message(String channelId, String ts) {
+        try (Cursor cursor = getReadableDatabase().rawQuery(
+                "SELECT json FROM message WHERE channel_id = ? AND ts = ?", new String[]{channelId, ts})) {
+            return cursor.moveToFirst() ? cursor.getString(0) : null;
+        }
+    }
+
     List<String> thread(String channelId, String threadTs) {
         List<String> args = new ArrayList<>();
         args.add(channelId);

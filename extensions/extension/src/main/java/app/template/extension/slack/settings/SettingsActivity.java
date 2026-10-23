@@ -48,6 +48,14 @@ public final class SettingsActivity extends SettingsScreen {
 
     private void addMessages() {
         startSection("Messages");
+        if (PatchedFeatures.messageLogger()) {
+            addSwitch(Settings.KEEP_DELETED_MESSAGES, "Keep deleted messages",
+                    "Messages others delete stay in the conversation, marked as deleted.");
+            addSwitch(Settings.KEEP_EDIT_HISTORY, "Keep edit history",
+                    "Messages others edit show their earlier versions below them.");
+            addLink("Message log", "Deleted messages and earlier versions of edited messages.",
+                    MessageLogActivity.class);
+        }
         if (PatchedFeatures.keepMessageHistory()) {
             addSwitch(Settings.KEEP_MESSAGE_HISTORY, "Keep message history",
                     "Keeps a copy of the messages Slack loads, and shows the copies where the server "

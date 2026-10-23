@@ -1,12 +1,15 @@
 package app.template.patches.slack.shared
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
+import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.util.proxy.mutableTypes.MutableClass
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod.Companion.toMutable
 import com.android.tools.smali.dexlib2.builder.MutableMethodImplementation
 import com.android.tools.smali.dexlib2.immutable.ImmutableMethod
 import com.android.tools.smali.dexlib2.immutable.ImmutableMethodParameter
+
+internal const val SINGLE_CLASS = "Lio/reactivex/rxjava3/core/Single;"
 
 /**
  * Renames [method] and adds a method with its former name and signature, so the new method can
@@ -54,3 +57,13 @@ internal fun MutableClass.replaceMethod(method: MutableMethod, registerCount: In
         ).toMutable().apply { addInstructions(0, smali) }
     )
 }
+
+/**
+ * @return The reference to a method of the Single class of RxJava. R8 changed their return types
+ * to the classes of the operators, which differ between app versions.
+ */
+internal fun BytecodePatchContext.singleMethod(name: String, parameterType: String) =
+    classDefBy(SINGLE_CLASS).methods.singleOrNull {
+        it.name == name && it.parameterTypes.map(CharSequence::toString) == listOf(parameterType)
+    }?.let { "$SINGLE_CLASS->$name($parameterType)${it.returnType}" }
+        ?: throw IllegalStateException("Could not find $SINGLE_CLASS->$name($parameterType)")

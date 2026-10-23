@@ -23,6 +23,10 @@ public final class PatchedFeatures {
         return false;
     }
 
+    public static boolean messageLogger() {
+        return false;
+    }
+
     public static boolean standardMarkdown() {
         return false;
     }

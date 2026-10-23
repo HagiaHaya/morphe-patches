@@ -14,7 +14,7 @@ import java.util.Map;
  * one per signed in workspace, named after the ID of the workspace.
  * Names that can not be read fall back to the IDs.
  */
-final class SlackNames {
+public final class SlackNames {
 
     private static final String TAG = "MorpheSlack";
 
@@ -45,7 +45,7 @@ final class SlackNames {
     /**
      * Reads the names. Slack keeps writing its databases meanwhile, so they are opened read only.
      */
-    static SlackNames load(Context context) {
+    public static SlackNames load(Context context) {
         SlackNames names = new SlackNames();
         File[] files = context.getDatabasePath(DATABASE_PREFIX).getParentFile().listFiles();
         if (files == null) {
@@ -96,7 +96,7 @@ final class SlackNames {
     /**
      * @return The ID of the workspace whose database lists the conversation, or null.
      */
-    String teamIdOf(String conversationId) {
+    public String teamIdOf(String conversationId) {
         Conversation conversation = conversations.get(conversationId);
         return conversation != null ? conversation.teamId : null;
     }
@@ -104,7 +104,7 @@ final class SlackNames {
     /**
      * @return "#channel" for channels and the name of the other user for direct messages.
      */
-    String conversationName(String conversationId) {
+    public String conversationName(String conversationId) {
         Conversation conversation = conversations.get(conversationId);
         if (conversation == null || conversation.nameOrUser == null) {
             return conversationId;
@@ -120,7 +120,7 @@ final class SlackNames {
         return "#" + conversation.nameOrUser;
     }
 
-    String userName(String userId) {
+    public String userName(String userId) {
         String name = users.get(userId);
         return name != null ? name : userId;
     }

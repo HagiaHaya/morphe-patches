@@ -183,16 +183,11 @@ internal const val GET_THREAD_COROUTINE_CLASS = "Lslack/reply/impl/ReplyReposito
 /**
  * Coroutine requesting conversations.replies for a thread. It returns the ApiResult
  * of the request, either right away or when it resumes after the response.
+ * Found by name only, as the message logger may have wrapped it already.
  */
 internal object GetThreadInvokeSuspendFingerprint : Fingerprint(
     definingClass = GET_THREAD_COROUTINE_CLASS,
     name = "invokeSuspend",
     returnType = "Ljava/lang/Object;",
     parameters = listOf("Ljava/lang/Object;"),
-    filters = listOf(
-        methodCall(
-            definingClass = "Lslack/services/api/conversations/AuthedConversationsApi;",
-            name = "conversationsReplies\$default",
-        ),
-    ),
 )

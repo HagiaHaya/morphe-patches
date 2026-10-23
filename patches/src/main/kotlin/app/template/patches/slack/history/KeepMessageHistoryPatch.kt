@@ -11,7 +11,9 @@ import app.template.patches.shared.Constants.COMPATIBILITY_SLACK
 import app.template.patches.shared.requireExtensionMethods
 import app.template.patches.slack.settings.addPatchedFeature
 import app.template.patches.slack.settings.settingsPatch
+import app.template.patches.slack.shared.SINGLE_CLASS
 import app.template.patches.slack.shared.SlackAppOnCreateFingerprint
+import app.template.patches.slack.shared.singleMethod
 import app.template.patches.slack.shared.wrapMethod
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
@@ -28,8 +30,6 @@ private const val ARCHIVE_ACTIVITY = "app.template.extension.slack.MessageArchiv
 private const val ARCHIVE_SEARCH_ACTIVITY = "app.template.extension.slack.MessageArchiveSearchActivity"
 
 private const val JSON_INFLATER_CLASS = "Lslack/commons/json/JsonInflater;"
-
-private const val SINGLE_CLASS = "Lio/reactivex/rxjava3/core/Single;"
 
 private const val SHORTCUT_BACKGROUND_COLOR = "hagiahaya_shortcut_background"
 
@@ -171,16 +171,6 @@ private fun BytecodePatchContext.hookCacheStatement(statement: CacheStatement, h
 private fun BytecodePatchContext.fieldOfType(classType: String, fieldType: String) =
     classDefBy(classType).fields.singleOrNull { it.type == fieldType }
         ?: throw IllegalStateException("Could not find the $fieldType field of $classType")
-
-/**
- * @return The reference to a method of the Single class of RxJava. R8 changed their return types
- * to the classes of the operators, which differ between app versions.
- */
-private fun BytecodePatchContext.singleMethod(name: String, parameterType: String) =
-    classDefBy(SINGLE_CLASS).methods.singleOrNull {
-        it.name == name && it.parameterTypes.map(CharSequence::toString) == listOf(parameterType)
-    }?.let { "$SINGLE_CLASS->$name($parameterType)${it.returnType}" }
-        ?: throw IllegalStateException("Could not find $SINGLE_CLASS->$name($parameterType)")
 
 @Suppress("unused")
 val keepMessageHistoryPatch = bytecodePatch(

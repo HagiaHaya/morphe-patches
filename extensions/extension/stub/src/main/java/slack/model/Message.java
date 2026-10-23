@@ -8,4 +8,7 @@ public final class Message {
      * Timestamp of the message, which identifies it in its conversation.
      */
     public String ts;
+    public String threadTs;
+    public String text;
+    public String user;
 }
