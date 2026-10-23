@@ -2,27 +2,26 @@ package app.template.patches.slack.history
 
 import app.morphe.patcher.StringComparisonType
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
-import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
-import app.morphe.patcher.util.proxy.mutableTypes.MutableClass
-import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
-import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod.Companion.toMutable
 import app.template.patches.shared.Constants.COMPATIBILITY_SLACK
 import app.template.patches.shared.requireExtensionMethods
+import app.template.patches.slack.settings.addPatchedFeature
+import app.template.patches.slack.settings.settingsPatch
+import app.template.patches.slack.shared.SINGLE_CLASS
+import app.template.patches.slack.shared.SlackAppOnCreateFingerprint
+import app.template.patches.slack.shared.singleMethod
+import app.template.patches.slack.shared.wrapMethod
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
-import com.android.tools.smali.dexlib2.builder.MutableMethodImplementation
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.iface.reference.StringReference
-import com.android.tools.smali.dexlib2.immutable.ImmutableMethod
-import com.android.tools.smali.dexlib2.immutable.ImmutableMethodParameter
 
 private const val EXTENSION_CLASS = "Lapp/template/extension/slack/KeepMessageHistoryPatch;"
 
@@ -31,8 +30,6 @@ private const val ARCHIVE_ACTIVITY = "app.template.extension.slack.MessageArchiv
 private const val ARCHIVE_SEARCH_ACTIVITY = "app.template.extension.slack.MessageArchiveSearchActivity"
 
 private const val JSON_INFLATER_CLASS = "Lslack/commons/json/JsonInflater;"
-
-private const val SINGLE_CLASS = "Lio/reactivex/rxjava3/core/Single;"
 
 private const val SHORTCUT_BACKGROUND_COLOR = "hagiahaya_shortcut_background"
 
@@ -122,31 +119,6 @@ private val messageArchiveShortcutPatch = resourcePatch {
 }
 
 /**
- * Renames [method] and adds a method with its former name and signature, so the new method can
- * call the original one. The methods of a class are kept in a set, so the method is removed
- * while its name, which is part of its hash, changes.
- */
-private fun MutableClass.wrapMethod(method: MutableMethod, originalName: String, registerCount: Int, smali: String) {
-    val name = method.name
-    methods.remove(method)
-    method.name = originalName
-    methods.add(method)
-
-    methods.add(
-        ImmutableMethod(
-            method.definingClass,
-            name,
-            method.parameters.map { ImmutableMethodParameter(it.type, null, null) },
-            method.returnType,
-            method.accessFlags,
-            null,
-            null,
-            MutableMethodImplementation(registerCount),
-        ).toMutable().apply { addInstructions(0, smali) }
-    )
-}
-
-/**
  * Calls the extension method [hookName] with the leading arguments of the lambda that binds
  * [statement], everywhere it is created.
  */
@@ -200,16 +172,6 @@ private fun BytecodePatchContext.fieldOfType(classType: String, fieldType: Strin
     classDefBy(classType).fields.singleOrNull { it.type == fieldType }
         ?: throw IllegalStateException("Could not find the $fieldType field of $classType")
 
-/**
- * @return The reference to a method of the Single class of RxJava. R8 changed their return types
- * to the classes of the operators, which differ between app versions.
- */
-private fun BytecodePatchContext.singleMethod(name: String, parameterType: String) =
-    classDefBy(SINGLE_CLASS).methods.singleOrNull {
-        it.name == name && it.parameterTypes.map(CharSequence::toString) == listOf(parameterType)
-    }?.let { "$SINGLE_CLASS->$name($parameterType)${it.returnType}" }
-        ?: throw IllegalStateException("Could not find $SINGLE_CLASS->$name($parameterType)")
-
 @Suppress("unused")
 val keepMessageHistoryPatch = bytecodePatch(
     name = "Keep message history",
@@ -222,9 +184,7 @@ val keepMessageHistoryPatch = bytecodePatch(
 ) {
     compatibleWith(COMPATIBILITY_SLACK)
 
-    dependsOn(messageArchiveShortcutPatch)
-
-    extendWith("extensions/extension.mpe")
+    dependsOn(messageArchiveShortcutPatch, settingsPatch)
 
     execute {
         requireExtensionMethods(
@@ -240,6 +200,7 @@ val keepMessageHistoryPatch = bytecodePatch(
             "getHistoryMapper",
             "addArchivedReplies",
         )
+        addPatchedFeature("keepMessageHistory")
 
         SlackAppOnCreateFingerprint.method.addInstruction(
             0,

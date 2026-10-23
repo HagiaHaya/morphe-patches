@@ -9,3 +9,10 @@ java {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
 }
+
+dependencies {
+    // Framework classes the stubs name in their signatures, such as Context.
+    compileOnly(libs.android) {
+        isTransitive = false
+    }
+}

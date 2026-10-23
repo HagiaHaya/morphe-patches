@@ -10,16 +10,6 @@ import app.morphe.patcher.string
 // Statements that cache messages are found by their SQL, as R8 inlined some of them.
 
 /**
- * The application class is named in the manifest, so its name is kept.
- */
-internal object SlackAppOnCreateFingerprint : Fingerprint(
-    definingClass = "Lslack/app/SlackApp;",
-    name = "onCreate",
-    returnType = "V",
-    parameters = listOf(),
-)
-
-/**
  * A statement that caches messages, found by the start of its SQL. SQLDelight binds the arguments
  * with a lambda that captures them in the order of the columns, which every method running the
  * statement creates right before it loads the SQL. R8 inlined some of the queries into other
@@ -193,16 +183,11 @@ internal const val GET_THREAD_COROUTINE_CLASS = "Lslack/reply/impl/ReplyReposito
 /**
  * Coroutine requesting conversations.replies for a thread. It returns the ApiResult
  * of the request, either right away or when it resumes after the response.
+ * Found by name only, as the message logger may have wrapped it already.
  */
 internal object GetThreadInvokeSuspendFingerprint : Fingerprint(
     definingClass = GET_THREAD_COROUTINE_CLASS,
     name = "invokeSuspend",
     returnType = "Ljava/lang/Object;",
     parameters = listOf("Ljava/lang/Object;"),
-    filters = listOf(
-        methodCall(
-            definingClass = "Lslack/services/api/conversations/AuthedConversationsApi;",
-            name = "conversationsReplies\$default",
-        ),
-    ),
 )
