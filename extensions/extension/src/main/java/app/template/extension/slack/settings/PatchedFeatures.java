@@ -31,6 +31,10 @@ public final class PatchedFeatures {
         return false;
     }
 
+    public static boolean featureFlags() {
+        return false;
+    }
+
     public static boolean keepMessageHistory() {
         return false;
     }

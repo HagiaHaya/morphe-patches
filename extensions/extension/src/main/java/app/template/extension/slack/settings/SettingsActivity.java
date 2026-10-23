@@ -22,6 +22,7 @@ public final class SettingsActivity extends SettingsScreen {
         addMessages();
         addComposer();
         addPeople();
+        addAdvanced();
         addRestart();
     }
 
@@ -74,6 +75,13 @@ public final class SettingsActivity extends SettingsScreen {
         startSection("People");
         if (PatchedFeatures.nicknames()) {
             addLink("Nicknames", "Give members nicknames that only you see.", NicknamesActivity.class);
+        }
+    }
+
+    private void addAdvanced() {
+        startSection("Advanced");
+        if (PatchedFeatures.featureFlags()) {
+            addLink("Feature flags", "Turn features and experiments of Slack on or off.", FeatureFlagsActivity.class);
         }
     }
 

@@ -20,7 +20,7 @@ private const val EXTENSION_PACKAGE = "app.template.extension.slack.settings"
 /**
  * Screens of the settings, which open from the preferences of Slack.
  */
-private val SCREENS = listOf("SettingsActivity", "NicknamesActivity")
+private val SCREENS = listOf("SettingsActivity", "NicknamesActivity", "FeatureFlagsActivity")
 
 private val settingsResourcePatch = resourcePatch {
     execute {
