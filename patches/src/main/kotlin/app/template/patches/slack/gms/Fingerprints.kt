@@ -27,6 +27,16 @@ internal object HandleGetCredentialResponseFingerprint : Fingerprint(
 )
 
 /**
+ * Initializes Firebase when the app starts, before the application is created.
+ */
+internal object FirebaseInitProviderOnCreateFingerprint : Fingerprint(
+    definingClass = "Lcom/google/firebase/provider/FirebaseInitProvider;",
+    name = "onCreate",
+    returnType = "Z",
+    parameters = listOf(),
+)
+
+/**
  * The screen to sign in from, shown while signed out.
  */
 internal object AppLandingActivityOnCreateFingerprint : Fingerprint(
