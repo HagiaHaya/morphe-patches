@@ -10,16 +10,6 @@ import app.morphe.patcher.string
 // Statements that cache messages are found by their SQL, as R8 inlined some of them.
 
 /**
- * The application class is named in the manifest, so its name is kept.
- */
-internal object SlackAppOnCreateFingerprint : Fingerprint(
-    definingClass = "Lslack/app/SlackApp;",
-    name = "onCreate",
-    returnType = "V",
-    parameters = listOf(),
-)
-
-/**
  * A statement that caches messages, found by the start of its SQL. SQLDelight binds the arguments
  * with a lambda that captures them in the order of the columns, which every method running the
  * statement creates right before it loads the SQL. R8 inlined some of the queries into other

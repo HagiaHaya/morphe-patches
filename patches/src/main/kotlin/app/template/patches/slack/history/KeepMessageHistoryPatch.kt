@@ -2,27 +2,24 @@ package app.template.patches.slack.history
 
 import app.morphe.patcher.StringComparisonType
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
-import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
-import app.morphe.patcher.util.proxy.mutableTypes.MutableClass
-import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
-import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod.Companion.toMutable
 import app.template.patches.shared.Constants.COMPATIBILITY_SLACK
 import app.template.patches.shared.requireExtensionMethods
+import app.template.patches.slack.settings.addPatchedFeature
+import app.template.patches.slack.settings.settingsPatch
+import app.template.patches.slack.shared.SlackAppOnCreateFingerprint
+import app.template.patches.slack.shared.wrapMethod
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
-import com.android.tools.smali.dexlib2.builder.MutableMethodImplementation
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.iface.reference.StringReference
-import com.android.tools.smali.dexlib2.immutable.ImmutableMethod
-import com.android.tools.smali.dexlib2.immutable.ImmutableMethodParameter
 
 private const val EXTENSION_CLASS = "Lapp/template/extension/slack/KeepMessageHistoryPatch;"
 
@@ -122,31 +119,6 @@ private val messageArchiveShortcutPatch = resourcePatch {
 }
 
 /**
- * Renames [method] and adds a method with its former name and signature, so the new method can
- * call the original one. The methods of a class are kept in a set, so the method is removed
- * while its name, which is part of its hash, changes.
- */
-private fun MutableClass.wrapMethod(method: MutableMethod, originalName: String, registerCount: Int, smali: String) {
-    val name = method.name
-    methods.remove(method)
-    method.name = originalName
-    methods.add(method)
-
-    methods.add(
-        ImmutableMethod(
-            method.definingClass,
-            name,
-            method.parameters.map { ImmutableMethodParameter(it.type, null, null) },
-            method.returnType,
-            method.accessFlags,
-            null,
-            null,
-            MutableMethodImplementation(registerCount),
-        ).toMutable().apply { addInstructions(0, smali) }
-    )
-}
-
-/**
  * Calls the extension method [hookName] with the leading arguments of the lambda that binds
  * [statement], everywhere it is created.
  */
@@ -222,9 +194,7 @@ val keepMessageHistoryPatch = bytecodePatch(
 ) {
     compatibleWith(COMPATIBILITY_SLACK)
 
-    dependsOn(messageArchiveShortcutPatch)
-
-    extendWith("extensions/extension.mpe")
+    dependsOn(messageArchiveShortcutPatch, settingsPatch)
 
     execute {
         requireExtensionMethods(
@@ -240,6 +210,7 @@ val keepMessageHistoryPatch = bytecodePatch(
             "getHistoryMapper",
             "addArchivedReplies",
         )
+        addPatchedFeature("keepMessageHistory")
 
         SlackAppOnCreateFingerprint.method.addInstruction(
             0,
