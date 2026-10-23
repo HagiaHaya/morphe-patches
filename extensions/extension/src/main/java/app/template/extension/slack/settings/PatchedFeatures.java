@@ -27,6 +27,10 @@ public final class PatchedFeatures {
         return false;
     }
 
+    public static boolean nicknames() {
+        return false;
+    }
+
     public static boolean keepMessageHistory() {
         return false;
     }

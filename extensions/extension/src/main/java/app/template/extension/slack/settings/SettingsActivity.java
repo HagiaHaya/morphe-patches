@@ -21,6 +21,7 @@ public final class SettingsActivity extends SettingsScreen {
         addPrivacy();
         addMessages();
         addComposer();
+        addPeople();
         addRestart();
     }
 
@@ -66,6 +67,13 @@ public final class SettingsActivity extends SettingsScreen {
             addSwitch(Settings.STANDARD_MARKDOWN, "Standard Markdown",
                     "Formats **bold**, *italic*, ~~strikethrough~~, `code` and [text](link) as you type, "
                             + "instead of Slack's *bold* and _italic_.");
+        }
+    }
+
+    private void addPeople() {
+        startSection("People");
+        if (PatchedFeatures.nicknames()) {
+            addLink("Nicknames", "Give members nicknames that only you see.", NicknamesActivity.class);
         }
     }
 
