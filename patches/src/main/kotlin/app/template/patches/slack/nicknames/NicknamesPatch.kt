@@ -3,9 +3,9 @@ package app.template.patches.slack.nicknames
 import app.morphe.patcher.patch.bytecodePatch
 import app.template.patches.shared.Constants.COMPATIBILITY_SLACK
 import app.template.patches.shared.requireExtensionMethods
+import app.template.patches.shared.wrapMethod
 import app.template.patches.slack.settings.addPatchedFeature
 import app.template.patches.slack.settings.settingsPatch
-import app.template.patches.slack.shared.wrapMethod
 
 private const val EXTENSION_CLASS = "Lapp/template/extension/slack/NicknamesPatch;"
 

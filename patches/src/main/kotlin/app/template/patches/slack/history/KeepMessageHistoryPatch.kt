@@ -9,12 +9,12 @@ import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
 import app.template.patches.shared.Constants.COMPATIBILITY_SLACK
 import app.template.patches.shared.requireExtensionMethods
+import app.template.patches.shared.wrapMethod
 import app.template.patches.slack.settings.addPatchedFeature
 import app.template.patches.slack.settings.settingsPatch
 import app.template.patches.slack.shared.SINGLE_CLASS
 import app.template.patches.slack.shared.SlackAppOnCreateFingerprint
 import app.template.patches.slack.shared.singleMethod
-import app.template.patches.slack.shared.wrapMethod
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction

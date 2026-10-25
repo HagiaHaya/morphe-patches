@@ -5,10 +5,10 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.patch.bytecodePatch
 import app.template.patches.shared.Constants.COMPATIBILITY_SLACK
+import app.template.patches.shared.replaceMethod
 import app.template.patches.shared.requireExtensionMethods
 import app.template.patches.slack.settings.addPatchedFeature
 import app.template.patches.slack.settings.settingsPatch
-import app.template.patches.slack.shared.replaceMethod
 
 private const val EXTENSION_CLASS = "Lapp/template/extension/slack/StandardMarkdownPatch;"
 
