@@ -17,7 +17,7 @@ Push notifications of the patched app also go through MicroG-RE.
 ## 🩹 Patches list
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.5.0-dev.5](https://github.com/HagiaHaya/morphe-patches/releases/tag/v1.5.0-dev.5)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;22 patches total
+> **[v1.5.0-dev.6](https://github.com/HagiaHaya/morphe-patches/releases/tag/v1.5.0-dev.6)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;24 patches total
 <details open>
 <summary>📦 Slack&nbsp;&nbsp;•&nbsp;&nbsp;12 patches</summary>
 <br>
@@ -45,6 +45,28 @@ Push notifications of the patched app also go through MicroG-RE.
 </details>
 
 <details open>
+<summary>📦 Pepper&nbsp;&nbsp;•&nbsp;&nbsp;8 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 8.20.00 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description | ⚙️&nbsp;Options |
+|----------|----------------|-----------|
+| [Catch Flamedeer](#catch-flamedeer) | Adds a setting to get a notification when a Flamedeer ("Ognisty Renifer") of the Flamedeer hunt shows up, or to catch it at once by opening its prize screen. Flamedeers found while the app is in the background get a notification instead of being missed. Optionally looks for Flamedeers while the app is idle or in the background, and links the collection of Flamedeers in the settings. |  |
+| [Enable debug menu](#enable-debug-menu) | Adds a setting to show the hidden debug menu of the developers of Pepper at the top right of the home screen. Some of its actions can break the app. |  |
+| [GmsCore support](#gmscore-support) | Allows signing in with Google by using MicroG-RE instead of Google Play services. |  |
+| [Remove ads](#remove-ads) | Removes the ads shown between deals and on the deal pages. |  |
+| [Sanitize deal links](#sanitize-deal-links) | Opens the store page of a deal directly, instead of through redirects that track the click and add affiliate links. |  |
+| [Sanitize sharing links](#sanitize-sharing-links) | Shares the direct link to deals and discussions, instead of a link that redirects through a tracking service. |  |
+| [Spoof contributor level](#spoof-contributor-level) | Adds a setting to show Silver, Gold or Platinum in the app, such as on the profile, instead of the contributor level earned. It unlocks the app icons of the level, but rewards granted by Pepper, such as more deal stats, are not unlocked. |  |
+| [Unlock custom app icons](#unlock-custom-app-icons) | Unlocks all app icons regardless of the contributor level, and offers the seasonal icons, such as the Black Friday one, all year round. |  |
+
+</details>
+
+<details open>
 <summary>📦 Wykop.pl&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
 <br>
 
@@ -59,26 +81,6 @@ Push notifications of the patched app also go through MicroG-RE.
 | [GmsCore support](#gmscore-support) | Allows signing in with Google by using MicroG-RE instead of Google Play services. |  |
 | [Hide newsletter prompt](#hide-newsletter-prompt) | Hides the prompt to sign up for the newsletter on the website shown by the app. |  |
 | [Remove ads](#remove-ads) | Hides ads and blocks ad networks on the website shown by the app. |  |
-
-</details>
-
-<details open>
-<summary>📦 Pepper&nbsp;&nbsp;•&nbsp;&nbsp;6 patches</summary>
-<br>
-
-**🎯 Supported versions:**
-
-| 8.20.00 |
-| :---: |
-
-| 💊&nbsp;Patch | 📜&nbsp;Description | ⚙️&nbsp;Options |
-|----------|----------------|-----------|
-| [GmsCore support](#gmscore-support) | Allows signing in with Google by using MicroG-RE instead of Google Play services. |  |
-| [Remove ads](#remove-ads) | Removes the ads shown between deals and on the deal pages. |  |
-| [Sanitize deal links](#sanitize-deal-links) | Opens the store page of a deal directly, instead of through redirects that track the click and add affiliate links. |  |
-| [Sanitize sharing links](#sanitize-sharing-links) | Shares the direct link to deals and discussions, instead of a link that redirects through a tracking service. |  |
-| [Spoof contributor level](#spoof-contributor-level) | Adds a setting to show Silver, Gold or Platinum in the app, such as on the profile, instead of the contributor level earned. It unlocks the app icons of the level, but rewards granted by Pepper, such as more deal stats, are not unlocked. |  |
-| [Unlock custom app icons](#unlock-custom-app-icons) | Unlocks all app icons regardless of the contributor level, and offers the seasonal icons, such as the Black Friday one, all year round. |  |
 
 </details>
 

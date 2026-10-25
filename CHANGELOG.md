@@ -1,3 +1,11 @@
+## [1.5.0-dev.6](https://github.com/HagiaHaya/morphe-patches/compare/v1.5.0-dev.5...v1.5.0-dev.6) (2026-10-25)
+
+### ✨ New Features
+
+* **Pepper - Catch Flamedeer:** Get a notification for a Flamedeer of the Flamedeer hunt, or catch it at once ([4a09758](https://github.com/HagiaHaya/morphe-patches/commit/4a09758cc1773d7feb8e917b78679bf63a0510be))
+* **Pepper - Catch Flamedeer:** Look for Flamedeers in the background and open the collection from the settings ([142df69](https://github.com/HagiaHaya/morphe-patches/commit/142df694e56119bc0b68b1cec1e63a6489b26686))
+* **Pepper - Enable debug menu:** Show the hidden debug menu of the developers of Pepper ([c8491c9](https://github.com/HagiaHaya/morphe-patches/commit/c8491c9deec26d90619dcd275641275d4a3b8ee1))
+
 ## [1.5.0-dev.5](https://github.com/HagiaHaya/morphe-patches/compare/v1.5.0-dev.4...v1.5.0-dev.5) (2026-10-23)
 
 ### 🐛 Bug Fixes
