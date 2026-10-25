@@ -76,6 +76,7 @@ public final class CatchFlamedeerPatch {
      */
     public static void initialize(Application application) {
         applicationContext = application;
+        FlamedeerHunter.start(application);
         application.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
             @Override
             public void onActivityResumed(Activity activity) {

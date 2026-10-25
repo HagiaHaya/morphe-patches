@@ -30,4 +30,8 @@ public final class PatchedFeatures {
     public static boolean catchFlamedeer() {
         return false;
     }
+
+    public static boolean enableDebugMenu() {
+        return false;
+    }
 }
