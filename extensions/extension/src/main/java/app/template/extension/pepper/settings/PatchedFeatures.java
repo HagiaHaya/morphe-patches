@@ -26,4 +26,8 @@ public final class PatchedFeatures {
     public static boolean spoofContributorLevel() {
         return false;
     }
+
+    public static boolean catchFlamedeer() {
+        return false;
+    }
 }

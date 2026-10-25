@@ -136,6 +136,37 @@ public final class SettingsActivity extends Activity {
         if (PatchedFeatures.spoofContributorLevel()) {
             addContributorLevel();
         }
+        if (PatchedFeatures.catchFlamedeer()) {
+            addFlamedeerMode();
+        }
+    }
+
+    private void addFlamedeerMode() {
+        String[] modes = {
+                text("Tylko w aplikacji", "Only in the app"),
+                text("Powiadomienie", "Notify"),
+                text("Łap automatycznie", "Catch automatically"),
+        };
+        String description = text(
+                "Co zrobić, gdy pojawi się Ognisty Renifer z Polowania na Ogniste Renifery. "
+                        + "Poza trybem „Tylko w aplikacji” renifer znaleziony, gdy aplikacja jest w tle, "
+                        + "daje powiadomienie.",
+                "What to do when a Flamedeer of the Flamedeer hunt shows up. "
+                        + "Unless only in the app, a Flamedeer found while the app is in the background "
+                        + "gets a notification.");
+
+        TextView[] summary = new TextView[1];
+        View row = addRow(text("Ogniste Renifery", "Flamedeers"),
+                modes[Settings.getFlamedeerMode()] + "\n" + description, null, view ->
+                        new AlertDialog.Builder(this)
+                                .setTitle(text("Ogniste Renifery", "Flamedeers"))
+                                .setSingleChoiceItems(modes, Settings.getFlamedeerMode(), (dialog, which) -> {
+                                    Settings.setFlamedeerMode(which);
+                                    summary[0].setText(modes[which] + "\n" + description);
+                                    dialog.dismiss();
+                                })
+                                .show());
+        summary[0] = row.findViewWithTag("summary");
     }
 
     private void addContributorLevel() {
