@@ -24,6 +24,26 @@ public final class Settings {
      */
     public static final String CONTRIBUTOR_LEVEL = "contributor_level";
 
+    /**
+     * What to do when a Flamedeer of the Flamedeer hunt shows up, one of the FLAMEDEER_MODE values.
+     */
+    public static final String FLAMEDEER_MODE = "flamedeer_mode";
+
+    /**
+     * Only the app shows the Flamedeer.
+     */
+    public static final int FLAMEDEER_MODE_OFF = 0;
+
+    /**
+     * A notification opens the prize screen.
+     */
+    public static final int FLAMEDEER_MODE_NOTIFY = 1;
+
+    /**
+     * The prize screen opens at once.
+     */
+    public static final int FLAMEDEER_MODE_CATCH = 2;
+
     private static SharedPreferences preferences;
 
     /**
@@ -57,6 +77,16 @@ public final class Settings {
     static void setContributorLevel(int level) {
         if (preferences != null) {
             preferences.edit().putInt(CONTRIBUTOR_LEVEL, level).apply();
+        }
+    }
+
+    public static int getFlamedeerMode() {
+        return preferences == null ? FLAMEDEER_MODE_CATCH : preferences.getInt(FLAMEDEER_MODE, FLAMEDEER_MODE_CATCH);
+    }
+
+    static void setFlamedeerMode(int mode) {
+        if (preferences != null) {
+            preferences.edit().putInt(FLAMEDEER_MODE, mode).apply();
         }
     }
 }
