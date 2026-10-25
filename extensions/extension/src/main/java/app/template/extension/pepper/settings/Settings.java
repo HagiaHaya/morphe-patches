@@ -18,6 +18,7 @@ public final class Settings {
     public static final String SANITIZE_SHARING_LINKS = "sanitize_sharing_links";
     public static final String SANITIZE_DEAL_LINKS = "sanitize_deal_links";
     public static final String UNLOCK_CUSTOM_APP_ICONS = "unlock_custom_app_icons";
+    public static final String DEBUG_MENU = "debug_menu";
 
     /**
      * Contributor level to show, from 1 (Silver) to 3 (Platinum), or 0 to show the one earned.

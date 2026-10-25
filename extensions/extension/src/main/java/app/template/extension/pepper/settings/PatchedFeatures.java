@@ -31,4 +31,7 @@ public final class PatchedFeatures {
         return false;
     }
 
+    public static boolean enableDebugMenu() {
+        return false;
+    }
 }

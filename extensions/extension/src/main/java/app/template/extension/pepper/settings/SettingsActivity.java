@@ -140,6 +140,14 @@ public final class SettingsActivity extends Activity {
         if (PatchedFeatures.spoofContributorLevel()) {
             addContributorLevel();
         }
+        if (PatchedFeatures.enableDebugMenu()) {
+            addSwitch(Settings.DEBUG_MENU,
+                    text("Menu debugowania", "Debug menu"),
+                    text("Ukryte menu deweloperów Peppera w prawym górnym rogu ekranu głównego. "
+                                    + "Niektóre jego opcje mogą zepsuć aplikację.",
+                            "The hidden menu of the developers of Pepper at the top right of the home screen. "
+                                    + "Some of its actions can break the app."));
+        }
     }
 
     private void addFlamedeerMode() {
