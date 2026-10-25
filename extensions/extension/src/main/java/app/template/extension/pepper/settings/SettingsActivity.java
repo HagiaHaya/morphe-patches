@@ -4,11 +4,13 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.LocaleManager;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Insets;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
@@ -26,6 +28,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import java.util.Locale;
+import java.util.function.IntConsumer;
 
 /**
  * Settings of the patches, opened from the settings of Pepper.
@@ -93,6 +96,7 @@ public final class SettingsActivity extends Activity {
         }
 
         addFeatures();
+        addFlamedeerHunt();
         addLanguage();
         addRestart();
     }
@@ -136,9 +140,6 @@ public final class SettingsActivity extends Activity {
         if (PatchedFeatures.spoofContributorLevel()) {
             addContributorLevel();
         }
-        if (PatchedFeatures.catchFlamedeer()) {
-            addFlamedeerMode();
-        }
     }
 
     private void addFlamedeerMode() {
@@ -176,21 +177,88 @@ public final class SettingsActivity extends Activity {
                 text("Złoto", "Gold"),
                 text("Platyna", "Platinum"),
         };
-        String description = text(
-                "Zmienia tylko poziom wyświetlany w aplikacji. Nagrody przyznaje Pepper.",
-                "Only changes the level the app shows. Pepper still grants the rewards of the level earned.");
+        addChoice(text("Poziom w Pepper Club", "Pepper Club level"),
+                text("Zmienia tylko poziom wyświetlany w aplikacji. Nagrody przyznaje Pepper.",
+                        "Only changes the level the app shows. Pepper still grants the rewards of the level earned."),
+                levels, Settings.getContributorLevel(), Settings::setContributorLevel);
+    }
 
+    private void addFlamedeerHunt() {
+        if (!PatchedFeatures.catchFlamedeer()) {
+            return;
+        }
+
+        addHeader(text("Polowanie na Ogniste Renifery", "Flamedeer hunt"));
+
+        String[] modes = {
+                text("Tylko w aplikacji", "Only in the app"),
+                text("Powiadomienie", "Notify"),
+                text("Łap automatycznie", "Catch automatically"),
+        };
+        addChoice(text("Gdy pojawi się renifer", "When a Flamedeer shows up"),
+                text("Poza trybem „Tylko w aplikacji” renifer znaleziony, gdy aplikacja jest w tle, "
+                                + "daje powiadomienie.",
+                        "Unless only in the app, a Flamedeer found while the app is in the background "
+                                + "gets a notification."),
+                modes, Settings.getFlamedeerMode(), Settings::setFlamedeerMode);
+
+        int[] intervals = {0, 2, 5, 10, 15};
+        String[] intervalNames = {
+                text("Wyłączone", "Off"),
+                text("Co 2 minuty", "Every 2 minutes"),
+                text("Co 5 minut", "Every 5 minutes"),
+                text("Co 10 minut", "Every 10 minutes"),
+                text("Co 15 minut", "Every 15 minutes"),
+        };
+        int interval = 0;
+        for (int i = 0; i < intervals.length; i++) {
+            if (intervals[i] == Settings.getFlamedeerSearchInterval()) {
+                interval = i;
+            }
+        }
+        addChoice(text("Szukaj w tle", "Search in the background"),
+                text("Gdy trwa polowanie, a aplikacja przez ten czas niczego nie pobrała, pyta Peppera "
+                                + "o renifera, także w tle. Pepper sprawdza zwycięzców pod kątem nadużyć.",
+                        "While a hunt runs and the app made no request for this long, it asks Pepper "
+                                + "for a Flamedeer, also in the background. Pepper checks winners for abuse."),
+                intervalNames, interval, which -> Settings.setFlamedeerSearchInterval(intervals[which]));
+
+        addRow(text("Moja kolekcja", "My collection"),
+                text("Złapane renifery i kolekcje na stronie Peppera.",
+                        "The Flamedeers caught and the collections, on the website of Pepper."),
+                null, view -> openFlamedeerCollection());
+    }
+
+    /**
+     * Opens the collection of the user in the app, which shows pages of the website it has no screen for.
+     */
+    private void openFlamedeerCollection() {
+        int domainId = getResources().getIdentifier("domain_full_name", "string", getPackageName());
+        String domain = domainId != 0 ? getString(domainId) : "www.pepper.pl";
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://" + domain + "/flamedeer"));
+        try {
+            startActivity(new Intent(intent).setPackage(getPackageName()));
+        } catch (ActivityNotFoundException ex) {
+            startActivity(intent);
+        }
+    }
+
+    /**
+     * Adds a row that shows the choice made, and lets the user make another in a dialog.
+     */
+    private void addChoice(String title, String description, String[] choices, int selected, IntConsumer onChoice) {
+        int[] current = {selected};
         TextView[] summary = new TextView[1];
-        View row = addRow(text("Poziom w Pepper Club", "Pepper Club level"),
-                levels[Settings.getContributorLevel()] + "\n" + description, null, view ->
-                        new AlertDialog.Builder(this)
-                                .setTitle(text("Poziom w Pepper Club", "Pepper Club level"))
-                                .setSingleChoiceItems(levels, Settings.getContributorLevel(), (dialog, which) -> {
-                                    Settings.setContributorLevel(which);
-                                    summary[0].setText(levels[which] + "\n" + description);
-                                    dialog.dismiss();
-                                })
-                                .show());
+        View row = addRow(title, choices[selected] + "\n" + description, null, view ->
+                new AlertDialog.Builder(this)
+                        .setTitle(title)
+                        .setSingleChoiceItems(choices, current[0], (dialog, which) -> {
+                            current[0] = which;
+                            onChoice.accept(which);
+                            summary[0].setText(choices[which] + "\n" + description);
+                            dialog.dismiss();
+                        })
+                        .show());
         summary[0] = row.findViewWithTag("summary");
     }
 

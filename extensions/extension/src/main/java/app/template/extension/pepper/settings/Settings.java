@@ -44,6 +44,11 @@ public final class Settings {
      */
     public static final int FLAMEDEER_MODE_CATCH = 2;
 
+    /**
+     * Minutes without a request of the app after which to look for a Flamedeer, or 0 not to.
+     */
+    public static final String FLAMEDEER_SEARCH_INTERVAL = "flamedeer_search_interval";
+
     private static SharedPreferences preferences;
 
     /**
@@ -87,6 +92,16 @@ public final class Settings {
     static void setFlamedeerMode(int mode) {
         if (preferences != null) {
             preferences.edit().putInt(FLAMEDEER_MODE, mode).apply();
+        }
+    }
+
+    public static int getFlamedeerSearchInterval() {
+        return preferences == null ? 0 : preferences.getInt(FLAMEDEER_SEARCH_INTERVAL, 0);
+    }
+
+    static void setFlamedeerSearchInterval(int minutes) {
+        if (preferences != null) {
+            preferences.edit().putInt(FLAMEDEER_SEARCH_INTERVAL, minutes).apply();
         }
     }
 }
