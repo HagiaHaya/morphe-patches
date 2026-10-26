@@ -33,6 +33,11 @@ public final class Settings {
     public static final String FILTER_MIN_TEMPERATURE = "filter_min_temperature";
 
     /**
+     * Words that hide a comment, one per line.
+     */
+    public static final String COMMENT_FILTER_WORDS = "comment_filter_words";
+
+    /**
      * Contributor level to show, from 1 (Silver) to 3 (Platinum), or 0 to show the one earned.
      */
     public static final String CONTRIBUTOR_LEVEL = "contributor_level";

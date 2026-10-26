@@ -42,4 +42,8 @@ public final class PatchedFeatures {
     public static boolean filterDeals() {
         return false;
     }
+
+    public static boolean filterComments() {
+        return false;
+    }
 }

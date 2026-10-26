@@ -100,6 +100,7 @@ public final class SettingsActivity extends Activity {
 
         addFeatures();
         addDealFilters();
+        addCommentFilter();
         addFlamedeerHunt();
         addLanguage();
         addRestart();
@@ -234,6 +235,20 @@ public final class SettingsActivity extends Activity {
                 text("Ukrywa okazje z niższą temperaturą, np. 0 ukrywa zimne.",
                         "Hides deals with a lower temperature, such as 0 to hide cold ones."),
                 InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED);
+    }
+
+    private void addCommentFilter() {
+        if (!PatchedFeatures.filterComments()) {
+            return;
+        }
+
+        addHeader(text("Komentarze", "Comments"));
+        addText(Settings.COMMENT_FILTER_WORDS, text("Ukryj komentarze ze słowami", "Hide comments with words"),
+                text("Ukrywa komentarze, i odpowiedzi na nie, z tymi słowami. Jedno na linię, "
+                                + "* zastępuje dowolny tekst.",
+                        "Hides comments, and the replies to them, with these words. One per line, "
+                                + "* stands for any text."),
+                InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
     }
 
     /**
