@@ -34,4 +34,8 @@ public final class PatchedFeatures {
     public static boolean enableDebugMenu() {
         return false;
     }
+
+    public static boolean showPriceWithShipping() {
+        return false;
+    }
 }

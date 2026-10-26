@@ -131,6 +131,12 @@ public final class SettingsActivity extends Activity {
                     text("Udostępnia bezpośredni link do okazji, a nie link śledzący.",
                             "Shares the direct link to a deal instead of a tracking link."));
         }
+        if (PatchedFeatures.showPriceWithShipping()) {
+            addSwitch(Settings.PRICE_WITH_SHIPPING,
+                    text("Cena z dostawą", "Price with shipping"),
+                    text("Dodaje do kosztów dostawy cenę razem z dostawą, np. + 9,99zł = 59,98zł.",
+                            "Adds the price with shipping to the shipping costs, such as + 9.99 = 59.98."));
+        }
         if (PatchedFeatures.unlockCustomAppIcons()) {
             addSwitch(Settings.UNLOCK_CUSTOM_APP_ICONS,
                     text("Odblokuj ikony aplikacji", "Unlock custom app icons"),
