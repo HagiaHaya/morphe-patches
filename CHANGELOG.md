@@ -1,3 +1,16 @@
+## [1.5.0-dev.8](https://github.com/HagiaHaya/morphe-patches/compare/v1.5.0-dev.7...v1.5.0-dev.8) (2026-10-26)
+
+### 🐛 Bug Fixes
+
+* **Pepper - GmsCore support:** Show notifications when Pepper registered for them through Google Play services ([3ffcce4](https://github.com/HagiaHaya/morphe-patches/commit/3ffcce4245d90f1ea3c6e0af6f0f6f90de2653a9)), closes [#18](https://github.com/HagiaHaya/morphe-patches/issues/18)
+* **Wykop.pl - GmsCore support:** Get notifications, which Google refused to the patched app ([d567ff9](https://github.com/HagiaHaya/morphe-patches/commit/d567ff908f2c77d5275cc17abbcfda32f62248f4))
+
+### ✨ New Features
+
+* Ask to let MicroG-RE run in the background in apps with `GmsCore support`, so notifications arrive ([42d21b1](https://github.com/HagiaHaya/morphe-patches/commit/42d21b16844604097e2d09d6be72bc01882ff842))
+* **Pepper:** Ask to restart Pepper after turning a patch on or off in the settings ([f80b128](https://github.com/HagiaHaya/morphe-patches/commit/f80b12820cd7939fe00244feccdfb79802d28a9e))
+* **Slack:** Ask to restart Slack after turning a patch on or off in the settings ([ed4de7b](https://github.com/HagiaHaya/morphe-patches/commit/ed4de7b51f2fddf5c29d22c67161053a5a077d18))
+
 ## [1.5.0-dev.7](https://github.com/HagiaHaya/morphe-patches/compare/v1.5.0-dev.6...v1.5.0-dev.7) (2026-10-26)
 
 ### ✨ New Features

@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.5.0-dev.7",
+  "version": "1.5.0-dev.8",
   "patches": [
     {
       "name": "Add deals to calendar",
@@ -325,7 +325,7 @@
     },
     {
       "name": "GmsCore support",
-      "description": "Allows signing in with Google by using MicroG-RE instead of Google Play services.",
+      "description": "Allows signing in with Google and receiving notifications by using MicroG-RE instead of Google Play services.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -384,7 +384,7 @@
     },
     {
       "name": "GmsCore support",
-      "description": "Allows signing in with Google by using MicroG-RE instead of Google Play services.",
+      "description": "Allows signing in with Google and receiving notifications by using MicroG-RE instead of Google Play services.",
       "default": true,
       "category": null,
       "compatiblePackages": [
