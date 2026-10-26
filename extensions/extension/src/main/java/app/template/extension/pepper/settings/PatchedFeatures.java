@@ -38,4 +38,8 @@ public final class PatchedFeatures {
     public static boolean showPriceWithShipping() {
         return false;
     }
+
+    public static boolean filterDeals() {
+        return false;
+    }
 }

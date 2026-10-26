@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
+import android.text.InputType;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -22,6 +23,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
+import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Switch;
@@ -96,6 +99,7 @@ public final class SettingsActivity extends Activity {
         }
 
         addFeatures();
+        addDealFilters();
         addFlamedeerHunt();
         addLanguage();
         addRestart();
@@ -195,6 +199,76 @@ public final class SettingsActivity extends Activity {
                 text("Zmienia tylko poziom wyświetlany w aplikacji. Nagrody przyznaje Pepper.",
                         "Only changes the level the app shows. Pepper still grants the rewards of the level earned."),
                 levels, Settings.getContributorLevel(), Settings::setContributorLevel);
+    }
+
+    private void addDealFilters() {
+        if (!PatchedFeatures.filterDeals()) {
+            return;
+        }
+
+        addHeader(text("Filtry okazji", "Deal filters"));
+
+        String names = text("Jedna na linię, * zastępuje dowolny tekst, np. Allegro*.",
+                "One per line, * stands for any text, such as Amazon*.");
+        addText(Settings.FILTER_KEYWORDS, text("Słowa kluczowe", "Keywords"),
+                text("Ukrywa okazje i dyskusje z tymi słowami w tytule. Jedno na linię, "
+                                + "* zastępuje dowolny tekst.",
+                        "Hides deals and discussions with these words in the title. One per line, "
+                                + "* stands for any text."),
+                InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        addText(Settings.FILTER_MERCHANTS, text("Sklepy", "Stores"),
+                text("Ukrywa okazje z tych sklepów. ", "Hides deals from these stores. ") + names,
+                InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        addText(Settings.FILTER_USERS, text("Użytkownicy", "Members"),
+                text("Ukrywa okazje i dyskusje tych użytkowników. ", "Hides the deals and discussions of these members. ")
+                        + names,
+                InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        addText(Settings.FILTER_CATEGORIES, text("Kategorie", "Categories"),
+                text("Ukrywa okazje, których główna kategoria to jedna z tych. ",
+                        "Hides deals whose main category is one of these. ") + names,
+                InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        addText(Settings.FILTER_MAX_PRICE, text("Najwyższa cena", "Highest price"),
+                text("Ukrywa droższe okazje.", "Hides deals that cost more."),
+                InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        addText(Settings.FILTER_MIN_TEMPERATURE, text("Najniższa temperatura", "Lowest temperature"),
+                text("Ukrywa okazje z niższą temperaturą, np. 0 ukrywa zimne.",
+                        "Hides deals with a lower temperature, such as 0 to hide cold ones."),
+                InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED);
+    }
+
+    /**
+     * Adds a row that shows a setting entered as text, and lets the user change it in a dialog.
+     */
+    private void addText(String key, String title, String description, int inputType) {
+        TextView[] summary = new TextView[1];
+        View row = addRow(title, textSummary(key, description), null, view -> {
+            EditText input = new EditText(this);
+            input.setInputType(inputType);
+            input.setText(Settings.getString(key));
+            if ((inputType & InputType.TYPE_TEXT_FLAG_MULTI_LINE) != 0) {
+                input.setMinLines(3);
+                input.setGravity(Gravity.TOP | Gravity.START);
+            }
+            FrameLayout container = new FrameLayout(this);
+            container.setPadding(dp(20), dp(8), dp(20), 0);
+            container.addView(input);
+
+            new AlertDialog.Builder(this)
+                    .setTitle(title)
+                    .setView(container)
+                    .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                        Settings.setString(key, input.getText().toString().trim());
+                        summary[0].setText(textSummary(key, description));
+                    })
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .show();
+        });
+        summary[0] = row.findViewWithTag("summary");
+    }
+
+    private String textSummary(String key, String description) {
+        String value = Settings.getString(key).trim().replace("\n", ", ");
+        return (value.isEmpty() ? text("Brak", "None") : value) + "\n" + description;
     }
 
     private void addFlamedeerHunt() {

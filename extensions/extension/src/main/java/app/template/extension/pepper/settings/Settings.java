@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Settings of the patches, changed on the screen added to the settings of Pepper.
  */
@@ -20,6 +23,14 @@ public final class Settings {
     public static final String UNLOCK_CUSTOM_APP_ICONS = "unlock_custom_app_icons";
     public static final String DEBUG_MENU = "debug_menu";
     public static final String PRICE_WITH_SHIPPING = "price_with_shipping";
+
+    // Deal filters: lists have one entry per line, numbers are empty when not set.
+    public static final String FILTER_KEYWORDS = "filter_keywords";
+    public static final String FILTER_MERCHANTS = "filter_merchants";
+    public static final String FILTER_USERS = "filter_users";
+    public static final String FILTER_CATEGORIES = "filter_categories";
+    public static final String FILTER_MAX_PRICE = "filter_max_price";
+    public static final String FILTER_MIN_TEMPERATURE = "filter_min_temperature";
 
     /**
      * Contributor level to show, from 1 (Silver) to 3 (Platinum), or 0 to show the one earned.
@@ -75,6 +86,30 @@ public final class Settings {
         if (preferences != null) {
             preferences.edit().putBoolean(key, enabled).apply();
         }
+    }
+
+    public static String getString(String key) {
+        return preferences == null ? "" : preferences.getString(key, "");
+    }
+
+    static void setString(String key, String value) {
+        if (preferences != null) {
+            preferences.edit().putString(key, value).apply();
+        }
+    }
+
+    /**
+     * @return The non-empty lines of a setting, without surrounding spaces.
+     */
+    public static List<String> getLines(String key) {
+        List<String> lines = new ArrayList<>();
+        for (String line : getString(key).split("\\n")) {
+            String trimmed = line.trim();
+            if (!trimmed.isEmpty()) {
+                lines.add(trimmed);
+            }
+        }
+        return lines;
     }
 
     public static int getContributorLevel() {
