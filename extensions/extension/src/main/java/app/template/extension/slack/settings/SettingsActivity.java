@@ -1,8 +1,6 @@
 package app.template.extension.slack.settings;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import app.template.extension.slack.MessageArchiveActivity;
 import app.template.extension.slack.MessageArchiveSearchActivity;
@@ -96,17 +94,5 @@ public final class SettingsActivity extends SettingsScreen {
     private void addRestart() {
         startSection("");
         addRow("Restart Slack", "Most changes take effect after restarting the app.", null, view -> restart());
-    }
-
-    private void restart() {
-        try {
-            Intent launchIntent = getPackageManager().getLaunchIntentForPackage(getPackageName());
-            if (launchIntent != null && launchIntent.getComponent() != null) {
-                startActivity(Intent.makeRestartActivityTask(launchIntent.getComponent()));
-            }
-        } catch (Exception ex) {
-            Log.e(Settings.TAG, "Failed to restart", ex);
-        }
-        System.exit(0);
     }
 }

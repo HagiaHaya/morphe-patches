@@ -30,7 +30,9 @@ import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.function.IntConsumer;
 
 /**
@@ -50,6 +52,11 @@ public final class SettingsActivity extends Activity {
     private static final String[] LANGUAGE_TAGS = {"pl", "en"};
 
     private static final String[] LANGUAGE_NAMES = {"Polski", "English"};
+
+    /**
+     * Values of the switches the app runs with, until it restarts.
+     */
+    private static final Map<String, Boolean> runningValues = new HashMap<>();
 
     private boolean polish;
 
@@ -481,6 +488,20 @@ public final class SettingsActivity extends Activity {
                 null, view -> restart());
     }
 
+    /**
+     * Asks to restart Pepper, as the patches read most settings when the app starts
+     * or when they show something.
+     */
+    private void askToRestart() {
+        new AlertDialog.Builder(this)
+                .setTitle(text("Wymagane ponowne uruchomienie", "Restart required"))
+                .setMessage(text("Uruchom ponownie Peppera, aby zastosować zmianę.",
+                        "Restart Pepper to apply the change."))
+                .setPositiveButton(text("Uruchom ponownie", "Restart"), (dialog, which) -> restart())
+                .setNegativeButton(text("Później", "Later"), null)
+                .show();
+    }
+
     private void restart() {
         try {
             Intent launchIntent = getPackageManager().getLaunchIntentForPackage(getPackageName());
@@ -499,8 +520,17 @@ public final class SettingsActivity extends Activity {
 
     private void addSwitch(String key, boolean defaultValue, String title, String summary) {
         Switch toggle = new Switch(this);
-        toggle.setChecked(Settings.getBoolean(key, defaultValue));
-        toggle.setOnCheckedChangeListener((button, checked) -> Settings.setEnabled(key, checked));
+        boolean enabled = Settings.getBoolean(key, defaultValue);
+        // Settings only change here, so the first value seen is the one the app runs with.
+        runningValues.putIfAbsent(key, enabled);
+        toggle.setChecked(enabled);
+        toggle.setOnCheckedChangeListener((button, checked) -> {
+            Settings.setEnabled(key, checked);
+            // Switching back to the value the app runs with needs no restart.
+            if (checked != runningValues.get(key)) {
+                askToRestart();
+            }
+        });
         // The row toggles the switch, which would otherwise take the click.
         toggle.setClickable(false);
         toggle.setFocusable(false);
