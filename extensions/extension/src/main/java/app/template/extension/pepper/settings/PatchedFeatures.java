@@ -50,4 +50,8 @@ public final class PatchedFeatures {
     public static boolean priceErrorAlerts() {
         return false;
     }
+
+    public static boolean blockTracking() {
+        return false;
+    }
 }

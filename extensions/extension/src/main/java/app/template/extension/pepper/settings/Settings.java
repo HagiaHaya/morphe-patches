@@ -23,6 +23,7 @@ public final class Settings {
     public static final String UNLOCK_CUSTOM_APP_ICONS = "unlock_custom_app_icons";
     public static final String DEBUG_MENU = "debug_menu";
     public static final String PRICE_WITH_SHIPPING = "price_with_shipping";
+    public static final String RANDOM_DEVICE_ID = "random_device_id";
 
     // Deal filters: lists have one entry per line, numbers are empty when not set.
     public static final String FILTER_KEYWORDS = "filter_keywords";
@@ -92,6 +93,10 @@ public final class Settings {
         return preferences == null || preferences.getBoolean(key, true);
     }
 
+    public static boolean getBoolean(String key, boolean defaultValue) {
+        return preferences == null ? defaultValue : preferences.getBoolean(key, defaultValue);
+    }
+
     static void setEnabled(String key, boolean enabled) {
         if (preferences != null) {
             preferences.edit().putBoolean(key, enabled).apply();
@@ -102,7 +107,7 @@ public final class Settings {
         return preferences == null ? "" : preferences.getString(key, "");
     }
 
-    static void setString(String key, String value) {
+    public static void setString(String key, String value) {
         if (preferences != null) {
             preferences.edit().putString(key, value).apply();
         }

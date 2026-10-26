@@ -102,6 +102,7 @@ public final class SettingsActivity extends Activity {
         addDealFilters();
         addCommentFilter();
         addPriceErrorAlerts();
+        addPrivacy();
         addFlamedeerHunt();
         addLanguage();
         addRestart();
@@ -311,6 +312,20 @@ public final class SettingsActivity extends Activity {
         return (value.isEmpty() ? text("Brak", "None") : value) + "\n" + description;
     }
 
+    private void addPrivacy() {
+        if (!PatchedFeatures.blockTracking()) {
+            return;
+        }
+
+        addHeader(text("Prywatność", "Privacy"));
+        addSwitch(Settings.RANDOM_DEVICE_ID, false,
+                text("Losowy identyfikator urządzenia", "Random device ID"),
+                text("Wysyła losowy identyfikator zamiast wyliczonego z Android ID. Pepper zobaczy "
+                                + "nowe urządzenie, więc powiadomienia mogą wymagać ponownego włączenia.",
+                        "Sends a random ID instead of one derived from the Android ID. Pepper sees a new "
+                                + "device, so notifications may need to be turned on again."));
+    }
+
     private void addFlamedeerHunt() {
         if (!PatchedFeatures.catchFlamedeer()) {
             return;
@@ -479,8 +494,12 @@ public final class SettingsActivity extends Activity {
     }
 
     private void addSwitch(String key, String title, String summary) {
+        addSwitch(key, true, title, summary);
+    }
+
+    private void addSwitch(String key, boolean defaultValue, String title, String summary) {
         Switch toggle = new Switch(this);
-        toggle.setChecked(Settings.isEnabled(key));
+        toggle.setChecked(Settings.getBoolean(key, defaultValue));
         toggle.setOnCheckedChangeListener((button, checked) -> Settings.setEnabled(key, checked));
         // The row toggles the switch, which would otherwise take the click.
         toggle.setClickable(false);
