@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Settings of the patches, changed on the screen added to the settings of Pepper.
  */
@@ -19,6 +22,26 @@ public final class Settings {
     public static final String SANITIZE_DEAL_LINKS = "sanitize_deal_links";
     public static final String UNLOCK_CUSTOM_APP_ICONS = "unlock_custom_app_icons";
     public static final String DEBUG_MENU = "debug_menu";
+    public static final String PRICE_WITH_SHIPPING = "price_with_shipping";
+    public static final String RANDOM_DEVICE_ID = "random_device_id";
+
+    // Deal filters: lists have one entry per line, numbers are empty when not set.
+    public static final String FILTER_KEYWORDS = "filter_keywords";
+    public static final String FILTER_MERCHANTS = "filter_merchants";
+    public static final String FILTER_USERS = "filter_users";
+    public static final String FILTER_CATEGORIES = "filter_categories";
+    public static final String FILTER_MAX_PRICE = "filter_max_price";
+    public static final String FILTER_MIN_TEMPERATURE = "filter_min_temperature";
+
+    /**
+     * Words that hide a comment, one per line.
+     */
+    public static final String COMMENT_FILTER_WORDS = "comment_filter_words";
+
+    /**
+     * Discount in percent from which a new deal gets a notification, or 0 for none.
+     */
+    public static final String PRICE_ERROR_DISCOUNT = "price_error_discount";
 
     /**
      * Contributor level to show, from 1 (Silver) to 3 (Platinum), or 0 to show the one earned.
@@ -70,10 +93,48 @@ public final class Settings {
         return preferences == null || preferences.getBoolean(key, true);
     }
 
+    public static boolean getBoolean(String key, boolean defaultValue) {
+        return preferences == null ? defaultValue : preferences.getBoolean(key, defaultValue);
+    }
+
     static void setEnabled(String key, boolean enabled) {
         if (preferences != null) {
             preferences.edit().putBoolean(key, enabled).apply();
         }
+    }
+
+    public static String getString(String key) {
+        return preferences == null ? "" : preferences.getString(key, "");
+    }
+
+    public static void setString(String key, String value) {
+        if (preferences != null) {
+            preferences.edit().putString(key, value).apply();
+        }
+    }
+
+    public static int getInt(String key) {
+        return preferences == null ? 0 : preferences.getInt(key, 0);
+    }
+
+    static void setInt(String key, int value) {
+        if (preferences != null) {
+            preferences.edit().putInt(key, value).apply();
+        }
+    }
+
+    /**
+     * @return The non-empty lines of a setting, without surrounding spaces.
+     */
+    public static List<String> getLines(String key) {
+        List<String> lines = new ArrayList<>();
+        for (String line : getString(key).split("\\n")) {
+            String trimmed = line.trim();
+            if (!trimmed.isEmpty()) {
+                lines.add(trimmed);
+            }
+        }
+        return lines;
     }
 
     public static int getContributorLevel() {

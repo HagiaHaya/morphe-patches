@@ -11,3 +11,13 @@ internal object RealCallExecuteFingerprint : Fingerprint(
     parameters = listOf(),
     strings = listOf("Already Executed"),
 )
+
+/**
+ * Constructor kotlinx.serialization creates the responses of the REST API with:
+ * `ApiSuccessRepresentation(seenFields, data, additionalData, messages, marker)`.
+ */
+internal object ApiSuccessDeserializationConstructorFingerprint : Fingerprint(
+    definingClass = "Lcom/pepper/network/apirepresentation/ApiSuccessRepresentation;",
+    name = "<init>",
+    custom = { method, _ -> method.parameterTypes.firstOrNull() == "I" },
+)

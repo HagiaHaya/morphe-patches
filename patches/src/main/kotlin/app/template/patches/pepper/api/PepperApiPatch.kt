@@ -45,6 +45,11 @@ internal val pepperApiPatch = bytecodePatch {
             strings = listOf("wss:"),
         ).method
 
+        // Request.Builder.header(String, String)
+        val headerMethod = classDefBy(builderType).methods.single {
+            it.parameterTypes.map(CharSequence::toString) == listOf("Ljava/lang/String;", "Ljava/lang/String;")
+        }
+
         val responseFields = classDefBy(responseType).fields
         val codeField = responseFields.single { it.type == "I" }
         val bodyField = responseFields.single { field ->
@@ -64,11 +69,14 @@ internal val pepperApiPatch = bytecodePatch {
 
             replaceMethod(
                 stub("newRequest"),
-                registerCount = 3,
+                registerCount = 5,
                 """
                     new-instance v0, $builderType
                     invoke-direct { v0 }, $builderType-><init>()V
                     invoke-virtual { v0, p0 }, $builderType->${urlMethod.name}(Ljava/lang/String;)${urlMethod.returnType}
+                    if-eqz p1, :build
+                    invoke-virtual { v0, p1, p2 }, $builderType->${headerMethod.name}(Ljava/lang/String;Ljava/lang/String;)${headerMethod.returnType}
+                    :build
                     new-instance v1, $requestType
                     invoke-direct { v1, v0 }, $requestType-><init>($builderType)V
                     return-object v1

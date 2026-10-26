@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
+import android.text.InputType;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -22,6 +23,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
+import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Switch;
@@ -96,6 +99,10 @@ public final class SettingsActivity extends Activity {
         }
 
         addFeatures();
+        addDealFilters();
+        addCommentFilter();
+        addPriceErrorAlerts();
+        addPrivacy();
         addFlamedeerHunt();
         addLanguage();
         addRestart();
@@ -130,6 +137,12 @@ public final class SettingsActivity extends Activity {
                     text("Czyste linki do udostępniania", "Sanitize sharing links"),
                     text("Udostępnia bezpośredni link do okazji, a nie link śledzący.",
                             "Shares the direct link to a deal instead of a tracking link."));
+        }
+        if (PatchedFeatures.showPriceWithShipping()) {
+            addSwitch(Settings.PRICE_WITH_SHIPPING,
+                    text("Cena z dostawą", "Price with shipping"),
+                    text("Dodaje do kosztów dostawy cenę razem z dostawą, np. + 9,99zł = 59,98zł.",
+                            "Adds the price with shipping to the shipping costs, such as + 9.99 = 59.98."));
         }
         if (PatchedFeatures.unlockCustomAppIcons()) {
             addSwitch(Settings.UNLOCK_CUSTOM_APP_ICONS,
@@ -189,6 +202,128 @@ public final class SettingsActivity extends Activity {
                 text("Zmienia tylko poziom wyświetlany w aplikacji. Nagrody przyznaje Pepper.",
                         "Only changes the level the app shows. Pepper still grants the rewards of the level earned."),
                 levels, Settings.getContributorLevel(), Settings::setContributorLevel);
+    }
+
+    private void addDealFilters() {
+        if (!PatchedFeatures.filterDeals()) {
+            return;
+        }
+
+        addHeader(text("Filtry okazji", "Deal filters"));
+
+        String names = text("Jedna na linię, * zastępuje dowolny tekst, np. Allegro*.",
+                "One per line, * stands for any text, such as Amazon*.");
+        addText(Settings.FILTER_KEYWORDS, text("Słowa kluczowe", "Keywords"),
+                text("Ukrywa okazje i dyskusje z tymi słowami w tytule. Jedno na linię, "
+                                + "* zastępuje dowolny tekst.",
+                        "Hides deals and discussions with these words in the title. One per line, "
+                                + "* stands for any text."),
+                InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        addText(Settings.FILTER_MERCHANTS, text("Sklepy", "Stores"),
+                text("Ukrywa okazje z tych sklepów. ", "Hides deals from these stores. ") + names,
+                InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        addText(Settings.FILTER_USERS, text("Użytkownicy", "Members"),
+                text("Ukrywa okazje i dyskusje tych użytkowników. ", "Hides the deals and discussions of these members. ")
+                        + names,
+                InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        addText(Settings.FILTER_CATEGORIES, text("Kategorie", "Categories"),
+                text("Ukrywa okazje, których główna kategoria to jedna z tych. ",
+                        "Hides deals whose main category is one of these. ") + names,
+                InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        addText(Settings.FILTER_MAX_PRICE, text("Najwyższa cena", "Highest price"),
+                text("Ukrywa droższe okazje.", "Hides deals that cost more."),
+                InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        addText(Settings.FILTER_MIN_TEMPERATURE, text("Najniższa temperatura", "Lowest temperature"),
+                text("Ukrywa okazje z niższą temperaturą, np. 0 ukrywa zimne.",
+                        "Hides deals with a lower temperature, such as 0 to hide cold ones."),
+                InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED);
+    }
+
+    private void addCommentFilter() {
+        if (!PatchedFeatures.filterComments()) {
+            return;
+        }
+
+        addHeader(text("Komentarze", "Comments"));
+        addText(Settings.COMMENT_FILTER_WORDS, text("Ukryj komentarze ze słowami", "Hide comments with words"),
+                text("Ukrywa komentarze, i odpowiedzi na nie, z tymi słowami. Jedno na linię, "
+                                + "* zastępuje dowolny tekst.",
+                        "Hides comments, and the replies to them, with these words. One per line, "
+                                + "* stands for any text."),
+                InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+    }
+
+    private void addPriceErrorAlerts() {
+        if (!PatchedFeatures.priceErrorAlerts()) {
+            return;
+        }
+
+        addHeader(text("Powiadomienia", "Notifications"));
+
+        int[] discounts = {0, 70, 80, 90, 95};
+        String[] discountNames = new String[discounts.length];
+        int selected = 0;
+        for (int i = 0; i < discounts.length; i++) {
+            discountNames[i] = discounts[i] == 0 ? text("Wyłączone", "Off") : "-" + discounts[i] + "%";
+            if (discounts[i] == Settings.getInt(Settings.PRICE_ERROR_DISCOUNT)) {
+                selected = i;
+            }
+        }
+        addChoice(text("Błędy cenowe", "Price errors"),
+                text("Powiadamia o nowych okazjach z co najmniej taką zniżką. Sprawdza co 10 minut, "
+                                + "także w tle, dopóki Android nie zamknie aplikacji.",
+                        "Notifies of new deals with at least this discount. Checks every 10 minutes, "
+                                + "also in the background, until Android closes the app."),
+                discountNames, selected, which -> Settings.setInt(Settings.PRICE_ERROR_DISCOUNT, discounts[which]));
+    }
+
+    /**
+     * Adds a row that shows a setting entered as text, and lets the user change it in a dialog.
+     */
+    private void addText(String key, String title, String description, int inputType) {
+        TextView[] summary = new TextView[1];
+        View row = addRow(title, textSummary(key, description), null, view -> {
+            EditText input = new EditText(this);
+            input.setInputType(inputType);
+            input.setText(Settings.getString(key));
+            if ((inputType & InputType.TYPE_TEXT_FLAG_MULTI_LINE) != 0) {
+                input.setMinLines(3);
+                input.setGravity(Gravity.TOP | Gravity.START);
+            }
+            FrameLayout container = new FrameLayout(this);
+            container.setPadding(dp(20), dp(8), dp(20), 0);
+            container.addView(input);
+
+            new AlertDialog.Builder(this)
+                    .setTitle(title)
+                    .setView(container)
+                    .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                        Settings.setString(key, input.getText().toString().trim());
+                        summary[0].setText(textSummary(key, description));
+                    })
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .show();
+        });
+        summary[0] = row.findViewWithTag("summary");
+    }
+
+    private String textSummary(String key, String description) {
+        String value = Settings.getString(key).trim().replace("\n", ", ");
+        return (value.isEmpty() ? text("Brak", "None") : value) + "\n" + description;
+    }
+
+    private void addPrivacy() {
+        if (!PatchedFeatures.blockTracking()) {
+            return;
+        }
+
+        addHeader(text("Prywatność", "Privacy"));
+        addSwitch(Settings.RANDOM_DEVICE_ID, false,
+                text("Losowy identyfikator urządzenia", "Random device ID"),
+                text("Wysyła losowy identyfikator zamiast wyliczonego z Android ID. Pepper zobaczy "
+                                + "nowe urządzenie, więc powiadomienia mogą wymagać ponownego włączenia.",
+                        "Sends a random ID instead of one derived from the Android ID. Pepper sees a new "
+                                + "device, so notifications may need to be turned on again."));
     }
 
     private void addFlamedeerHunt() {
@@ -359,8 +494,12 @@ public final class SettingsActivity extends Activity {
     }
 
     private void addSwitch(String key, String title, String summary) {
+        addSwitch(key, true, title, summary);
+    }
+
+    private void addSwitch(String key, boolean defaultValue, String title, String summary) {
         Switch toggle = new Switch(this);
-        toggle.setChecked(Settings.isEnabled(key));
+        toggle.setChecked(Settings.getBoolean(key, defaultValue));
         toggle.setOnCheckedChangeListener((button, checked) -> Settings.setEnabled(key, checked));
         // The row toggles the switch, which would otherwise take the click.
         toggle.setClickable(false);

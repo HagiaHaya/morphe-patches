@@ -1,5 +1,5 @@
-// Compile-only stubs of the classes of Slack the extension uses. They mirror the names and
-// descriptors in the app, which is not obfuscated. Fields are not final, so javac reads
+// Compile-only stubs of the classes of Slack and Pepper the extension uses. They mirror the names and
+// descriptors the apps keep unobfuscated. Fields are not final, so javac reads
 // them instead of inlining constants.
 plugins {
     `java-library`

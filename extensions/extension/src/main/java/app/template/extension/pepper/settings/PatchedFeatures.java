@@ -34,4 +34,24 @@ public final class PatchedFeatures {
     public static boolean enableDebugMenu() {
         return false;
     }
+
+    public static boolean showPriceWithShipping() {
+        return false;
+    }
+
+    public static boolean filterDeals() {
+        return false;
+    }
+
+    public static boolean filterComments() {
+        return false;
+    }
+
+    public static boolean priceErrorAlerts() {
+        return false;
+    }
+
+    public static boolean blockTracking() {
+        return false;
+    }
 }
