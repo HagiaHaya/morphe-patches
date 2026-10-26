@@ -11,6 +11,8 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.patch.bytecodePatch
 import app.template.patches.shared.Constants.COMPATIBILITY_WYKOP
 import app.template.patches.shared.gms.gmsCoreSupportResourcePatch
+import app.template.patches.shared.gms.resetPushRegistration
+import app.template.patches.shared.gms.spoofFirebaseCertificate
 import app.template.patches.shared.gms.useGmsCore
 import app.template.patches.shared.requireExtensionMethods
 
@@ -26,7 +28,8 @@ private const val EXTENSION_CLASS = "Lapp/template/extension/wykop/GmsCoreSuppor
 @Suppress("unused")
 val gmsCoreSupportPatch = bytecodePatch(
     name = "GmsCore support",
-    description = "Allows signing in with Google by using MicroG-RE instead of Google Play services.",
+    description = "Allows signing in with Google and receiving notifications " +
+        "by using MicroG-RE instead of Google Play services.",
     default = true
 ) {
     compatibleWith(COMPATIBILITY_WYKOP)
@@ -36,9 +39,14 @@ val gmsCoreSupportPatch = bytecodePatch(
     extendWith("extensions/extension.mpe")
 
     execute {
-        requireExtensionMethods(EXTENSION_CLASS, "checkGmsCore")
+        requireExtensionMethods(EXTENSION_CLASS, "checkGmsCore", "resetPushRegistration")
 
         useGmsCore()
+
+        // The API key of Wykop.pl only accepts the certificate of the original app.
+        spoofFirebaseCertificate(ORIGINAL_SIGNATURE)
+
+        resetPushRegistration(EXTENSION_CLASS)
 
         // Ask to install GmsCore if it is missing.
         val flutterActivityClass = classDefBy(MAIN_ACTIVITY_CLASS).superclass!!

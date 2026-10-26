@@ -1,7 +1,295 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.4.0",
+  "version": "1.5.0-dev.8",
   "patches": [
+    {
+      "name": "Add deals to calendar",
+      "description": "Adds \"Add to calendar\" to the menu of a deal, which creates an event when the deal starts, or before it expires.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.tippingcanoe.pepperpl",
+          "name": "Pepper",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FF3400",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "8.20.00",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Anonymize file names",
+      "description": "Adds an option to upload files under a random name, keeping the extension, so the name does not reveal anything about the file or the device.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.Slack",
+          "name": "Slack",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#4A154B",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.10.20.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Block telemetry",
+      "description": "Adds an option to block the usage tracking, performance traces and crash reports Slack sends to its servers and to Sentry.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.Slack",
+          "name": "Slack",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#4A154B",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.10.20.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Block tracking",
+      "description": "Blocks the analytics of Pepper, such as reports of the deals visited and shared and tracking pixels, Firebase Analytics, Facebook app events, Adjust, Iterable and the start of the SDKs of ads. Adds a setting to send a random device ID instead of one derived from the Android ID.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.tippingcanoe.pepperpl",
+          "name": "Pepper",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FF3400",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "8.20.00",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Catch Flamedeer",
+      "description": "Adds a setting to get a notification when a Flamedeer (\"Ognisty Renifer\") of the Flamedeer hunt shows up, or to catch it at once by opening its prize screen. Flamedeers found while the app is in the background get a notification instead of being missed. Optionally looks for Flamedeers while the app is idle or in the background, and links the collection of Flamedeers in the settings.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.tippingcanoe.pepperpl",
+          "name": "Pepper",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FF3400",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "8.20.00",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Enable debug menu",
+      "description": "Adds a setting to show the hidden debug menu of the developers of Pepper at the top right of the home screen. Some of its actions can break the app.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.tippingcanoe.pepperpl",
+          "name": "Pepper",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FF3400",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "8.20.00",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Feature flags",
+      "description": "Adds a screen to the patch settings to turn the feature flags of Slack on or off, which can enable features and experiments Slack has not released yet.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.Slack",
+          "name": "Slack",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#4A154B",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.10.20.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Filter comments",
+      "description": "Adds a setting to hide comments, and the replies to them, that contain certain words.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.tippingcanoe.pepperpl",
+          "name": "Pepper",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FF3400",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "8.20.00",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Filter deals",
+      "description": "Adds settings to hide deals and discussions from all lists by keyword, store, member, category, highest price or lowest temperature.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.tippingcanoe.pepperpl",
+          "name": "Pepper",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FF3400",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "8.20.00",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Fix Google sign-in",
+      "description": "Fixes signing in with Google staying on a loading button after choosing the account.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.Slack",
+          "name": "Slack",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#4A154B",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.10.20.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
     {
       "name": "Fix sidebar layout",
       "description": "Keeps the sidebar of the website shown by the app clear of the status bar and the navigation bar.",
@@ -37,7 +325,7 @@
     },
     {
       "name": "GmsCore support",
-      "description": "Allows signing in with Google by using MicroG-RE instead of Google Play services.",
+      "description": "Allows signing in with Google and receiving notifications by using MicroG-RE instead of Google Play services.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -63,7 +351,40 @@
     },
     {
       "name": "GmsCore support",
-      "description": "Allows signing in with Google by using MicroG-RE instead of Google Play services.",
+      "description": "Allows signing in with Google and receiving notifications by using MicroG-RE instead of Google Play services.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.Slack",
+          "name": "Slack",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#4A154B",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.10.20.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "GmsCore support",
+      "description": "Allows signing in with Google and receiving notifications by using MicroG-RE instead of Google Play services.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -77,6 +398,39 @@
           "targets": [
             {
               "version": "5.1.3",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide history limit banner",
+      "description": "Hides the banner at the start of conversations that says messages older than 90 days are hidden on the free plan and offers a Pro trial.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.Slack",
+          "name": "Slack",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#4A154B",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.10.20.0",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -119,6 +473,131 @@
               "version": null,
               "versionCodes": null,
               "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Keep message history",
+      "description": "Keeps a copy of the messages Slack loads on the device, and shows the copies where the server hides older messages, such as after 90 days on the free plan. Only the messages loaded while the patched app is used are kept. Long press the app icon and choose \"Search archive\" to search the copies, or \"Message archive\" to turn it off, export or delete them.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.Slack",
+          "name": "Slack",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#4A154B",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.10.20.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Message logger",
+      "description": "Adds options to keep the messages others delete, marked as deleted, and to show the earlier versions of the messages others edit below them. Patch settings list them in a message log.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.Slack",
+          "name": "Slack",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#4A154B",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.10.20.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Nicknames",
+      "description": "Adds a screen to the patch settings to give other members nicknames, which Slack shows instead of their names, only on this device.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.Slack",
+          "name": "Slack",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#4A154B",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.10.20.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Price error alerts",
+      "description": "Adds a setting to get a notification of new deals with a discount of at least 70 to 95%, such as price errors. Checks every 10 minutes, also in the background.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.tippingcanoe.pepperpl",
+          "name": "Pepper",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FF3400",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "8.20.00",
+              "versionCodes": null,
+              "isExperimental": false,
               "minSdk": null,
               "description": null
             }
@@ -213,8 +692,211 @@
       "options": []
     },
     {
+      "name": "Sanitize links",
+      "description": "Adds an option to remove tracking parameters, such as utm_source or fbclid, from the links in the messages you send.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.Slack",
+          "name": "Slack",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#4A154B",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.10.20.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Sanitize sharing links",
       "description": "Shares the direct link to deals and discussions, instead of a link that redirects through a tracking service.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.tippingcanoe.pepperpl",
+          "name": "Pepper",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FF3400",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "8.20.00",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Search comments",
+      "description": "Adds \"Search comments\" to the menu of a deal, which loads all its comments and replies, and finds the ones with the words entered.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.tippingcanoe.pepperpl",
+          "name": "Pepper",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FF3400",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "8.20.00",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Show price with shipping",
+      "description": "Adds a setting to show the price with shipping next to the shipping costs of deals, such as \"+ 9,99zł = 59,98zł\".",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.tippingcanoe.pepperpl",
+          "name": "Pepper",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FF3400",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "8.20.00",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Silent typing",
+      "description": "Adds an option to not show others that you are typing, while still showing when they are.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.Slack",
+          "name": "Slack",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#4A154B",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.10.20.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Spoof contributor level",
+      "description": "Adds a setting to show Silver, Gold or Platinum in the app, such as on the profile, instead of the contributor level earned. It unlocks the app icons of the level, but rewards granted by Pepper, such as more deal stats, are not unlocked.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.tippingcanoe.pepperpl",
+          "name": "Pepper",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FF3400",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "8.20.00",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Standard Markdown",
+      "description": "Adds an option to format messages as you type standard Markdown, such as **bold**, *italic*, ~~strikethrough~~ and [text](link), instead of Slack markup.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.Slack",
+          "name": "Slack",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#4A154B",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "26.10.20.0",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock custom app icons",
+      "description": "Unlocks all app icons regardless of the contributor level, and offers the seasonal icons, such as the Black Friday one, all year round.",
       "default": true,
       "category": null,
       "compatiblePackages": [
