@@ -15,6 +15,7 @@ import app.morphe.patcher.patch.bytecodePatch
 import app.template.patches.shared.Constants.COMPATIBILITY_PEPPER
 import app.template.patches.shared.gms.FrameworkCredentialProviderAvailabilityFingerprint
 import app.template.patches.shared.gms.gmsCoreSupportResourcePatch
+import app.template.patches.shared.gms.spoofFirebaseCertificate
 import app.template.patches.shared.gms.useGmsCore
 import app.template.patches.shared.requireExtensionMethods
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
@@ -31,7 +32,8 @@ private const val EXTENSION_CLASS = "Lapp/template/extension/pepper/GmsCoreSuppo
 @Suppress("unused")
 val gmsCoreSupportPatch = bytecodePatch(
     name = "GmsCore support",
-    description = "Allows signing in with Google by using MicroG-RE instead of Google Play services.",
+    description = "Allows signing in with Google and receiving notifications " +
+        "by using MicroG-RE instead of Google Play services.",
     default = true
 ) {
     compatibleWith(COMPATIBILITY_PEPPER)
@@ -44,6 +46,8 @@ val gmsCoreSupportPatch = bytecodePatch(
         requireExtensionMethods(EXTENSION_CLASS, "checkGmsCore")
 
         useGmsCore()
+
+        spoofFirebaseCertificate(ORIGINAL_SIGNATURE)
 
         // Report the provider of the Android framework as unavailable, so Credential Manager
         // signs in with Google through its Google Play services provider, which GmsCore handles.

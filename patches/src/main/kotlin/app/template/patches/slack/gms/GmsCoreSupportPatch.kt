@@ -16,6 +16,7 @@ import app.morphe.patcher.patch.bytecodePatch
 import app.template.patches.shared.Constants.COMPATIBILITY_SLACK
 import app.template.patches.shared.gms.FrameworkCredentialProviderAvailabilityFingerprint
 import app.template.patches.shared.gms.gmsCoreSupportResourcePatch
+import app.template.patches.shared.gms.spoofFirebaseCertificate
 import app.template.patches.shared.gms.useGmsCore
 import app.template.patches.shared.requireExtensionMethods
 import com.android.tools.smali.dexlib2.Opcode
@@ -75,6 +76,8 @@ val gmsCoreSupportPatch = bytecodePatch(
 
             it.method.replaceInstruction(sdkIntIndex, "const/16 v$register, $ANDROID_13_SDK_INT")
         }
+
+        spoofFirebaseCertificate(ORIGINAL_SIGNATURE)
 
         // Register for push notifications again through GmsCore once, as a push token
         // Slack got before it used GmsCore belongs to Google Play services.
