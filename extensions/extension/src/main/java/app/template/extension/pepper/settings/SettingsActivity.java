@@ -101,6 +101,7 @@ public final class SettingsActivity extends Activity {
         addFeatures();
         addDealFilters();
         addCommentFilter();
+        addPriceErrorAlerts();
         addFlamedeerHunt();
         addLanguage();
         addRestart();
@@ -249,6 +250,30 @@ public final class SettingsActivity extends Activity {
                         "Hides comments, and the replies to them, with these words. One per line, "
                                 + "* stands for any text."),
                 InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+    }
+
+    private void addPriceErrorAlerts() {
+        if (!PatchedFeatures.priceErrorAlerts()) {
+            return;
+        }
+
+        addHeader(text("Powiadomienia", "Notifications"));
+
+        int[] discounts = {0, 70, 80, 90, 95};
+        String[] discountNames = new String[discounts.length];
+        int selected = 0;
+        for (int i = 0; i < discounts.length; i++) {
+            discountNames[i] = discounts[i] == 0 ? text("Wyłączone", "Off") : "-" + discounts[i] + "%";
+            if (discounts[i] == Settings.getInt(Settings.PRICE_ERROR_DISCOUNT)) {
+                selected = i;
+            }
+        }
+        addChoice(text("Błędy cenowe", "Price errors"),
+                text("Powiadamia o nowych okazjach z co najmniej taką zniżką. Sprawdza co 10 minut, "
+                                + "także w tle, dopóki Android nie zamknie aplikacji.",
+                        "Notifies of new deals with at least this discount. Checks every 10 minutes, "
+                                + "also in the background, until Android closes the app."),
+                discountNames, selected, which -> Settings.setInt(Settings.PRICE_ERROR_DISCOUNT, discounts[which]));
     }
 
     /**

@@ -38,6 +38,11 @@ public final class Settings {
     public static final String COMMENT_FILTER_WORDS = "comment_filter_words";
 
     /**
+     * Discount in percent from which a new deal gets a notification, or 0 for none.
+     */
+    public static final String PRICE_ERROR_DISCOUNT = "price_error_discount";
+
+    /**
      * Contributor level to show, from 1 (Silver) to 3 (Platinum), or 0 to show the one earned.
      */
     public static final String CONTRIBUTOR_LEVEL = "contributor_level";
@@ -100,6 +105,16 @@ public final class Settings {
     static void setString(String key, String value) {
         if (preferences != null) {
             preferences.edit().putString(key, value).apply();
+        }
+    }
+
+    public static int getInt(String key) {
+        return preferences == null ? 0 : preferences.getInt(key, 0);
+    }
+
+    static void setInt(String key, int value) {
+        if (preferences != null) {
+            preferences.edit().putInt(key, value).apply();
         }
     }
 

@@ -46,4 +46,8 @@ public final class PatchedFeatures {
     public static boolean filterComments() {
         return false;
     }
+
+    public static boolean priceErrorAlerts() {
+        return false;
+    }
 }
