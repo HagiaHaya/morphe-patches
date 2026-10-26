@@ -82,6 +82,18 @@ public final class PepperApi {
      * @return The body of the response.
      */
     public static String get(String pathAndQuery) throws IOException {
+        return get(pathAndQuery, null);
+    }
+
+    /**
+     * Sends a GET request to the REST API. Blocks, so must not be called on the main thread.
+     *
+     * @param pathAndQuery Path below the REST API, such as {@code thread?limit=20}.
+     * @param jsonFormat   Value of the Pepper-JSON-Format header, which selects the representations
+     *                     in the response, such as {@code formatted_text=html}, or null.
+     * @return The body of the response.
+     */
+    public static String get(String pathAndQuery, String jsonFormat) throws IOException {
         if (Looper.myLooper() == Looper.getMainLooper()) {
             throw new IllegalStateException("Network request on the main thread");
         }
@@ -90,7 +102,10 @@ public final class PepperApi {
             throw new IOException("The app has not used the API yet");
         }
 
-        Object response = execute(httpClient, newRequest(restApiUrl + pathAndQuery));
+        Object request = jsonFormat == null
+                ? newRequest(restApiUrl + pathAndQuery, null, null)
+                : newRequest(restApiUrl + pathAndQuery, "Pepper-JSON-Format", jsonFormat);
+        Object response = execute(httpClient, request);
         try {
             int code = responseCode(response);
             String body = responseBody(response);
@@ -105,7 +120,10 @@ public final class PepperApi {
 
     // The methods below are generated during patching, as they use the obfuscated classes of OkHttp.
 
-    private static Object newRequest(String url) {
+    /**
+     * @param headerName The name of a header to add, or null.
+     */
+    private static Object newRequest(String url, String headerName, String headerValue) {
         throw new UnsupportedOperationException();
     }
 
