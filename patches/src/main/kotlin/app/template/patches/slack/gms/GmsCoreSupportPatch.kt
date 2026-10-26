@@ -16,6 +16,7 @@ import app.morphe.patcher.patch.bytecodePatch
 import app.template.patches.shared.Constants.COMPATIBILITY_SLACK
 import app.template.patches.shared.gms.FrameworkCredentialProviderAvailabilityFingerprint
 import app.template.patches.shared.gms.gmsCoreSupportResourcePatch
+import app.template.patches.shared.gms.resetPushRegistration
 import app.template.patches.shared.gms.spoofFirebaseCertificate
 import app.template.patches.shared.gms.useGmsCore
 import app.template.patches.shared.requireExtensionMethods
@@ -79,13 +80,8 @@ val gmsCoreSupportPatch = bytecodePatch(
 
         spoofFirebaseCertificate(ORIGINAL_SIGNATURE)
 
-        // Register for push notifications again through GmsCore once, as a push token
-        // Slack got before it used GmsCore belongs to Google Play services.
-        FirebaseInitProviderOnCreateFingerprint.method.addInstruction(
-            0,
-            "invoke-static/range { p0 .. p0 }, $EXTENSION_CLASS->" +
-                "resetPushRegistration(Landroid/content/ContentProvider;)V"
-        )
+        // Early builds of Slack patched without GmsCore support got their push token from Google Play services.
+        resetPushRegistration(EXTENSION_CLASS)
 
         // Ask to install GmsCore if it is missing, on the first screen shown signed out or in.
         listOf(AppLandingActivityOnCreateFingerprint, MainActivityOnCreateFingerprint).forEach {

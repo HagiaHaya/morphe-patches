@@ -187,6 +187,26 @@ private fun Instruction.argumentRegisters(): List<Int> = when (this) {
 }
 
 /**
+ * Makes the app register for push notifications through GmsCore again, once.
+ *
+ * A push token the app got from Google Play services, before it used GmsCore, belongs to
+ * Google Play services, which then receives the notifications but delivers them with an action
+ * the patched app does not receive. Firebase keeps using the cached token for a week, and after that
+ * GmsCore cannot register the same Firebase installation again (Google answers INTERNAL_SERVER_ERROR),
+ * so notifications never come back on their own.
+ *
+ * @param extensionClass Extension class with resetPushRegistration(ContentProvider),
+ * which deletes the registration.
+ */
+internal fun BytecodePatchContext.resetPushRegistration(extensionClass: String) {
+    FirebaseInitProviderOnCreateFingerprint.method.addInstruction(
+        0,
+        "invoke-static/range { p0 .. p0 }, $extensionClass->" +
+                "resetPushRegistration(Landroid/content/ContentProvider;)V"
+    )
+}
+
+/**
  * Replaces the string constants of the classes, for which [transform] returns a replacement.
  */
 private fun BytecodePatchContext.replaceStrings(

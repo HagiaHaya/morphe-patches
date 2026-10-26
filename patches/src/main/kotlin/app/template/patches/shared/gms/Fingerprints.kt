@@ -25,6 +25,16 @@ internal object GooglePlayServicesUtilLightAvailabilityFingerprint : Fingerprint
 )
 
 /**
+ * Initializes Firebase when the app starts, before the application is created.
+ */
+internal object FirebaseInitProviderOnCreateFingerprint : Fingerprint(
+    definingClass = "Lcom/google/firebase/provider/FirebaseInitProvider;",
+    name = "onCreate",
+    returnType = "Z",
+    parameters = listOf(),
+)
+
+/**
  * isAvailableOnDevice() of the Credential Manager provider of the Android framework.
  *
  * Apps that sign in with Google through Credential Manager use this provider on
