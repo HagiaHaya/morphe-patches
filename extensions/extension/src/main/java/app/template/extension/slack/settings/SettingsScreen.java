@@ -3,6 +3,7 @@ package app.template.extension.slack.settings;
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
@@ -22,6 +23,9 @@ import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * A screen of the settings of the patches, a list of rows built from framework views,
  * as the AndroidX classes of Slack are shrunk.
@@ -29,6 +33,11 @@ import android.widget.TextView;
 // Slack requires Android 12L.
 @TargetApi(Build.VERSION_CODES.S_V2)
 abstract class SettingsScreen extends Activity {
+
+    /**
+     * Values of the switches the app runs with, until it restarts.
+     */
+    private static final Map<String, Boolean> runningValues = new HashMap<>();
 
     LinearLayout list;
 
@@ -85,8 +94,17 @@ abstract class SettingsScreen extends Activity {
 
     Switch addSwitch(String key, String title, String summary) {
         Switch toggle = new Switch(this);
-        toggle.setChecked(Settings.isEnabled(key));
-        toggle.setOnCheckedChangeListener((button, checked) -> Settings.setEnabled(key, checked));
+        boolean enabled = Settings.isEnabled(key);
+        // Settings only change here, so the first value seen is the one the app runs with.
+        runningValues.putIfAbsent(key, enabled);
+        toggle.setChecked(enabled);
+        toggle.setOnCheckedChangeListener((button, checked) -> {
+            Settings.setEnabled(key, checked);
+            // Switching back to the value the app runs with needs no restart.
+            if (checked != runningValues.get(key)) {
+                askToRestart();
+            }
+        });
         // The row toggles the switch, which would otherwise take the click.
         toggle.setClickable(false);
         toggle.setFocusable(false);
@@ -135,6 +153,31 @@ abstract class SettingsScreen extends Activity {
 
         list.addView(row);
         return row;
+    }
+
+    /**
+     * Asks to restart Slack, as the patches read most settings when the app starts
+     * or when they show something.
+     */
+    void askToRestart() {
+        new AlertDialog.Builder(this)
+                .setTitle("Restart required")
+                .setMessage("Restart Slack to apply the change.")
+                .setPositiveButton("Restart", (dialog, which) -> restart())
+                .setNegativeButton("Later", null)
+                .show();
+    }
+
+    void restart() {
+        try {
+            Intent launchIntent = getPackageManager().getLaunchIntentForPackage(getPackageName());
+            if (launchIntent != null && launchIntent.getComponent() != null) {
+                startActivity(Intent.makeRestartActivityTask(launchIntent.getComponent()));
+            }
+        } catch (Exception ex) {
+            Log.e(Settings.TAG, "Failed to restart", ex);
+        }
+        System.exit(0);
     }
 
     /**
