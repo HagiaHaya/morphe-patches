@@ -1,3 +1,15 @@
+## [1.5.0-dev.7](https://github.com/HagiaHaya/morphe-patches/compare/v1.5.0-dev.6...v1.5.0-dev.7) (2026-10-26)
+
+### ✨ New Features
+
+* **Pepper - Add deals to calendar:** Add the start or the end of a deal to the calendar ([f115f2a](https://github.com/HagiaHaya/morphe-patches/commit/f115f2a53960f16f30878f00a90ea4ce412a42df))
+* **Pepper - Block tracking:** Stop the analytics of Pepper and of third-party SDKs ([058f3d5](https://github.com/HagiaHaya/morphe-patches/commit/058f3d57311e10da30eb49047135d3bceeff6bf8))
+* **Pepper - Filter comments:** Hide comments that contain chosen words ([84dba47](https://github.com/HagiaHaya/morphe-patches/commit/84dba474b905bd92513ef87a96fc9f1628e47d87))
+* **Pepper - Filter deals:** Hide deals by keyword, store, member, category, price or temperature ([c2031b8](https://github.com/HagiaHaya/morphe-patches/commit/c2031b8d5807489727ebf0657ce7b3948d3689d6))
+* **Pepper - Price error alerts:** Get a notification for new deals with a big discount ([2a43efd](https://github.com/HagiaHaya/morphe-patches/commit/2a43efd7ba0c702ed59fdcc3ef1ea7a5c8b58c5b))
+* **Pepper - Search comments:** Search the comments of a deal from its menu ([da1cae9](https://github.com/HagiaHaya/morphe-patches/commit/da1cae926186181256d60f5dee8ec18cf7e510d3))
+* **Pepper - Show price with shipping:** Show the total price next to the shipping costs ([decc7a9](https://github.com/HagiaHaya/morphe-patches/commit/decc7a9dff794c635a09e60a1dfef65838027ec8))
+
 ## [1.5.0-dev.6](https://github.com/HagiaHaya/morphe-patches/compare/v1.5.0-dev.5...v1.5.0-dev.6) (2026-10-25)
 
 ### ✨ New Features
