@@ -2,7 +2,7 @@
 morphe-patcher = "1.15.1"
 #noinspection GradleDependency
 smali = "d92701d947"
-gson = "2.14.0"
+gson = "2.15.0"
 # Last release of the Android API on Maven Central, only for the names of the framework classes.
 #noinspection GradleDependency
 android = "4.1.1.4"
