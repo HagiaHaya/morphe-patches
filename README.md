@@ -4,7 +4,7 @@ Patches for use with [Morphe](https://morphe.software).
 
 ## ❓ About
 
-Patches for the [Wykop.pl](https://wykop.pl), [Pepper.pl](https://www.pepper.pl) and [Slack](https://slack.com) apps, such as removing ads, sanitizing sharing and deal links, and keeping Slack messages older than the free plan shows.
+Patches for the [Wykop.pl](https://wykop.pl), [Pepper.pl](https://www.pepper.pl), [Slack](https://slack.com) and [Happy Color](https://play.google.com/store/apps/details?id=com.pixel.art.coloring.color.number) apps, such as removing ads, sanitizing sharing and deal links, keeping Slack messages older than the free plan shows, and unlimited hints in Happy Color.
 
 ### How to use these patches
 

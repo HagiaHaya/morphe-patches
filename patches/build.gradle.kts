@@ -3,7 +3,7 @@ group = "app.hagiahaya"
 patches {
     about {
         name = "HagiaHaya Patches"
-        description = "Patches for the Wykop.pl, Pepper.pl and Slack apps"
+        description = "Patches for the Wykop.pl, Pepper.pl, Slack and Happy Color apps"
         source = "git@github.com:HagiaHaya/morphe-patches.git"
         author = "HagiaHaya"
         contact = "https://github.com/HagiaHaya/morphe-patches/issues"

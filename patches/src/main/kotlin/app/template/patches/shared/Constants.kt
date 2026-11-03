@@ -59,4 +59,20 @@ object Constants {
             )
         )
     )
+
+    val COMPATIBILITY_HAPPY_COLOR = Compatibility(
+        name = "Happy Color", // App name as it appears in the Android launcher.
+        packageName = "com.pixel.art.coloring.color.number",
+        // Distributed as a split XAPK.
+        apkFileType = ApkFileType.XAPK,
+        appIconColor = 0xFF7043,
+        targets = listOf(
+            // Version the patches were developed against. Unlimited hints edits the compiled
+            // Dart code of this exact build, so other versions are not supported.
+            AppTarget(
+                version = "2.24.1",
+                isExperimental = true
+            )
+        )
+    )
 }
