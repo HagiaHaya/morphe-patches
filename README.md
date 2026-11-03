@@ -17,7 +17,7 @@ Push notifications of the patched app also go through MicroG-RE.
 ## 🩹 Patches list
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.5.0-dev.9](https://github.com/HagiaHaya/morphe-patches/releases/tag/v1.5.0-dev.9)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;33 patches total
+> **[v1.5.0-dev.10](https://github.com/HagiaHaya/morphe-patches/releases/tag/v1.5.0-dev.10)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;34 patches total
 <details open>
 <summary>📦 Pepper&nbsp;&nbsp;•&nbsp;&nbsp;15 patches</summary>
 <br>
@@ -92,7 +92,7 @@ Push notifications of the patched app also go through MicroG-RE.
 </details>
 
 <details open>
-<summary>📦 Happy Color&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<summary>📦 Happy Color&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -102,6 +102,7 @@ Push notifications of the patched app also go through MicroG-RE.
 
 | 💊&nbsp;Patch | 📜&nbsp;Description | ⚙️&nbsp;Options |
 |----------|----------------|-----------|
+| [GmsCore support](#gmscore-support) | Allows signing in with Google and receiving notifications by using MicroG-RE instead of Google Play services. |  |
 | [Remove ads](#remove-ads) | Stops banner, interstitial and app-open ads from loading (AppLovin MAX). Rewarded ads for hints are left working. |  |
 | [Unlimited hints](#unlimited-hints) | Enables the game's built-in unlimited hints mode, so using a hint never lowers the hint balance. arm64-v8a devices only. |  |
 

@@ -1,3 +1,9 @@
+## [1.5.0-dev.10](https://github.com/HagiaHaya/morphe-patches/compare/v1.5.0-dev.9...v1.5.0-dev.10) (2026-11-03)
+
+### ✨ New Features
+
+* **Happy Color - GmsCore support:** Sign in with Google through MicroG-RE ([8a22281](https://github.com/HagiaHaya/morphe-patches/commit/8a22281911e90ca66ef86a86f08ae947584bd5be))
+
 ## [1.5.0-dev.9](https://github.com/HagiaHaya/morphe-patches/compare/v1.5.0-dev.8...v1.5.0-dev.9) (2026-11-03)
 
 ### ✨ New Features

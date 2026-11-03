@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.5.0-dev.9",
+  "version": "1.5.0-dev.10",
   "patches": [
     {
       "name": "Add deals to calendar",
@@ -313,6 +313,32 @@
             },
             {
               "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "GmsCore support",
+      "description": "Allows signing in with Google and receiving notifications by using MicroG-RE instead of Google Play services.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.pixel.art.coloring.color.number",
+          "name": "Happy Color",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FF7043",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2.24.1",
               "versionCodes": null,
               "isExperimental": true,
               "minSdk": null,
