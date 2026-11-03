@@ -1,3 +1,10 @@
+## [1.5.0-dev.9](https://github.com/HagiaHaya/morphe-patches/compare/v1.5.0-dev.8...v1.5.0-dev.9) (2026-11-03)
+
+### ✨ New Features
+
+* **Happy Color - Remove ads:** Stop banner, interstitial and app-open ads from loading ([89e7f4e](https://github.com/HagiaHaya/morphe-patches/commit/89e7f4e9096e4783a978d5319484e51594ec4ba1))
+* **Happy Color - Unlimited hints:** Use hints without lowering the hint balance ([87010f5](https://github.com/HagiaHaya/morphe-patches/commit/87010f50cb53894499942259ba1345db64b2ffcc))
+
 ## [1.5.0-dev.8](https://github.com/HagiaHaya/morphe-patches/compare/v1.5.0-dev.7...v1.5.0-dev.8) (2026-10-26)
 
 ### 🐛 Bug Fixes
