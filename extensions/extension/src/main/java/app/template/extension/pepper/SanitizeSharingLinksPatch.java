@@ -2,6 +2,8 @@ package app.template.extension.pepper;
 
 import android.util.Log;
 
+import app.template.extension.pepper.settings.Settings;
+
 @SuppressWarnings("unused")
 public final class SanitizeSharingLinksPatch {
 
@@ -16,6 +18,10 @@ public final class SanitizeSharingLinksPatch {
      *         or the shareable link if the thread address is missing.
      */
     public static String getThreadShareUrl(String threadUrl, String shareableLink) {
+        if (!Settings.isEnabled(Settings.SANITIZE_SHARING_LINKS)) {
+            return shareableLink;
+        }
+
         try {
             String sanitizedThreadUrl = Links.sanitizeWebLink(threadUrl);
             if (sanitizedThreadUrl != null) {

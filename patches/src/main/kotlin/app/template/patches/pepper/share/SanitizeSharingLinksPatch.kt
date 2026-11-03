@@ -4,6 +4,8 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod.Companion.toMutable
+import app.template.patches.pepper.settings.addPatchedFeature
+import app.template.patches.pepper.settings.settingsPatch
 import app.template.patches.shared.Constants.COMPATIBILITY_PEPPER
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
@@ -26,9 +28,13 @@ val sanitizeSharingLinksPatch = bytecodePatch(
 ) {
     compatibleWith(COMPATIBILITY_PEPPER)
 
+    dependsOn(settingsPatch)
+
     extendWith("extensions/extension.mpe")
 
     execute {
+        addPatchedFeature("sanitizeSharingLinks")
+
         threadApiRepresentationClasses.forEach { threadApiRepresentationClass ->
             GetShareableLinkFingerprint(threadApiRepresentationClass).let {
                 val shareableLinkField = it.method.instructions
