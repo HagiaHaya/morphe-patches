@@ -1,3 +1,15 @@
+## [1.5.0-dev.13](https://github.com/HagiaHaya/morphe-patches/compare/v1.5.0-dev.12...v1.5.0-dev.13) (2026-11-25)
+
+### 🐛 Bug Fixes
+
+* **GmsCore support:** Spoof the Firebase certificate also when it is sent over gRPC ([ffda72f](https://github.com/HagiaHaya/morphe-patches/commit/ffda72f996f8e13bb276d6c0c2bbffcd5edc7dec))
+
+### ✨ New Features
+
+* **Jakdojade - GmsCore support:** Support MicroG-RE for sign-in and notifications ([a96138a](https://github.com/HagiaHaya/morphe-patches/commit/a96138a379b440149a71fc6887529935e525e0a1))
+* **Jakdojade - Mini-game shortcut:** Add launcher shortcut ([a9c35ae](https://github.com/HagiaHaya/morphe-patches/commit/a9c35ae5e9ad2ad5596b73a8248162675036b0cb))
+* **Jakdojade - Unlock premium:** Unlock premium without a subscription ([0f09718](https://github.com/HagiaHaya/morphe-patches/commit/0f097185f26ef3b1f4b351e0e40d211300200743))
+
 ## [1.5.0-dev.12](https://github.com/HagiaHaya/morphe-patches/compare/v1.5.0-dev.11...v1.5.0-dev.12) (2026-11-25)
 
 ### 🐛 Bug Fixes

@@ -17,7 +17,7 @@ Push notifications of the patched app also go through MicroG-RE.
 ## 🩹 Patches list
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.5.0-dev.12](https://github.com/HagiaHaya/morphe-patches/releases/tag/v1.5.0-dev.12)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;34 patches total
+> **[v1.5.0-dev.13](https://github.com/HagiaHaya/morphe-patches/releases/tag/v1.5.0-dev.13)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;37 patches total
 <details open>
 <summary>📦 Pepper&nbsp;&nbsp;•&nbsp;&nbsp;15 patches</summary>
 <br>
@@ -44,6 +44,23 @@ Push notifications of the patched app also go through MicroG-RE.
 | [Show price with shipping](#show-price-with-shipping) | Adds a setting to show the price with shipping next to the shipping costs of deals, such as "+ 9,99zł = 59,98zł". |  |
 | [Spoof contributor level](#spoof-contributor-level) | Adds a setting to show Silver, Gold or Platinum in the app, such as on the profile, instead of the contributor level earned. It unlocks the app icons of the level, but rewards granted by Pepper, such as more deal stats, are not unlocked. |  |
 | [Unlock custom app icons](#unlock-custom-app-icons) | Unlocks all app icons regardless of the contributor level, and offers the seasonal icons, such as the Black Friday one, all year round. |  |
+
+</details>
+
+<details open>
+<summary>📦 Jakdojade&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 7.3.9 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description | ⚙️&nbsp;Options |
+|----------|----------------|-----------|
+| [Add mini-game shortcut](#add-mini-game-shortcut) | Adds the built-in mini-game to the menu shown when you long-press the Jakdojade icon. Open Jakdojade once to add the shortcut. |  |
+| [GmsCore support](#gmscore-support) | Allows signing in with Google and receiving notifications by using MicroG-RE instead of Google Play services. |  |
+| [Unlock premium](#unlock-premium) | Unlocks the premium features, such as hiding ads, offline timetables and departure notifications, without a subscription. Also turns on the hidden test premium developer flag so the account screen and billing report premium as active. |  |
 
 </details>
 
