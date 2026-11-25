@@ -111,7 +111,7 @@ public final class MessageLoggerPatch {
             return false;
         }
         try {
-            return userId.equals(((LoggedInUser) helper.loggedInUserLazy.get()).user);
+            return userId.equals(((LoggedInUser) helper.loggedInUserLazy.getValue()).user);
         } catch (Exception ex) {
             Log.e(TAG, "Failed to get the user signed in", ex);
             return false;

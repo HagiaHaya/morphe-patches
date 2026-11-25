@@ -13,9 +13,7 @@ import app.template.extension.slack.settings.Settings;
 import slack.services.autotag.inline.MarkdownAutoInlineTagProvider;
 import slack.services.slacktextview.SlackTextView$autoInlineTagView$1;
 import slack.textformatting.spans.CodeStyleSpan;
-import slack.textformatting.spans.ItalicStyleSpan;
 import slack.textformatting.spans.LinkStyleSpan;
-import slack.textformatting.spans.StrikethroughStyleSpan;
 
 /**
  * Formats the message composer as the user types standard Markdown instead of Slack markup:
@@ -72,6 +70,22 @@ public final class StandardMarkdownPatch {
      * which has no constructor of its own.
      */
     private static Object newBoldSpan() {
+        return null;
+    }
+
+    /**
+     * Replaced by the patch with the creation of the italic span of Slack,
+     * which has no constructor of its own.
+     */
+    private static Object newItalicSpan() {
+        return null;
+    }
+
+    /**
+     * Replaced by the patch with the creation of the strikethrough span of Slack,
+     * which has no constructor of its own.
+     */
+    private static Object newStrikethroughSpan() {
         return null;
     }
 
@@ -221,9 +235,9 @@ public final class StandardMarkdownPatch {
             case BOLD:
                 return newBoldSpan();
             case ITALIC:
-                return new ItalicStyleSpan();
+                return newItalicSpan();
             case STRIKETHROUGH:
-                return new StrikethroughStyleSpan();
+                return newStrikethroughSpan();
             case CODE:
                 return new CodeStyleSpan(themedContext(provider));
             case LINK:

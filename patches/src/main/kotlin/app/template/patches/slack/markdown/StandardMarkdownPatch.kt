@@ -24,25 +24,36 @@ val standardMarkdownPatch = bytecodePatch(
     dependsOn(settingsPatch)
 
     execute {
-        requireExtensionMethods(EXTENSION_CLASS, "tagResult", "newBoldSpan")
+        requireExtensionMethods(EXTENSION_CLASS, "tagResult", "newBoldSpan", "newItalicSpan", "newStrikethroughSpan")
         addPatchedFeature("standardMarkdown")
 
-        // R8 removed the constructor of the bold span, so create it like Slack does,
-        // with the constructor of its superclass.
-        Fingerprint(
-            definingClass = EXTENSION_CLASS,
-            name = "newBoldSpan",
-        ).let { fingerprint ->
-            fingerprint.classDef.replaceMethod(
-                fingerprint.method,
-                registerCount = 2,
-                """
-                    new-instance v0, Lslack/textformatting/spans/BoldStyleSpan;
-                    const/4 v1, 0x1
-                    invoke-direct { v0, v1 }, Landroid/text/style/StyleSpan;-><init>(I)V
-                    return-object v0
-                """
-            )
+        // R8 removed the constructors of the bold, italic and strikethrough spans,
+        // so create them like Slack does, with the constructor of their superclass.
+        mapOf(
+            "newBoldSpan" to """
+                new-instance v0, Lslack/textformatting/spans/BoldStyleSpan;
+                const/4 v1, 0x1
+                invoke-direct { v0, v1 }, Landroid/text/style/StyleSpan;-><init>(I)V
+                return-object v0
+            """,
+            "newItalicSpan" to """
+                new-instance v0, Lslack/textformatting/spans/ItalicStyleSpan;
+                const/4 v1, 0x2
+                invoke-direct { v0, v1 }, Landroid/text/style/StyleSpan;-><init>(I)V
+                return-object v0
+            """,
+            "newStrikethroughSpan" to """
+                new-instance v0, Lslack/textformatting/spans/StrikethroughStyleSpan;
+                invoke-direct { v0 }, Landroid/text/style/StrikethroughSpan;-><init>()V
+                return-object v0
+            """,
+        ).forEach { (name, smali) ->
+            Fingerprint(
+                definingClass = EXTENSION_CLASS,
+                name = name,
+            ).let { fingerprint ->
+                fingerprint.classDef.replaceMethod(fingerprint.method, registerCount = 2, smali)
+            }
         }
 
         // Registers: p0 (this), p1 (text), p2 (cursor), p3 (text view), which are high ones.

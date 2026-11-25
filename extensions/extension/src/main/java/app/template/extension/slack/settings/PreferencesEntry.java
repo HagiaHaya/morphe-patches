@@ -77,8 +77,8 @@ public final class PreferencesEntry {
             List<Object> result = new ArrayList<>(items);
             result.addAll(aboutIndex, Arrays.asList(
                     new SKListHeaderPresentationObject(HEADER_ID, new CharSequenceResource("HagiaHaya Patches"),
-                            null, null, aboutHeader.sectionHeaderId, aboutHeader.belongsToSectionId,
-                            aboutHeader.isSticky, null, aboutHeader.options, aboutHeader.accessories),
+                            null, null, aboutHeader.sectionHeaderId, aboutHeader.isSticky, null,
+                            aboutHeader.options, aboutHeader.accessories),
                     new SKListGenericPresentationObject(ENTRY_ID, new CharSequenceResource("Patch settings"),
                             new CharSequenceResource("Turn the features of the patches on or off"),
                             icon != 0 ? new SKImageResource.Icon(icon, null, null) : null, null, null,
