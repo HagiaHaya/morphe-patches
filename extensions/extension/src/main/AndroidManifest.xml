@@ -1,1 +1,6 @@
-<manifest/>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- The extension posts notifications in the patched apps, which declare this permission, such as Pepper. -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+</manifest>
