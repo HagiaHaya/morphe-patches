@@ -12,7 +12,7 @@ public final class MessagePersistenceHelperImpl {
     /**
      * The LoggedInUser of the workspace.
      */
-    public dagger.Lazy loggedInUserLazy;
+    public kotlin.Lazy loggedInUserLazy;
 
     /**
      * @return The cached message, a PersistedMessageObj, if there is one.

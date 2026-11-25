@@ -15,4 +15,6 @@ dependencies {
     compileOnly(libs.android) {
         isTransitive = false
     }
+    // Classes of Kotlin the apps bundle and the stubs name, such as Lazy.
+    compileOnly(libs.kotlin.stdlib)
 }
