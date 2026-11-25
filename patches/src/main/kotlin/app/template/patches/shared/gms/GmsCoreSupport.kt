@@ -38,8 +38,16 @@ private const val GMS_CORE_VENDOR_GROUP_ID = "app.revanced"
 private const val GMS_CORE_PACKAGE_NAME = "$GMS_CORE_VENDOR_GROUP_ID.android.gms"
 
 /**
+ * Job of the extension that keeps GmsCore connected for the push notifications of the app.
+ */
+private const val CONNECTION_JOB_CLASS = "app.template.extension.shared.GmsCoreConnectionJob"
+
+private const val RECEIVE_BOOT_COMPLETED_PERMISSION = "android.permission.RECEIVE_BOOT_COMPLETED"
+
+/**
  * Makes GmsCore present the original package name and signature of the app to Google,
- * and lets the app see GmsCore and receive push notifications from it.
+ * lets the app see GmsCore and receive push notifications from it, and adds the job that keeps
+ * GmsCore connected, so the notifications of each patched app come without opening any of them.
  *
  * @param packageName Package name of the app.
  * @param originalSignature SHA-1 of the certificate the original app is signed with.
@@ -72,6 +80,28 @@ internal fun gmsCoreSupportResourcePatch(packageName: String, originalSignature:
                     setAttribute("android:name", GMS_CORE_PACKAGE_NAME)
                 }
             )
+
+            application.appendChild(
+                document.createElement("service").apply {
+                    setAttribute("android:name", CONNECTION_JOB_CLASS)
+                    setAttribute("android:permission", "android.permission.BIND_JOB_SERVICE")
+                    setAttribute("android:exported", "false")
+                }
+            )
+
+            // The job is kept when the phone restarts, which needs the permission.
+            val usesPermissions = document.getElementsByTagName("uses-permission")
+            val hasBootPermission = (0 until usesPermissions.length).any {
+                usesPermissions.item(it).attributes.getNamedItem("android:name")?.nodeValue ==
+                    RECEIVE_BOOT_COMPLETED_PERMISSION
+            }
+            if (!hasBootPermission) {
+                document.documentElement.appendChild(
+                    document.createElement("uses-permission").apply {
+                        setAttribute("android:name", RECEIVE_BOOT_COMPLETED_PERMISSION)
+                    }
+                )
+            }
 
             // Receive push notifications from GmsCore.
             val elements = document.getElementsByTagName("*")

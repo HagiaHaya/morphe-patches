@@ -3,4 +3,14 @@
     <!-- The extension posts notifications in the patched apps, which declare this permission, such as Pepper. -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
+    <!-- The GmsCore support patches add the permission and the job to the patched apps. -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <application>
+        <service
+            android:name="app.template.extension.shared.GmsCoreConnectionJob"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+    </application>
+
 </manifest>
