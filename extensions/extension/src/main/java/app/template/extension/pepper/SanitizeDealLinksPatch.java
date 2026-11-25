@@ -6,6 +6,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
+import app.template.extension.pepper.settings.Settings;
+
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -63,7 +65,8 @@ public final class SanitizeDealLinksPatch {
 
     private static boolean openStoreLink(Context context, String link, boolean inBrowser) {
         try {
-            if (link == null || link.equals(linkBeingOpened)) {
+            if (link == null || link.equals(linkBeingOpened)
+                    || !Settings.isEnabled(Settings.SANITIZE_DEAL_LINKS)) {
                 return false;
             }
 

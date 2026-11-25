@@ -4,6 +4,8 @@ import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.patch.bytecodePatch
+import app.template.patches.pepper.settings.addPatchedFeature
+import app.template.patches.pepper.settings.settingsPatch
 import app.template.patches.shared.Constants.COMPATIBILITY_PEPPER
 
 private const val EXTENSION_CLASS = "Lapp/template/extension/pepper/SanitizeDealLinksPatch;"
@@ -17,9 +19,13 @@ val sanitizeDealLinksPatch = bytecodePatch(
 ) {
     compatibleWith(COMPATIBILITY_PEPPER)
 
+    dependsOn(settingsPatch)
+
     extendWith("extensions/extension.mpe")
 
     execute {
+        addPatchedFeature("sanitizeDealLinks")
+
         // "Get deal" opens https://www.pepper.pl/visit/thread/1372472 with the user id,
         // device id and analytics parameters added. It redirects to Pepper's affiliate redirect,
         // which then adds affiliate parameters. The API does not include the link to the store,

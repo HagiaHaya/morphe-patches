@@ -32,9 +32,49 @@ object Constants {
         apkFileType = ApkFileType.XAPK,
         appIconColor = 0xFF3400,
         targets = listOf(
-            // Version the patches were developed and verified against.
+            // Versions the patches were developed and verified against.
+            AppTarget(
+                version = "8.22.05"
+            ),
             AppTarget(
                 version = "8.20.00"
+            )
+        )
+    )
+
+    val COMPATIBILITY_SLACK = Compatibility(
+        name = "Slack", // App name as it appears in the Android launcher.
+        packageName = "com.Slack",
+        // APKPure distributes it as a split XAPK.
+        apkFileType = ApkFileType.XAPK,
+        // The launcher icon background is white, so use the Slack brand aubergine instead.
+        appIconColor = 0x4A154B,
+        targets = listOf(
+            // Version the patches were developed and verified against.
+            AppTarget(
+                version = "26.11.40.0"
+            ),
+            // Slack is not obfuscated and the patches find its classes by name,
+            // so they are expected to keep working with future app versions.
+            AppTarget(
+                version = null,
+                isExperimental = true
+            )
+        )
+    )
+
+    val COMPATIBILITY_HAPPY_COLOR = Compatibility(
+        name = "Happy Color", // App name as it appears in the Android launcher.
+        packageName = "com.pixel.art.coloring.color.number",
+        // Distributed as a split XAPK.
+        apkFileType = ApkFileType.XAPK,
+        appIconColor = 0xFF7043,
+        targets = listOf(
+            // Version the patches were developed against. Unlimited hints edits the compiled
+            // Dart code of this exact build, so other versions are not supported.
+            AppTarget(
+                version = "2.24.1",
+                isExperimental = true
             )
         )
     )

@@ -2,10 +2,17 @@
 morphe-patcher = "1.15.1"
 #noinspection GradleDependency
 smali = "d92701d947"
-gson = "2.14.0"
+gson = "2.15.0"
+# Last release of the Android API on Maven Central, only for the names of the framework classes.
+#noinspection GradleDependency
+android = "4.1.1.4"
+# The version the Morphe Gradle plugin compiles the extension with.
+kotlin = "2.4.10"
 
 [libraries]
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+android = { module = "com.google.android:android", version.ref = "android" }
+kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
 # Gradle plugins adds the dependency during build, this declaration is here only for dependabot to provide updates.
 #noinspection UnusedVersionCatalogEntry
 morphe-patcher = { module = "app.morphe:morphe-patcher", version.ref = "morphe-patcher" }

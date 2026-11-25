@@ -41,6 +41,8 @@ internal object Constants {
     val ACTIONS = setOf(
         "com.google.android.c2dm.intent.RECEIVE",
         "com.google.android.c2dm.intent.REGISTER",
+        // GmsCore answers a registration requested with an intent with an intent of its own action.
+        "com.google.android.c2dm.intent.REGISTRATION",
         "com.google.android.c2dm.intent.UNREGISTER",
         "com.google.android.contextmanager.service.ContextManagerService.START",
         "com.google.android.gcm.intent.SEND",
