@@ -180,13 +180,14 @@ public final class KeepMessageHistoryPatch {
     /**
      * Injection point. Called when Slack updates a cached message of a conversation,
      * such as when it is edited, gets a reaction, or a message sent from the app is delivered.
+     * The parameters are the values the statement sets, then local_id.
      */
     public static void onMessageUpdated(String ts, String clientMsgId, String sendState, Long ephemeralType,
-                                        String json, String callsRoomId, String threadTs, String subtype,
-                                        String userId, String localId) {
+                                        boolean isEphemeral, String json, String callsRoomId, String threadTs,
+                                        String subtype, String userId, String localId) {
         try {
             MessageArchive archive = archive();
-            if (archive == null || ts == null || json == null
+            if (archive == null || ts == null || json == null || isEphemeral
                     || !isFromServer(parseSendState(sendState), ephemeralType)) {
                 return;
             }

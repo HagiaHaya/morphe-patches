@@ -41,7 +41,8 @@ val featureFlagsPatch = bytecodePatch(
             )
         }
 
-        FeatureFlagIsEnabledFingerprint.method.addInstructionsWithLabels(
+        // An overridden flag skips the check of its dependencies, as a flag forced on in Slack does.
+        ResolveFeatureFlagFingerprint.method.addInstructionsWithLabels(
             0,
             """
                 invoke-static { p1 }, $EXTENSION_CLASS->override(Lslack/featureflag/FeatureFlagEnum;)I

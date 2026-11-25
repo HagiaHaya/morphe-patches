@@ -49,7 +49,7 @@ object Constants {
         targets = listOf(
             // Version the patches were developed and verified against.
             AppTarget(
-                version = "26.10.20.0"
+                version = "26.11.40.0"
             ),
             // Slack is not obfuscated and the patches find its classes by name,
             // so they are expected to keep working with future app versions.
