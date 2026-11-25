@@ -1,3 +1,14 @@
+## [1.5.0-dev.11](https://github.com/HagiaHaya/morphe-patches/compare/v1.5.0-dev.10...v1.5.0-dev.11) (2026-11-25)
+
+### 🐛 Bug Fixes
+
+* Get the notifications of apps with `GmsCore support` without opening a patched app ([26c3c5d](https://github.com/HagiaHaya/morphe-patches/commit/26c3c5db91c0b4d68eaede5ae55f8e939dde47ca))
+
+### 🚀 Updated App Support
+
+* **Pepper:** Support version 8.22.05 ([1913546](https://github.com/HagiaHaya/morphe-patches/commit/191354610648fe396fc4588d422e79cc7b523436))
+* **Slack:** Support version 26.11.40.0 ([f3c8f6c](https://github.com/HagiaHaya/morphe-patches/commit/f3c8f6c65670d91721224973d466b8ab5661d039))
+
 ## [1.5.0-dev.10](https://github.com/HagiaHaya/morphe-patches/compare/v1.5.0-dev.9...v1.5.0-dev.10) (2026-11-03)
 
 ### ✨ New Features
