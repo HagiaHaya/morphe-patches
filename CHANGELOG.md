@@ -1,3 +1,11 @@
+## [1.5.0-dev.12](https://github.com/HagiaHaya/morphe-patches/compare/v1.5.0-dev.11...v1.5.0-dev.12) (2026-11-25)
+
+### 🐛 Bug Fixes
+
+* **Slack - Message logger:** Log edits and deletions without crashing ([777a853](https://github.com/HagiaHaya/morphe-patches/commit/777a8536f4f8a6c454bbeb35d8c35f1d468d199b))
+* **Slack - Standard Markdown:** Format italic and strikethrough text without crashing ([89f308f](https://github.com/HagiaHaya/morphe-patches/commit/89f308f31afc207145ac3995bb8a9c4e1a13b7fe))
+* **Slack:** Open Preferences without crashing ([0904c6e](https://github.com/HagiaHaya/morphe-patches/commit/0904c6edfd1021a72ea233dbe5c4e4ebc72ddf73))
+
 ## [1.5.0-dev.11](https://github.com/HagiaHaya/morphe-patches/compare/v1.5.0-dev.10...v1.5.0-dev.11) (2026-11-25)
 
 ### 🐛 Bug Fixes
