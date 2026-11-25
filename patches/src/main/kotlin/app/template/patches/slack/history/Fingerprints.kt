@@ -1,9 +1,7 @@
 package app.template.patches.slack.history
 
 import app.morphe.patcher.Fingerprint
-import app.morphe.patcher.StringComparisonType
 import app.morphe.patcher.methodCall
-import app.morphe.patcher.string
 
 // Slack is not obfuscated, so classes and methods are found by name. The parameters are
 // listed in full, so patching fails if a query gains a column instead of reading the wrong one.
@@ -50,8 +48,6 @@ internal val insertMessageStatement = CacheStatement("INSERT INTO messages(local
 internal val insertOrIgnoreMessageStatement =
     CacheStatement("INSERT OR IGNORE INTO messages(local_id, ts, channel_id,", MESSAGE_COLUMNS)
 
-private const val MESSAGES_QUERIES_CLASS = "Lslack/persistence/messages/MessagesQueries;"
-
 /**
  * Updates a cached message of a conversation, such as when it is edited, gets a reaction,
  * or a message sent from the app gets its timestamp from the server:
@@ -59,28 +55,25 @@ private const val MESSAGES_QUERIES_CLASS = "Lslack/persistence/messages/Messages
  * ```
  * UPDATE messages
  * SET ts = ?, client_msg_id = ?, msg_send_state = ?,
- *     ephemeral_msg_type = ?, message_json = ?,
+ *     ephemeral_msg_type = ?, is_ephemeral = ?, message_json = ?,
  *     calls_room_id = ?, thread_ts = ?, subtype = ?, user_id = ?
  * WHERE local_id = ?
  * ```
  */
-internal object UpdateMessageByLocalIdFingerprint : Fingerprint(
-    definingClass = MESSAGES_QUERIES_CLASS,
-    name = "updateMessageByLocalId",
-    parameters = listOf(
+internal val updateMessageStatement = CacheStatement(
+    "UPDATE messages\nSET ts = ?, client_msg_id = ?, msg_send_state = ?,",
+    listOf(
         "Ljava/lang/String;", // ts
         "Ljava/lang/String;", // client_msg_id
         "Ljava/lang/String;", // msg_send_state
         "Ljava/lang/Long;", // ephemeral_msg_type
+        "Z", // is_ephemeral
         "Ljava/lang/String;", // message_json
         "Ljava/lang/String;", // calls_room_id
         "Ljava/lang/String;", // thread_ts
         "Ljava/lang/String;", // subtype
         "Ljava/lang/String;", // user_id
         "Ljava/lang/String;", // local_id
-    ),
-    filters = listOf(
-        string("UPDATE messages\nSET ts = ?, client_msg_id = ?, msg_send_state = ?,", StringComparisonType.STARTS_WITH),
     ),
 )
 
@@ -121,16 +114,12 @@ internal val insertThreadMessageStatement = CacheStatement(
  * WHERE team_id = ? AND local_id = ?
  * ```
  */
-internal object UpdateThreadMessageBlobFingerprint : Fingerprint(
-    definingClass = THREAD_MESSAGE_QUERIES_CLASS,
-    name = "update_message_blob",
-    parameters = listOf(
+internal val updateThreadMessageBlobStatement = CacheStatement(
+    "UPDATE message_threads\nSET message_blob = ?",
+    listOf(
         "Ljava/lang/String;", // message_blob
         "Ljava/lang/String;", // team_id
         "Ljava/lang/String;", // local_id
-    ),
-    filters = listOf(
-        string("UPDATE message_threads\nSET message_blob = ?", StringComparisonType.STARTS_WITH),
     ),
 )
 

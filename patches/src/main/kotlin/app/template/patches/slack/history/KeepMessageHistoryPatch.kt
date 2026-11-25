@@ -17,6 +17,7 @@ import app.template.patches.slack.shared.SlackAppOnCreateFingerprint
 import app.template.patches.slack.shared.singleMethod
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
+import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
@@ -146,7 +147,8 @@ private fun BytecodePatchContext.hookCacheStatement(statement: CacheStatement, h
                 (sqlIndex - 1 downTo maxOf(0, sqlIndex - BINDER_SEARCH_DISTANCE)).firstOrNull { index ->
                     val instruction = instructions[index]
                     val constructor = (instruction as? ReferenceInstruction)?.reference as? MethodReference
-                    instruction.opcode == Opcode.INVOKE_DIRECT_RANGE && constructor?.name == "<init>" &&
+                    (instruction.opcode == Opcode.INVOKE_DIRECT || instruction.opcode == Opcode.INVOKE_DIRECT_RANGE) &&
+                        constructor?.name == "<init>" &&
                         constructor.parameterTypes.take(parameters.size).map(CharSequence::toString) == parameters
                 } ?: throw PatchException("Could not find the arguments of \"${statement.sqlPrefix}\" in $method")
             }
@@ -154,12 +156,17 @@ private fun BytecodePatchContext.hookCacheStatement(statement: CacheStatement, h
             // From the last, so the indices of the others stay valid.
             binderIndices.distinct().sortedDescending().forEach { index ->
                 // The first register is the lambda being created.
-                val firstArgument = method.getInstruction<RegisterRangeInstruction>(index).startRegister + 1
-                method.addInstruction(
-                    index,
-                    "invoke-static/range { v$firstArgument .. v${firstArgument + registerCount - 1} }, " +
-                        "$EXTENSION_CLASS->$hookName($hookParameters)V"
-                )
+                val invoke = when (val binder = method.getInstruction(index)) {
+                    is RegisterRangeInstruction -> {
+                        val firstArgument = binder.startRegister + 1
+                        "invoke-static/range { v$firstArgument .. v${firstArgument + registerCount - 1} }"
+                    }
+                    is FiveRegisterInstruction -> listOf(binder.registerD, binder.registerE, binder.registerF, binder.registerG)
+                        .take(registerCount)
+                        .joinToString(prefix = "invoke-static { ", postfix = " }") { "v$it" }
+                    else -> throw PatchException("Unexpected binder of \"${statement.sqlPrefix}\" in $method")
+                }
+                method.addInstruction(index, "$invoke, $EXTENSION_CLASS->$hookName($hookParameters)V")
                 hooked++
             }
         }
@@ -215,17 +222,9 @@ val keepMessageHistoryPatch = bytecodePatch(
         // From ts to message_blob.
         hookCacheStatement(insertThreadMessageStatement, "onThreadMessageInserted")
         // From ts to local_id.
-        UpdateMessageByLocalIdFingerprint.method.addInstruction(
-            0,
-            "invoke-static/range { p1 .. p10 }, $EXTENSION_CLASS->onMessageUpdated(" +
-                "Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Long;Ljava/lang/String;" +
-                "Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"
-        )
-        UpdateThreadMessageBlobFingerprint.method.addInstruction(
-            0,
-            "invoke-static/range { p1 .. p3 }, $EXTENSION_CLASS->onThreadMessageUpdated(" +
-                "Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"
-        )
+        hookCacheStatement(updateMessageStatement, "onMessageUpdated")
+        // From message_blob to local_id.
+        hookCacheStatement(updateThreadMessageBlobStatement, "onThreadMessageUpdated")
 
         RemoveMessageEventFingerprint.let { fingerprint ->
             val (getChannel, getDeletedTs) = fingerprint.instructionMatches

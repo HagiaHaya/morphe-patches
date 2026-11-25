@@ -2,6 +2,9 @@ package app.template.extension.shared;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.content.ContentProviderClient;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -19,7 +22,8 @@ import java.util.Locale;
 
 /**
  * Asks to install MicroG-RE, which the GmsCore support patches make apps use
- * instead of Google Play services, and to let it run in the background.
+ * instead of Google Play services, and to let it run in the background,
+ * and keeps it connected for the push notifications of the app.
  */
 public final class GmsCoreSupport {
 
@@ -44,6 +48,17 @@ public final class GmsCoreSupport {
      * Any action the receiver does not know, so it honors the settings of GmsCore.
      */
     private static final String GMS_CORE_CONNECT_ACTION = "app.template.extension.CONNECT_GMS_CORE";
+
+    /**
+     * ID of {@link GmsCoreConnectionJob}, far above the IDs WorkManager gives the jobs of the app, from 0 up.
+     */
+    private static final int CONNECTION_JOB_ID = 0x4D6F7270;
+
+    /**
+     * How often {@link GmsCoreConnectionJob} runs, the shortest period Android allows.
+     * Android runs it less often while the phone is idle or the app is rarely used.
+     */
+    private static final long CONNECTION_JOB_INTERVAL_MS = 15 * 60 * 1000;
 
     private static final String PREFERENCES_NAME = "hagiahaya_gms_core";
 
@@ -90,6 +105,9 @@ public final class GmsCoreSupport {
         new Thread(() -> {
             try {
                 Problem problem = findProblem(activity);
+                if (problem != Problem.NOT_INSTALLED) {
+                    scheduleConnectionJob(activity.getApplicationContext());
+                }
                 if (problem == null) {
                     connectGmsCore(activity);
                 } else {
@@ -105,15 +123,37 @@ public final class GmsCoreSupport {
     /**
      * Asks GmsCore to connect to Google for push notifications, if it is not connected and its
      * settings allow it. Android does not let GmsCore connect in the background while it is not
-     * exempt from battery optimization, and GmsCore then only tries again when the phone restarts.
+     * exempt from battery optimization. GmsCore has one connection for all apps, and once Android
+     * stops its push service, it does not reconnect on its own until the phone restarts.
      */
-    private static void connectGmsCore(Context context) {
+    static void connectGmsCore(Context context) {
         try {
             context.sendBroadcast(new Intent(GMS_CORE_CONNECT_ACTION)
                     .setClassName(GMS_CORE_PACKAGE_NAME, GMS_CORE_PUSH_TRIGGER_RECEIVER)
                     .addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES));
         } catch (Exception ex) {
             Log.e(TAG, "connectGmsCore failure", ex);
+        }
+    }
+
+    /**
+     * Schedules {@link GmsCoreConnectionJob}, which keeps GmsCore connected for the app, so its
+     * notifications do not depend on the app or another patched app being opened.
+     * The job is kept when the phone restarts.
+     */
+    private static void scheduleConnectionJob(Context context) {
+        try {
+            JobScheduler jobScheduler = context.getSystemService(JobScheduler.class);
+            if (jobScheduler.getPendingJob(CONNECTION_JOB_ID) != null) return;
+
+            jobScheduler.schedule(new JobInfo.Builder(CONNECTION_JOB_ID,
+                    new ComponentName(context, GmsCoreConnectionJob.class))
+                    .setPeriodic(CONNECTION_JOB_INTERVAL_MS)
+                    .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+                    .setPersisted(true)
+                    .build());
+        } catch (Exception ex) {
+            Log.e(TAG, "scheduleConnectionJob failure", ex);
         }
     }
 

@@ -5,6 +5,9 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.patch.bytecodePatch
 import app.template.patches.shared.replaceMethod
 import app.template.patches.shared.requireExtensionMethods
+import com.android.tools.smali.dexlib2.Opcode
+import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
+import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
 private const val EXTENSION_CLASS = "Lapp/template/extension/pepper/api/PepperApi;"
 
@@ -45,9 +48,16 @@ internal val pepperApiPatch = bytecodePatch {
             strings = listOf("wss:"),
         ).method
 
-        // Request.Builder.header(String, String)
-        val headerMethod = classDefBy(builderType).methods.single {
-            it.parameterTypes.map(CharSequence::toString) == listOf("Ljava/lang/String;", "Ljava/lang/String;")
+        // Request.Builder.header(String, String), which removes the headers of the name before adding it,
+        // unlike addHeader(String, String), which R8 removes from some versions of the app.
+        val headerMethod = classDefBy(builderType).methods.single { method ->
+            method.parameterTypes.map(CharSequence::toString) == listOf("Ljava/lang/String;", "Ljava/lang/String;") &&
+                method.implementation?.instructions?.any { instruction ->
+                    val reference = (instruction as? ReferenceInstruction)?.reference as? MethodReference
+                    // Headers.Builder.removeAll(String)
+                    instruction.opcode == Opcode.INVOKE_VIRTUAL && reference?.returnType == "V" &&
+                        reference.parameterTypes.map(CharSequence::toString) == listOf("Ljava/lang/String;")
+                } == true
         }
 
         val responseFields = classDefBy(responseType).fields
