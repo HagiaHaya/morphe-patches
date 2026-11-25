@@ -173,6 +173,9 @@ internal fun BytecodePatchContext.spoofFirebaseCertificate(originalSignature: St
     // Firebase sends the hash in uppercase hexadecimal digits.
     val certificateHash = originalSignature.uppercase()
 
+    var headerFound = false
+    var certificateSpoofed = false
+
     classDefByStrings(ANDROID_CERT_HEADER).distinctBy { it.type }.forEach { classDef ->
         mutableClassDefBy(classDef.type).methods.forEach { method ->
             val instructions = method.implementation?.instructions?.toList() ?: return@forEach
@@ -185,6 +188,7 @@ internal fun BytecodePatchContext.spoofFirebaseCertificate(originalSignature: St
                 }
                 val string = ((instruction as ReferenceInstruction).reference as StringReference).string
                 if (string != ANDROID_CERT_HEADER) return@mapIndexedNotNull null
+                headerFound = true
 
                 val nameRegister = (instruction as OneRegisterInstruction).registerA
                 val callIndex = (index + 1 until instructions.size).firstOrNull {
@@ -193,10 +197,14 @@ internal fun BytecodePatchContext.spoofFirebaseCertificate(originalSignature: St
                 val call = callIndex?.let { instructions[it] }
                 val arguments = call?.argumentRegisters().orEmpty()
                 val parameterTypes = ((call as? ReferenceInstruction)?.reference as? MethodReference)?.parameterTypes
+                // Firebase also names the header to build an io.grpc Metadata.Key for its gRPC
+                // services, such as In-App Messaging, where the hash is put on the metadata rather
+                // than set as an HTTP header. Only a setRequestProperty/addRequestProperty(String,
+                // String) call holds the hash in a register that can be replaced, so skip the rest.
                 if (parameterTypes?.map { it.toString() } != listOf("Ljava/lang/String;", "Ljava/lang/String;") ||
                     arguments.indexOf(nameRegister) != arguments.size - 2
                 ) {
-                    throw PatchException("Could not find where Firebase sets $ANDROID_CERT_HEADER in $method")
+                    return@mapIndexedNotNull null
                 }
 
                 // The register only holds the hash of the header, so it can be replaced before the call.
@@ -205,8 +213,15 @@ internal fun BytecodePatchContext.spoofFirebaseCertificate(originalSignature: St
 
             valueLoads.asReversed().forEach { (callIndex, valueRegister) ->
                 method.addInstruction(callIndex, "const-string v$valueRegister, \"$certificateHash\"")
+                certificateSpoofed = true
             }
         }
+    }
+
+    // When the app sends the header but in a shape none of the calls above matched, it would keep
+    // sending the certificate of the patched app, so fail loudly instead of silently breaking push.
+    if (headerFound && !certificateSpoofed) {
+        throw PatchException("Could not find where Firebase sets $ANDROID_CERT_HEADER")
     }
 }
 
