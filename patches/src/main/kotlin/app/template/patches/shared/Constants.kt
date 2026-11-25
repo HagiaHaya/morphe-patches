@@ -63,6 +63,18 @@ object Constants {
         )
     )
 
+    val COMPATIBILITY_JAKDOJADE = Compatibility(
+        name = "Jakdojade",
+        packageName = "com.citynav.jakdojade.pl.android",
+        apkFileType = ApkFileType.APKM,
+        appIconColor = 0x0A9F6A,
+        targets = listOf(
+            AppTarget(
+                version = "7.3.9"
+            )
+        )
+    )
+
     val COMPATIBILITY_HAPPY_COLOR = Compatibility(
         name = "Happy Color", // App name as it appears in the Android launcher.
         packageName = "com.pixel.art.coloring.color.number",
