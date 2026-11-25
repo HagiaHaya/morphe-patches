@@ -32,7 +32,10 @@ object Constants {
         apkFileType = ApkFileType.XAPK,
         appIconColor = 0xFF3400,
         targets = listOf(
-            // Version the patches were developed and verified against.
+            // Versions the patches were developed and verified against.
+            AppTarget(
+                version = "8.22.05"
+            ),
             AppTarget(
                 version = "8.20.00"
             )
