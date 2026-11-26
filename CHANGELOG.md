@@ -1,3 +1,10 @@
+## [1.5.0-dev.14](https://github.com/HagiaHaya/morphe-patches/compare/v1.5.0-dev.13...v1.5.0-dev.14) (2026-11-26)
+
+### 🐛 Bug Fixes
+
+* **GmsCore support:** Find the location through MicroG-RE ([9323990](https://github.com/HagiaHaya/morphe-patches/commit/9323990ce25d0df5d3aa5d738520e95e88f62fb4))
+* **Jakdojade - GmsCore support:** Ask to let MicroG-RE access the location ([e28e00b](https://github.com/HagiaHaya/morphe-patches/commit/e28e00b1dd46237b3c6e4978879204366276ea9c))
+
 ## [1.5.0-dev.13](https://github.com/HagiaHaya/morphe-patches/compare/v1.5.0-dev.12...v1.5.0-dev.13) (2026-11-25)
 
 ### 🐛 Bug Fixes
