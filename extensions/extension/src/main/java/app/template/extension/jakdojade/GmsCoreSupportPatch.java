@@ -10,9 +10,10 @@ public final class GmsCoreSupportPatch {
 
     /**
      * Injection point. Called when the launcher activity is created.
+     * Jakdojade gets the location only through Google Play services, so through GmsCore.
      */
     public static void checkGmsCore(Activity activity) {
-        GmsCoreSupport.checkGmsCore(activity, "Jakdojade", "Jakdojade");
+        GmsCoreSupport.checkGmsCore(activity, "Jakdojade", "Jakdojade", true);
     }
 
     /**

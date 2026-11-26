@@ -1,5 +1,6 @@
 package app.template.extension.shared;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.job.JobInfo;
@@ -13,6 +14,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.net.Uri;
+import android.os.Build;
 import android.os.PowerManager;
 import android.provider.Settings;
 import android.util.Log;
@@ -73,6 +75,11 @@ public final class GmsCoreSupport {
     private static final String BACKGROUND_CHECK_DISABLED_KEY = "background_check_disabled";
 
     /**
+     * If the user chose not to be asked again to let GmsCore access the location.
+     */
+    private static final String LOCATION_CHECK_DISABLED_KEY = "location_check_disabled";
+
+    /**
      * Prefix of the files in which Firebase keeps the installation, the ID the push token is issued for.
      */
     private static final String FIREBASE_INSTALLATION_FILE_PREFIX = "PersistedInstallation.";
@@ -98,19 +105,31 @@ public final class GmsCoreSupport {
      * @param appNamePolish Name of the app in the genitive case in Polish, such as "Wykopu".
      */
     public static void checkGmsCore(Activity activity, String appName, String appNamePolish) {
+        checkGmsCore(activity, appName, appNamePolish, false);
+    }
+
+    /**
+     * Like {@link #checkGmsCore(Activity, String, String)}, and for an app that gets the location
+     * through GmsCore, first asks to let GmsCore access the location, if it can not.
+     *
+     * @param usesLocation If the app gets the location through GmsCore.
+     */
+    public static void checkGmsCore(Activity activity, String appName, String appNamePolish, boolean usesLocation) {
         if (checked) return;
         checked = true;
 
         // Reaching the content provider of GmsCore may have to start it first.
         new Thread(() -> {
             try {
-                Problem problem = findProblem(activity);
+                Problem problem = findProblem(activity, usesLocation);
                 if (problem != Problem.NOT_INSTALLED) {
                     scheduleConnectionJob(activity.getApplicationContext());
                 }
-                if (problem == null) {
+                // The location is checked before whether GmsCore can run, so it may as well connect.
+                if (problem == null || problem == Problem.NO_LOCATION_ACCESS) {
                     connectGmsCore(activity);
-                } else {
+                }
+                if (problem != null) {
                     // Show the dialog once the activity is created.
                     activity.runOnUiThread(() -> showDialog(activity, problem, appName, appNamePolish));
                 }
@@ -183,11 +202,12 @@ public final class GmsCoreSupport {
 
     private enum Problem {
         NOT_INSTALLED,
+        NO_LOCATION_ACCESS,
         BATTERY_OPTIMIZED,
         NOT_RUNNING,
     }
 
-    private static Problem findProblem(Context context) {
+    private static Problem findProblem(Context context, boolean usesLocation) {
         try {
             context.getPackageManager().getPackageInfo(GMS_CORE_PACKAGE_NAME, 0);
         } catch (PackageManager.NameNotFoundException ex) {
@@ -195,7 +215,17 @@ public final class GmsCoreSupport {
             return Problem.NOT_INSTALLED;
         }
 
-        if (getPreferences(context).getBoolean(BACKGROUND_CHECK_DISABLED_KEY, false)) {
+        SharedPreferences preferences = getPreferences(context);
+
+        // GmsCore gets the location for an app only with all of these permissions. It asks for the missing
+        // ones itself from the background, where Android may not show the request, and waits for the answer.
+        if (usesLocation && !preferences.getBoolean(LOCATION_CHECK_DISABLED_KEY, false)
+                && !hasLocationAccess(context)) {
+            Log.i(TAG, "GmsCore can not access the location");
+            return Problem.NO_LOCATION_ACCESS;
+        }
+
+        if (preferences.getBoolean(BACKGROUND_CHECK_DISABLED_KEY, false)) {
             return null;
         }
 
@@ -216,6 +246,21 @@ public final class GmsCoreSupport {
         }
         client.close();
         return null;
+    }
+
+    private static boolean hasLocationAccess(Context context) {
+        String[] permissions = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
+                ? new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_BACKGROUND_LOCATION}
+                : new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
+
+        PackageManager packageManager = context.getPackageManager();
+        for (String permission : permissions) {
+            if (packageManager.checkPermission(permission, GMS_CORE_PACKAGE_NAME) != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private static void showDialog(Activity activity, Problem problem, String appName, String appNamePolish) {
@@ -247,6 +292,20 @@ public final class GmsCoreSupport {
                         .setPositiveButton(polish ? "Pobierz" : "Download", (dialogInterface, which) ->
                                 open(activity, new Intent(Intent.ACTION_VIEW, Uri.parse(GMS_CORE_DOWNLOAD_URL))));
                 break;
+            case NO_LOCATION_ACCESS:
+                builder.setTitle(polish ? "MicroG nie ma dostępu do lokalizacji" : "MicroG can't access the location")
+                        .setMessage(polish
+                                ? "Lokalizację w tej zmodyfikowanej wersji " + appNamePolish
+                                + " ustala MicroG-RE, które nie ma do niej dostępu. W uprawnieniach MicroG-RE "
+                                + "zezwól na dostęp do lokalizacji zawsze i włącz dokładną lokalizację."
+                                : "The location in this patched " + appName + " comes from MicroG-RE, "
+                                + "which can't access it. In the permissions of MicroG-RE, allow access to "
+                                + "the location all the time and turn on precise location.")
+                        .setPositiveButton(polish ? "Otwórz ustawienia" : "Open settings", (dialogInterface, which) ->
+                                openGmsCoreSettings(activity))
+                        .setNeutralButton(polish ? "Nie pytaj ponownie" : "Don't ask again", (dialogInterface, which) ->
+                                getPreferences(activity).edit().putBoolean(LOCATION_CHECK_DISABLED_KEY, true).apply());
+                break;
             case BATTERY_OPTIMIZED:
                 builder.setTitle(polish ? "MicroG nie działa w tle" : "MicroG can't run in the background")
                         .setMessage(polish
@@ -273,13 +332,17 @@ public final class GmsCoreSupport {
                                 + "app launch, allow MicroG-RE to start on its own, to be started by other apps "
                                 + "and to run in the background.")
                         .setPositiveButton(polish ? "Otwórz ustawienia" : "Open settings", (dialogInterface, which) ->
-                                open(activity, new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                                        Uri.fromParts("package", GMS_CORE_PACKAGE_NAME, null))))
+                                openGmsCoreSettings(activity))
                         .setNeutralButton(polish ? "Nie pytaj ponownie" : "Don't ask again", doNotAskAgain);
                 break;
         }
 
         builder.show();
+    }
+
+    private static void openGmsCoreSettings(Activity activity) {
+        open(activity, new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                Uri.fromParts("package", GMS_CORE_PACKAGE_NAME, null)));
     }
 
     private static void open(Activity activity, Intent intent) {

@@ -165,7 +165,8 @@ internal object Constants {
         "com.google.android.gms.location.reporting.service.START",
         "com.google.android.gms.location.settings.LOCATION_HISTORY",
         "com.google.android.gms.location.settings.LOCATION_REPORTING_SETTINGS",
-        "com.google.android.location.internal.GoogleLocationManagerService",
+        // The fused location provider and the location settings of the app bind with it.
+        "com.google.android.location.internal.GoogleLocationManagerService.START",
         "com.google.android.gms.locationsharing.api.START",
         "com.google.android.gms.locationsharingreporter.service.START",
         "com.google.android.gms.lockbox.service.START",

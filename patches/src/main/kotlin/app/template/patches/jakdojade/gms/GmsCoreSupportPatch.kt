@@ -26,7 +26,7 @@ private const val EXTENSION_CLASS = "Lapp/template/extension/jakdojade/GmsCoreSu
 @Suppress("unused")
 val gmsCoreSupportPatch = bytecodePatch(
     name = "GmsCore support",
-    description = "Allows signing in with Google and receiving notifications " +
+    description = "Allows signing in with Google, finding the location and receiving notifications " +
         "by using MicroG-RE instead of Google Play services.",
     default = true
 ) {
